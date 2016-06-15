@@ -40,6 +40,12 @@ CREATE VIEW postgrest_views.unfaelle_raw AS SELECT
     senioren as senioren
 FROM public.unfalldaten_raw;
 
+CREATE VIEW postgrest_views.random_unfall_as_geojson AS
+    SELECT 'Feature' As type,
+                 ST_AsGeoJSON(the_geom)::json As geometry,
+                 row_to_json((SELECT l FROM (SELECT l.unfall_id AS unfall_id, concat_ws(' ', trim(u.vu_ort), nullif(trim(u.vu_hoehe), '')) as description, l.source as source) As l)) As properties
+          FROM public.unfalldaten_geometries l JOIN public.unfalldaten_raw u ON l.unfall_id = u.id ORDER BY RANDOM() LIMIT 1;
+
 CREATE VIEW postgrest_views.unfaelle AS
     SELECT
       ST_X(g.the_geom) as lon,
