@@ -1,0 +1,27 @@
+version: "2"
+
+services:
+  postgis:
+    #image: mdillon/postgis:9.5
+    image: postgis
+    volumes:
+      - ./api/data.sql.gz:/docker-entrypoint-initdb.d/0data.sql.gz
+      - ./api/postgrest.sql:/docker-entrypoint-initdb.d/1postgrest.sql
+    environment:
+      - POSTGRES_PASSWORD=unfaelle_aua_aua
+      - POSTGRES_DB=ms_unfaelle
+  postgrest:
+    #image: begriffs/postgrest:v0.3.2.0
+    build:
+      context: ./api
+    environment:
+      - PG_ENV_POSTGRES_USER=postgres
+      - PG_ENV_POSTGRES_PASSWORD=unfaelle_aua_aua
+      - PG_PORT_5432_TCP_ADDR=postgis
+      - PG_PORT_5432_TCP_PORT=5432
+      - PG_ENV_POSTGRES_DB=ms_unfaelle
+      - POSTGREST_SCHEMA=postgrest_views
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgis
