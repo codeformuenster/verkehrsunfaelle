@@ -58,7 +58,7 @@ AS $$
 --DECLARE
 --  vcompany_id int;
 BEGIN
-  INSERT INTO public.unfalldaten_geometries (unfall_id, created_at, the_geom, source) VALUES (new.unfall_id, NOW(), 'POINT(' || ST_GeomFromText(concat_ws(' ', new.lon::text, new.lat::text), 4326) || ')','human');
+  INSERT INTO public.unfalldaten_geometries (unfall_id, created_at, the_geom, source) VALUES (new.unfall_id, NOW(), ST_GeomFromText('POINT(' || concat_ws(' ', new.lon::text, new.lat::text) || ')', 4326), 'human');
 RETURN new;
 END;
 $$;
