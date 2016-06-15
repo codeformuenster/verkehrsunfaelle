@@ -1,0 +1,236 @@
+<html lang="de-de" dir="ltr">
+
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>CodeForMuenster.org</title>
+      <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+      <link rel="apple-touch-icon-precomposed" href="images/apple-touch-icon.png">
+      <link rel="stylesheet" href="/css/c4m.css">
+      <link rel="stylesheet" href="/uikit/css/uikit.gradient.min.css">
+      <link rel="stylesheet" href="/uikit/css/tooltip.gradient.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+      <script src="/uikit/js/uikit.min.js"></script>
+      <script src="/uikit/js/tooltip.js"></script>
+
+                  <!-- link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+                  <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script -->
+
+                  <link rel="stylesheet" href="/lib/leaflet.css" />
+                  <script src="/lib/leaflet.js"></script>
+
+      <style>
+      #fileUrl {
+        width: 100%;
+      margin-bottom: 10px;
+      }
+      .layerClick {
+        margin:2px 0;
+        padding:3px 20px;
+        background-color:#ddd;
+        border-radius:5px;
+        cursor:pointer;
+      }
+      </style>
+  </head>
+
+  <body>
+      <div class="uk-container uk-container-center uk-margin-top uk-margin-large-bottom">
+
+          <nav class="uk-navbar uk-margin-large-bottom">
+              <a class="uk-navbar-brand uk-hidden-small" href="/index.html"><img style="height:40px" src="http://codeformuenster.org/img/cfm_logo.png" /></a>
+              <ul class="uk-navbar-nav uk-hidden-small">
+                  <li>
+                      <a href="/index.html">Startseite</a>
+                  </li>
+                  <li>
+                      <a href="/index.html#projekte"> Projekte</a>
+                  </li>
+                  <li>
+                      <a target="_blank" href="http://www.meetup.com/OK-Lab-Munster/"><i class="uk-icon-external-link"></i> Nächstes Treffen (meetup.com)</a>
+                  </li>
+                  <li>
+                      <a target="_blank" href="https://github.com/codeformuenster/"><i class="uk-icon-external-link"></i> Quellcode auf Github</a>
+                  </li>
+              </ul>
+              <a href="#offcanvas" class="uk-navbar-toggle uk-visible-small" data-uk-offcanvas></a>
+              <div class="uk-navbar-brand uk-navbar-center uk-visible-small">Code For Münster</div>
+          </nav>
+
+
+        <h1 class="uk-text-center">Verkehrsunfälle in Münster</h1>
+
+
+
+        <!-- leaflet map example -->
+        <div  class="uk-grid"  data-uk-grid-margin>
+          <div class="uk-width-medium-1-1">
+            <p>Über eine Anfrage bei <a href="https://fragdenstaat.de" target="_blank">Frag den Staat</a> haben wir Exceldateien für die Jahre 2007 bis 2014 bekommen. Durch unterschiedliche Spaltennamen und inkonsistente Datumsangaben mussten wir diese teilautomatisiert normalisieren. Bla bla bla. Hier unten kann man verschieben</p>
+          </div>
+          <div class="uk-width-medium-9-10">
+            <input id="fileUrl" name="fileUrl" type="text" value="https://raw.githubusercontent.com/codeformuenster/open-data/master/stimmbezirke.geojson"
+            placeholder="Enter url to GEOJSON file" class="uk-form uk-form-large">
+          </div>
+          <div class="uk-width-medium-1-10">
+            <input id="goButton" type="button" value="Go" class="uk-button uk-button-primary uk-button-large" />
+          </div>
+
+
+          <div class="uk-width-medium-1-1">
+
+            <div id="map" style="height:500px">
+            </div>
+
+            <div id="fileList">
+            </div>
+
+            <script>
+
+
+              (function() {
+
+                  // generate map
+                  var map = L.map('map').setView([51.96, 7.62], 13);
+
+                  L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                  }).addTo(map);
+
+
+
+                  var GeoList = function() {
+
+                    var files = [];
+                    var filecounter = 0;
+
+                    $( "#fileList" ).click(function( event ) {
+                        console.log( "clicked: ", event.target );
+                        var ele = $(event.target);
+                        if (ele.hasClass('layerClick')) {
+                          var layerId = ele.data('id');
+                          files[layerId].show = 1 - files[layerId].show ;
+                          var myLayer = files[layerId].layer;
+                          if ( files[layerId].show) {
+                            ele.css('opacity','');
+                            map.addLayer(myLayer);
+                          } else {
+                            map.removeLayer(myLayer);
+                            ele.css('opacity','0.5');
+                          }
+                        }
+                    });
+
+                    return {
+                      addFile: function(json, layer) {
+                        var fileId = ++filecounter;
+                        files[fileId] = { id: fileId, name: json, show: 1, layer:layer };
+                        console.log("files", files);
+                        $('#fileList').append('<div class="layerClick" data-id="' + fileId + '">' + json + '</div>')
+                      }
+                    }
+                  }();
+
+                  // load remote json data
+                  //
+                  function showJson( url ) {
+                    $.ajax( url, {
+                      dataType: "json",
+                      headers: {
+                        "Prefer": "plurality=singular"
+                      }
+                    })
+                    .done(function( data ) {
+                        console.log("got data", data);
+
+                        var latLon = data.geometry.coordinates;
+                        console.log(latLon);
+                        map.setView([latLon[1], latLon[0]], 17)
+
+                        var myStyle = {
+                            "color": "#ff7800",
+                            "weight": 5,
+                            "opacity": 0.65
+                        };
+                        var myLayer = L.geoJson(data, {
+                            style: myStyle
+                        });
+                        map.addLayer(myLayer);
+                        GeoList.addFile(url, myLayer);
+                      });
+
+                    }
+
+                    showJson( "http://localhost:3000/random_unfall_as_geojson" );
+
+                })();
+
+            </script>
+
+
+
+
+          </div>
+
+
+        </div>
+
+
+
+        <hr class="uk-grid-divider wider">
+
+
+
+
+    </div>
+        </div>
+
+
+        <!-- mobile navigation -->
+        <div id="offcanvas" class="uk-offcanvas">
+            <div class="uk-offcanvas-bar">
+                <ul class="uk-nav uk-nav-offcanvas">
+                  <li class="uk-active">
+                      <a href="/index.html">CodeForMuenster.Org</a>
+                  </li>
+                    <li>
+                        <a href="/index.html"> Startseite </a>
+
+                    </li>
+                    <li>
+                        <a target="_blank" href="http://www.meetup.com/OK-Lab-Munster/"><i class="uk-icon-external-link"></i> Nächstes Treffen (meetup.com)</a>
+
+                    </li>
+                    <li>
+                        <a target="_blank" href="https://github.com/codeformuenster/"><i class="uk-icon-external-link"></i> Quellcode auf Github</a>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- github ribbon -->
+        <a href="https://github.com/codeformuenster"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+
+
+        <div class="tm-footer">
+            <div class="uk-container uk-container-center uk-text-center">
+
+                <ul class="uk-subnav uk-subnav-line uk-flex-center">
+                    <li><a href="https://github.com/codeformuenster">GitHub</a></li>
+                    <li><a href="https://github.com/codeformuenster/codeformuenster/issues">Issues</a></li>
+                    <li><a href="https://github.com/orgs/codeformuenster/people">Komplette Mitgliederliste</a></li>
+                    <li><a href="https://twitter.com/codeformuenster">Twitter</a></li>
+                    <li><a href="/impressum/index.html">Impressum</a></li>
+                </ul>
+
+                <div class="uk-panel">
+                  <p> <!-- some text could be here --></p>
+                    <a href="http://codeformuenster.org"><img src="http://codeformuenster.org/img/cfm_logo.png"></a>
+                </div>
+
+            </div>
+        </div>
+
+    </body>
+
+</html>

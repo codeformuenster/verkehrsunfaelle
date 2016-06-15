@@ -1,0 +1,124 @@
+
+
+/* footer */
+.tm-footer .uk-subnav-line > li:before { border-color: #ddd; }
+.tm-footer,
+.tm-footer a { color: #ddd !important; }
+.tm-footer a:hover { color: #fff !important; }
+.tm-footer {background-color: rgb(37, 37, 37);}
+.tm-middle,
+.tm-section,
+.tm-footer { padding: 50px 0; }
+div.uk-navbar-brand {overflow: hidden; white-space: nowrap;}
+
+/* Tablet and bigger */
+@media (min-width: 768px) {
+
+    .tm-middle,
+    .tm-section,
+    .tm-footer { padding: 90px 0; }
+
+}
+
+/* Large screen and bigger */
+@media (min-width: 1220px) {
+
+    .tm-middle,
+    .tm-section,
+    .tm-footer { padding: 120px 0; }
+
+}
+
+
+/* frontpage */
+#muensterBG {
+background: url(/img/schloss-bg.jpg);
+background-repeat: no-repeat;
+-moz-background-size:100%;
+-webkit-background-size:100%;
+background-size:100%;
+background-position:center bottom;
+height: 500px
+}
+
+/* social buttons */
+.meetup {color:#E0393E}
+.facebook {color:   #3b5998}
+.twitter {color: #55acee}
+.micon {
+padding: 7px 10px;
+margin: 10px;
+}
+.contactbutton {display:block;margin-top:10px;margin-bottom:10px; }
+.contrib-image { width:350px;height:150px;overflow:hidden; }
+.contrib-gray {background-color:#ccc;}
+.uk-grid-divider.wider {margin-top: 50px;margin-bottom: 60px;}
+
+
+
+/* project list styles */
+.progress {
+width: 100%;
+height: 50px;
+}
+
+.progress-wrap {
+background: #077737;
+height: 20px;
+margin-bottom:5px;
+overflow: hidden;
+position: relative;
+}
+.progress-wrap .progress-bar {
+background: #ddd;
+left: 0;
+position: absolute;
+top: 0;
+}
+.projectTeaser p {margin:0}
+
+.previewImage {width:100%;
+overflow:hidden;
+margin-bottom:10px;
+padding: 33%;
+box-sizing: border-box;
+position: relative;
+background-color:#eee;
+}
+
+.previewImage img, .previewImage .emptyimg {
+position: absolute;
+top: 0;
+left: 0;
+display:block;
+}
+.emptyimg {
+text-align:center;
+width:100%;
+margin-top:-50px;
+height:100%;
+color: #ccc;
+font-size: 80pt;
+}
+
+.module-header a {color:white}
+.module-header {
+padding: 15px 5px;
+background: #333;
+color: #fff;
+text-align: center;
+white-space: nowrap;
+overflow: hidden;
+}
+.previewText {height:60px;overflow:hidden}
+.icon-container-title {
+padding: 15px;
+background: #16CE65!important;
+margin: 0 0 30px!important;
+border-top: none;
+font-family: Montserrat,Helvetica,Arial,sans-serif;
+text-transform: uppercase;
+color: #137254;
+}
+.projectTeaser {     background: #CACACA; }
+.projectInner {padding: 20px 10px;}
