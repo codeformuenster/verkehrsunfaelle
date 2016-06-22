@@ -13,17 +13,13 @@
       <script src="/uikit/js/uikit.min.js"></script>
       <script src="/uikit/js/tooltip.js"></script>
 
-                  <!-- link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
-                  <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script -->
-
                   <link rel="stylesheet" href="/lib/leaflet.css" />
+
                   <script src="/lib/leaflet.js"></script>
 
+                  <script src="/lib/Leaflet.Editable.js"></script>
+
       <style>
-      #fileUrl {
-        width: 100%;
-      margin-bottom: 10px;
-      }
       .layerClick {
         margin:2px 0;
         padding:3px 20px;
@@ -67,16 +63,8 @@
           <div class="uk-width-medium-1-1">
             <p>Über eine Anfrage bei <a href="https://fragdenstaat.de" target="_blank">Frag den Staat</a> haben wir Exceldateien für die Jahre 2007 bis 2014 bekommen. Durch unterschiedliche Spaltennamen und inkonsistente Datumsangaben mussten wir diese teilautomatisiert normalisieren. Bla bla bla. Hier unten kann man verschieben</p>
           </div>
-          <div class="uk-width-medium-9-10">
-            <input id="fileUrl" name="fileUrl" type="text" value="https://raw.githubusercontent.com/codeformuenster/open-data/master/stimmbezirke.geojson"
-            placeholder="Enter url to GEOJSON file" class="uk-form uk-form-large">
-          </div>
-          <div class="uk-width-medium-1-10">
-            <input id="goButton" type="button" value="Go" class="uk-button uk-button-primary uk-button-large" />
-          </div>
 
-
-          <div class="uk-width-medium-1-1">
+          <div class="uk-width-medium-4-5">
 
             <div id="map" style="height:500px">
             </div>
@@ -88,9 +76,10 @@
 
 
               (function() {
+                  var noMoreEdit = 0;
 
                   // generate map
-                  var map = L.map('map').setView([51.96, 7.62], 13);
+                  var map = L.map('map', {editable: true}).setView([51.96, 7.62], 13);
 
                   L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
                       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -98,37 +87,25 @@
 
 
 
-                  var GeoList = function() {
 
-                    var files = [];
-                    var filecounter = 0;
 
-                    $( "#fileList" ).click(function( event ) {
-                        console.log( "clicked: ", event.target );
-                        var ele = $(event.target);
-                        if (ele.hasClass('layerClick')) {
-                          var layerId = ele.data('id');
-                          files[layerId].show = 1 - files[layerId].show ;
-                          var myLayer = files[layerId].layer;
-                          if ( files[layerId].show) {
-                            ele.css('opacity','');
-                            map.addLayer(myLayer);
-                          } else {
-                            map.removeLayer(myLayer);
-                            ele.css('opacity','0.5');
-                          }
-                        }
-                    });
-
-                    return {
-                      addFile: function(json, layer) {
-                        var fileId = ++filecounter;
-                        files[fileId] = { id: fileId, name: json, show: 1, layer:layer };
-                        console.log("files", files);
-                        $('#fileList').append('<div class="layerClick" data-id="' + fileId + '">' + json + '</div>')
-                      }
-                    }
-                  }();
+//                  function showDrawControls(drawnItems) {
+//
+//                        noMoreEdit = 1;
+//                        $('.layerEdit').hide();
+//                    		var drawControl = new L.Control.Draw({
+//                    			draw: false,
+//                    			edit: {
+//                    				featureGroup: drawnItems
+//                    			}
+//                    		});
+//                    		map.addControl(drawControl);
+//
+//                        map.on('draw:created', function (e) {
+//                          var layer = e.layer;
+//                          drawnItems.addLayer(layer);
+//                        });
+//                  }
 
                   // load remote json data
                   //
@@ -144,42 +121,38 @@
 
                         var latLon = data.geometry.coordinates;
                         console.log(latLon);
-                        map.setView([latLon[1], latLon[0]], 17)
+                        map.setView([latLon[1], latLon[0]], 17);
 
-                        var myStyle = {
-                            "color": "#ff7800",
-                            "weight": 5,
-                            "opacity": 0.65
-                        };
-                        var myLayer = L.geoJson(data, {
-                            style: myStyle
-                        });
-                        map.addLayer(myLayer);
-                        GeoList.addFile(url, myLayer);
-                      });
+                        var span_vu_ort = document.getElementById("vu_ort");
+                        var span_vu_hoehe = document.getElementById("vu_hoehe");
 
-                    }
+                        span_vu_ort.textContent = data.properties.vu_ort;
+                        span_vu_hoehe.textContent = data.properties.vu_hoehe;
 
-                    showJson( "http://localhost:3000/random_unfall_as_geojson" );
-
+                        var myLayer = L.geoJson(data);
+                        var unfallMarker = L.marker([latLon[1], latLon[0]])
+                        map.addLayer(unfallMarker);
+                        unfallMarker.enableEdit()
+                    });
+                  }
+                  showJson( "http://localhost:3000/random_unfall_as_geojson" );
                 })();
 
             </script>
 
-
-
-
           </div>
 
+          <div class="uk-width-medium-1-5">
+            <div class="sidebar_ort">
+              <h3 class="ort_descriptor">Ort laut Polizei:</h3>
+              Ort: <span id="vu_ort"></span><br />
+              Höhe: <span id="vu_hoehe"></span>
+            </div>
+          <div>
 
         </div>
 
-
-
         <hr class="uk-grid-divider wider">
-
-
-
 
     </div>
         </div>
