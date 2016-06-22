@@ -64,89 +64,20 @@
             <p>Über eine Anfrage bei <a href="https://fragdenstaat.de" target="_blank">Frag den Staat</a> haben wir Exceldateien für die Jahre 2007 bis 2014 bekommen. Durch unterschiedliche Spaltennamen und inkonsistente Datumsangaben mussten wir diese teilautomatisiert normalisieren. Bla bla bla. Hier unten kann man verschieben</p>
           </div>
 
-          <div class="uk-width-medium-4-5">
-
+          <div class="uk-width-medium-3-5">
             <div id="map" style="height:500px">
             </div>
-
-            <div id="fileList">
-            </div>
-
-            <script>
-
-
-              (function() {
-                  var noMoreEdit = 0;
-
-                  // generate map
-                  var map = L.map('map', {editable: true}).setView([51.96, 7.62], 13);
-
-                  L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                  }).addTo(map);
-
-
-
-
-
-//                  function showDrawControls(drawnItems) {
-//
-//                        noMoreEdit = 1;
-//                        $('.layerEdit').hide();
-//                    		var drawControl = new L.Control.Draw({
-//                    			draw: false,
-//                    			edit: {
-//                    				featureGroup: drawnItems
-//                    			}
-//                    		});
-//                    		map.addControl(drawControl);
-//
-//                        map.on('draw:created', function (e) {
-//                          var layer = e.layer;
-//                          drawnItems.addLayer(layer);
-//                        });
-//                  }
-
-                  // load remote json data
-                  //
-                  function showJson( url ) {
-                    $.ajax( url, {
-                      dataType: "json",
-                      headers: {
-                        "Prefer": "plurality=singular"
-                      }
-                    })
-                    .done(function( data ) {
-                        console.log("got data", data);
-
-                        var latLon = data.geometry.coordinates;
-                        console.log(latLon);
-                        map.setView([latLon[1], latLon[0]], 17);
-
-                        var span_vu_ort = document.getElementById("vu_ort");
-                        var span_vu_hoehe = document.getElementById("vu_hoehe");
-
-                        span_vu_ort.textContent = data.properties.vu_ort;
-                        span_vu_hoehe.textContent = data.properties.vu_hoehe;
-
-                        var myLayer = L.geoJson(data);
-                        var unfallMarker = L.marker([latLon[1], latLon[0]])
-                        map.addLayer(unfallMarker);
-                        unfallMarker.enableEdit()
-                    });
-                  }
-                  showJson( "http://localhost:3000/random_unfall_as_geojson" );
-                })();
-
-            </script>
-
           </div>
 
-          <div class="uk-width-medium-1-5">
-            <div class="sidebar_ort">
-              <h3 class="ort_descriptor">Ort laut Polizei:</h3>
+          <div class="uk-width-medium-2-5">
+            <div class="uk-panel uk-panel-box uk-margin-bottom">
+              <h2 class="uk-panel-title">Ort laut Polizei:</h2>
               Ort: <span id="vu_ort"></span><br />
               Höhe: <span id="vu_hoehe"></span>
+            </div>
+            <div class="uk-container-center">
+              <button id="refresh" class="uk-button uk-button-large uk-width-1-1 uk-margin-small-bottom" type="button">Neuer Unfall</button>
+              <button id="saveButton" class="uk-button uk-button-large uk-button-success uk-width-1-1" type="button">Speichern</button>
             </div>
           <div>
 
@@ -203,7 +134,70 @@
 
             </div>
         </div>
+        <script>
+          var baseUrl = "http://localhost:3000";
+          (function() {
+              // generate map
+              var map = L.map('map', {editable: true}).setView([51.96, 7.62], 13);
 
+              L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                  attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              }).addTo(map);
+
+              var unfallMarker;
+
+              // load remote json data
+              function loadUnfallJson() {
+                var span_vu_ort = document.getElementById("vu_ort");
+                var span_vu_hoehe = document.getElementById("vu_hoehe");
+
+                span_vu_ort.textContent = "wird";
+                span_vu_hoehe.textContent = "geladen...";
+
+                $.ajax( baseUrl + "/random_unfall_as_geojson", {
+                  dataType: "json",
+                  headers: {
+                    "Prefer": "plurality=singular"
+                  }
+                })
+                .done(function( data ) {
+                    console.log("got data", data);
+
+                    var latLon = data.geometry.coordinates;
+                    console.log(latLon);
+                    map.setView([latLon[1], latLon[0]], 17);
+
+                    span_vu_ort.textContent = data.properties.vu_ort;
+                    span_vu_hoehe.textContent = data.properties.vu_hoehe;
+
+                    unfallMarker = L.marker([latLon[1], latLon[0]]);
+                    unfallMarker._unfallProperties = data.properties;
+                    map.addLayer(unfallMarker);
+                    unfallMarker.enableEdit();
+                });
+              }
+              function saveUnfall () {
+                var latlng = unfallMarker.getLatLng()
+                var unfall_id = unfallMarker._unfallProperties.unfall_id;
+                $.ajax({
+                  type: "POST",
+                  url: baseUrl + "/unfaelle",
+                  data: JSON.stringify({ unfall_id: unfall_id, lat: latlng.lat, lon: latlng.lng }),
+                  contentType: "application/json"
+                });
+              }
+              // initial json load
+              loadUnfallJson();
+
+              $("#saveButton").click(function () {
+                saveUnfall();
+              });
+
+              $("#refresh").click(function () {
+                loadUnfallJson();
+              });
+            })();
+        </script>
     </body>
 
 </html>
