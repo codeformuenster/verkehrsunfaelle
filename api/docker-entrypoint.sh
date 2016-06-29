@@ -1,21 +1,20 @@
 #!/bin/bash
 
 # unofficial strict mode
-set -uo pipefail
+set -euo pipefail
 IFS=$'\n\t'
 
 SLEEPSECONDS=5
-echo "waiting $SLEEPSECONDS seconds for postgres.."
 
-# sleep while postgres is initializing
-sleep $SLEEPSECONDS
 pg_isready -q -h ${PG_PORT_5432_TCP_ADDR} -p ${PG_PORT_5432_TCP_PORT} -U ${PG_ENV_POSTGRES_USER}
 ISREADY=$?
+
+# sleep while postgres is initializing
 while [[ "$ISREADY" != 0 ]]; do
-  pg_isready -q -h ${PG_PORT_5432_TCP_ADDR} -p ${PG_PORT_5432_TCP_PORT} -U ${PG_ENV_POSTGRES_USER}
-  let ISREADY=$?
   echo "waiting $SLEEPSECONDS seconds for postgres.."
   sleep $SLEEPSECONDS
+  pg_isready -q -h ${PG_PORT_5432_TCP_ADDR} -p ${PG_PORT_5432_TCP_PORT} -U ${PG_ENV_POSTGRES_USER}
+  let ISREADY=$?
 done
 
 echo "postgres is now avaliable, starting postgrest"
