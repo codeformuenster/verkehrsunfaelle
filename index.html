@@ -53,15 +53,12 @@
               <div class="uk-navbar-brand uk-navbar-center uk-visible-small">Code For Münster</div>
           </nav>
 
-
         <h1 class="uk-text-center">Verkehrsunfälle in Münster</h1>
 
-
-
-        <!-- leaflet map example -->
         <div  class="uk-grid"  data-uk-grid-margin>
           <div class="uk-width-medium-1-1">
-            <p>Über eine Anfrage bei <a href="https://fragdenstaat.de" target="_blank">Frag den Staat</a> haben wir Exceldateien für die Jahre 2007 bis 2014 bekommen. Durch unterschiedliche Spaltennamen und inkonsistente Datumsangaben mussten wir diese teilautomatisiert normalisieren. Bla bla bla. Hier unten kann man verschieben</p>
+            <p>Dank einer Anfrage bei <a href="https://fragdenstaat.de" target="_blank">Frag den Staat</a> sind wir an Rohdaten der Verkehsunfälle der Jahre 2007 bis 2014 gekommen. Nach mehreren Versuchen ist es uns gelungen, die zwischen den Jahren unterschiedlichen Spaltennamen und Formate in eine Datenbank zu laden um sie zu visualisieren und einfach zugänglich zu machen. Bedauerlicherweise werden die Orte der Verkehrsunfälle in einem für Geocoder unverständlichem Format aufgenommen. (z.B.: "Kappenberger Damm, Höhe Kriegerweg") Wir haben es uns nun zur Aufgabe gemacht alle Unfälle durchzugehen und den korrekten Ort einzupflegen.</p>
+            <p>Diese Webseite ermöglicht es jedem bei diesem Prozess zu helfen! Es wird jeweils ein Unfall mit der Ortsbeschreibung der Polizei und dem ungefähren Ort angezeigt. Der Marker auf der Karte lässt sich dann an den korrekten Ort verschieben und dann mit dem "Speichern" Button abspeichern. Gemeinsam kann so der Datenbestand validiert, vervollständigt und verbessert werden!</p>
           </div>
 
           <div class="uk-width-medium-3-5">
@@ -145,11 +142,18 @@
               }).addTo(map);
 
               var unfallMarker;
+              var span_vu_ort = document.getElementById("vu_ort");
+              var span_vu_hoehe = document.getElementById("vu_hoehe");
+
+              function ajaxFail () {
+                UIkit.modal.alert("Fehler beim laden oder speichern. Dies sollte eigentlich nicht passieren. Bitte melde dich bei <a href=\"https://twitter.com/ubergesundheit\">@ubergesundheit auf Twitter</a>");
+                span_vu_ort.textContent = "Fehler :(";
+                span_vu_hoehe.textContent = "Fehler :(";
+                $("#saveButton").removeProp("disabled");
+              }
 
               // load remote json data
               function loadUnfallJson() {
-                var span_vu_ort = document.getElementById("vu_ort");
-                var span_vu_hoehe = document.getElementById("vu_hoehe");
 
                 span_vu_ort.textContent = "wird";
                 span_vu_hoehe.textContent = "geladen...";
@@ -174,7 +178,9 @@
                     unfallMarker._unfallProperties = data.properties;
                     map.addLayer(unfallMarker);
                     unfallMarker.enableEdit();
-                });
+                    $("#saveButton").prop("disabled", false);
+                })
+                .fail(ajaxFail);
               }
               function saveUnfall () {
                 var latlng = unfallMarker.getLatLng()
@@ -184,17 +190,24 @@
                   url: baseUrl + "/unfaelle",
                   data: JSON.stringify({ unfall_id: unfall_id, lat: latlng.lat, lon: latlng.lng }),
                   contentType: "application/json"
-                });
+                })
+                .done(function () {
+                  UIkit.modal.confirm("Unfall erfolgreich gespeichert!", function(){
+                  window.location.reload(true);
+                  }, {labels: {'Ok': 'Nächster Unfall', 'Cancel': 'nicht weitermachen'}});
+                })
+                .fail(ajaxFail)
               }
               // initial json load
               loadUnfallJson();
 
               $("#saveButton").click(function () {
+                $("#saveButton").prop("disabled", true);
                 saveUnfall();
               });
 
               $("#refresh").click(function () {
-                loadUnfallJson();
+                  window.location.reload(true);
               });
             })();
         </script>
