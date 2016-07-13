@@ -1,9 +1,15 @@
 version: "2"
 
 services:
+  html:
+    image: abiosoft/caddy
+    ports:
+      - "80:2015"
+    volumes:
+      - ./html:/srv
   postgis:
-    #image: mdillon/postgis:9.5
-    image: postgis
+    image: mdillon/postgis:9.5
+    #image: postgis
     volumes:
       - ./api/data.sql.gz:/docker-entrypoint-initdb.d/0data.sql.gz
       - ./api/postgrest.sql:/docker-entrypoint-initdb.d/1postgrest.sql

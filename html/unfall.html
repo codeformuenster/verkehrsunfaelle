@@ -13,12 +13,6 @@
       <script src="/uikit/js/uikit.min.js"></script>
       <script src="/uikit/js/tooltip.js"></script>
 
-                  <link rel="stylesheet" href="/lib/leaflet.css" />
-
-                  <script src="/lib/leaflet.js"></script>
-
-                  <script src="/lib/Leaflet.Editable.js"></script>
-
       <style>
       .layerClick {
         margin:2px 0;
@@ -53,34 +47,31 @@
               <div class="uk-navbar-brand uk-navbar-center uk-visible-small">Code For Münster</div>
           </nav>
 
-        <h1 class="uk-text-center">Verkehrsunfälle in Münster</h1>
+          <h1 class="uk-text-center">Verkehrsunfall Nr <span id="unfall_id"></span></h1>
 
         <div  class="uk-grid"  data-uk-grid-margin>
           <div class="uk-width-medium-1-1">
-            <p>Dank einer Anfrage bei <a href="https://fragdenstaat.de" target="_blank">Frag den Staat</a> sind wir an Rohdaten der Verkehsunfälle der Jahre 2007 bis 2014 gekommen. Nach mehreren Versuchen ist es uns gelungen, die zwischen den Jahren unterschiedlichen Spaltennamen und Formate in eine Datenbank zu laden um sie zu visualisieren und einfach zugänglich zu machen. Bedauerlicherweise werden die Orte der Verkehrsunfälle in einem für Geocoder unverständlichem Format aufgenommen. (z.B.: "Kappenberger Damm, Höhe Kriegerweg") Wir haben es uns nun zur Aufgabe gemacht alle Unfälle durchzugehen und den korrekten Ort einzupflegen.</p>
-            <p>Diese Webseite ermöglicht es jedem bei diesem Prozess zu helfen! Es wird jeweils ein Unfall mit der Ortsbeschreibung der Polizei und dem ungefähren Ort angezeigt. Der Marker auf der Karte lässt sich dann an den korrekten Ort verschieben und dann mit dem "Speichern" Button abspeichern. Gemeinsam kann so der Datenbestand validiert, vervollständigt und verbessert werden!</p>
+            <p>Dies ist der Unfall-Eintrag aus den Daten der Polizei. Die Bezeichner sind teilweise zusammengelegt. Leider kennen wir die Bedeutung teilweise auch nicht. Für Hinweise wären wir sehr dankbar! Die Rohdaten können nach Jahr sortiert <a href="https://github.com/codeformuenster/open-data/tree/master/Unfallstatistiken2007-2014/Rohdaten" target="_blank">heruntergeladen</a> werden.</p>
+            <a href="index.html">Zurück zur Verbesserungs-Karte</a>
+          </div>
+          <div class="uk-width-medium-1-1">
+            <p id="info_table"></p>
+            <table class="uk-table uk-table-striped uk-table-condensed">
+              <thead>
+                <tr>
+                  <th>Bezeichner</th>
+                  <th>Wert</th>
+                  <th>Beschreibung</th>
+                </tr>
+              </thead>
+              <tbody id="unfall_table">
+              </tbody>
+            </table>
           </div>
 
-          <div class="uk-width-medium-3-5">
-            <div id="map" style="height:500px">
-            </div>
-          </div>
 
-          <div class="uk-width-medium-2-5">
-            <div class="uk-panel uk-panel-box uk-margin-bottom">
-              <h2 class="uk-panel-title">Ort laut Polizei:</h2>
-              Ort: <span id="vu_ort"></span><br />
-              Höhe: <span id="vu_hoehe"></span>
-            </div>
-            <div class="uk-container-center">
-              <button id="refresh" class="uk-button uk-button-large uk-width-1-1 uk-margin-small-bottom" type="button">Neuer Unfall</button>
-              <button id="saveButton" class="uk-button uk-button-large uk-button-success uk-width-1-1" type="button">Speichern</button>
-            </div>
-          <div>
 
         </div>
-
-        <hr class="uk-grid-divider wider">
 
     </div>
         </div>
@@ -133,82 +124,118 @@
         </div>
         <script>
           var baseUrl = "http://localhost:3000";
+          // http://stackoverflow.com/a/5448595
+          function getParameterValue(val) {
+              var result = "",
+                  tmp = [];
+              var items = location.search.substr(1).split("&");
+              for (var index = 0; index < items.length; index++) {
+                  tmp = items[index].split("=");
+                  if (tmp[0] === val) result = decodeURIComponent(tmp[1]);
+              }
+              return result;
+          }
+
+          // http://stackoverflow.com/a/1026087
+          function capitalizeFirstLetter(string) {
+              return string.charAt(0).toUpperCase() + string.slice(1);
+          }
+
+          var keyDescriptions = {
+            "id": "Fortlaufende Nummer",
+            "vu_ort": "Ort",
+            "vu_hoehe": "Zusatzinformation zum Ort",
+            "tag": "Wochentag",
+            "datum": "",
+            "uhrzeit": "",
+            "kat": "?",
+            "flucht": "",
+            "row_t": "?",
+            "sv":"?",
+            "lv":"?",
+            "anzahl_beteiligte":"",
+            "fg":"?",
+            "rf":"?",
+            "mofa":"",
+            "kkr":"Kleinkraftrad",
+            "kkrad":"Kleinkraftrad",
+            "pkw":"Auto",
+            "lkw":"",
+            "kom": "Kraftomnibus",
+            "sonstige":null,
+            "1":"?",
+            "2":"?",
+            "alkohol":"",
+            "typ":"?",
+            "1_urs":"1. Ursache",
+            "2_urs":"2. Ursache",
+            "3_urs":"3. Ursache",
+            "sonst_urs":"sonstige Ursache",
+            "lichtverhaeltnisse":"",
+            "strassenzustand":"",
+            "01_alter_in_jahren":"",
+            "kinder":"",
+            "18_24":"",
+            "senioren":""
+          };
+
           (function() {
-              // generate map
-              var map = L.map('map', {editable: true}).setView([51.96, 7.62], 13);
-
-              L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                  attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              }).addTo(map);
-
-              var unfallMarker;
-              var span_vu_ort = document.getElementById("vu_ort");
-              var span_vu_hoehe = document.getElementById("vu_hoehe");
+              var tableElement = document.getElementById("unfall_table");
+              var tableInfo = document.getElementById("info_table");
 
               function ajaxFail () {
                 UIkit.modal.alert("Fehler beim laden oder speichern. Dies sollte eigentlich nicht passieren. Bitte melde dich bei <a href=\"https://twitter.com/ubergesundheit\">@ubergesundheit auf Twitter</a>");
-                span_vu_ort.textContent = "Fehler :(";
-                span_vu_hoehe.textContent = "Fehler :(";
-                $("#saveButton").removeProp("disabled");
+                tableInfo.textContent = "Fehler :(";
               }
 
               // load remote json data
               function loadUnfallJson() {
 
-                span_vu_ort.textContent = "wird";
-                span_vu_hoehe.textContent = "geladen...";
+                var id = getParameterValue("unfall_id");
+                if (id !== "") {
+                  tableInfo.textContent = "wird geladen...";
 
-                $.ajax( baseUrl + "/random_unfall_as_geojson", {
-                  dataType: "json",
-                  headers: {
-                    "Prefer": "plurality=singular"
-                  }
-                })
-                .done(function( data ) {
-                    console.log("got data", data);
+                  $.ajax( baseUrl + "/unfaelle_raw?id=eq." + id, {
+                    dataType: "json",
+                    headers: {
+                      "Prefer": "plurality=singular"
+                    }
+                  })
+                  .done(function( data ) {
+                      console.log("got data", data);
 
-                    var latLon = data.geometry.coordinates;
-                    console.log(latLon);
-                    map.setView([latLon[1], latLon[0]], 17);
+                      Object.keys(data).forEach(function (key) {
 
-                    span_vu_ort.textContent = data.properties.vu_ort;
-                    span_vu_hoehe.textContent = data.properties.vu_hoehe;
+                          var tr = document.createElement("tr");
 
-                    unfallMarker = L.marker([latLon[1], latLon[0]]);
-                    unfallMarker._unfallProperties = data.properties;
-                    map.addLayer(unfallMarker);
-                    unfallMarker.enableEdit();
-                    $("#saveButton").prop("disabled", false);
-                })
-                .fail(ajaxFail);
-              }
-              function saveUnfall () {
-                var latlng = unfallMarker.getLatLng()
-                var unfall_id = unfallMarker._unfallProperties.unfall_id;
-                $.ajax({
-                  type: "POST",
-                  url: baseUrl + "/unfaelle",
-                  data: JSON.stringify({ unfall_id: unfall_id, lat: latlng.lat, lon: latlng.lng }),
-                  contentType: "application/json"
-                })
-                .done(function () {
-                  UIkit.modal.confirm("Unfall erfolgreich gespeichert!", function(){
-                  window.location.reload(true);
-                  }, {labels: {'Ok': 'Nächster Unfall', 'Cancel': 'nicht weitermachen'}});
-                })
-                .fail(ajaxFail)
+                          var des_td = document.createElement("td");
+                          var key_td = document.createElement("td");
+                          var val_td = document.createElement("td");
+                          tr.appendChild(key_td);
+                          tr.appendChild(val_td);
+                          tr.appendChild(des_td);
+
+                          tableElement.appendChild(tr);
+
+                          key_td.classList.add("unfall_key");
+
+                          key_td.textContent = capitalizeFirstLetter(key);
+                          val_td.textContent = data[key];
+                          des_td.textContent = keyDescriptions[key];
+                      });
+
+                      tableInfo.textContent = ""
+                      document.getElementById("unfall_id").textContent = id;
+
+                  })
+                  .fail(ajaxFail);
+                } else {
+                  tableInfo.textContent = "keine Unfall id angegeben";
+                }
               }
               // initial json load
               loadUnfallJson();
 
-              $("#saveButton").click(function () {
-                $("#saveButton").prop("disabled", true);
-                saveUnfall();
-              });
-
-              $("#refresh").click(function () {
-                  window.location.reload(true);
-              });
             })();
         </script>
     </body>
