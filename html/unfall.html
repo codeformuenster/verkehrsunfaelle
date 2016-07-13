@@ -12,6 +12,7 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
       <script src="/uikit/js/uikit.min.js"></script>
       <script src="/uikit/js/tooltip.js"></script>
+      <script src="/js/util.js"></script>
 
       <style>
       .layerClick {
@@ -47,7 +48,7 @@
               <div class="uk-navbar-brand uk-navbar-center uk-visible-small">Code For Münster</div>
           </nav>
 
-          <h1 class="uk-text-center">Verkehrsunfall Nr <span id="unfall_id"></span></h1>
+          <h1 class="uk-text-center">Verkehrsunfall Nr. <span id="unfall_id"></span></h1>
 
         <div  class="uk-grid"  data-uk-grid-margin>
           <div class="uk-width-medium-1-1">
@@ -123,23 +124,6 @@
             </div>
         </div>
         <script>
-          var baseUrl = "http://localhost:3000";
-          // http://stackoverflow.com/a/5448595
-          function getParameterValue(val) {
-              var result = "",
-                  tmp = [];
-              var items = location.search.substr(1).split("&");
-              for (var index = 0; index < items.length; index++) {
-                  tmp = items[index].split("=");
-                  if (tmp[0] === val) result = decodeURIComponent(tmp[1]);
-              }
-              return result;
-          }
-
-          // http://stackoverflow.com/a/1026087
-          function capitalizeFirstLetter(string) {
-              return string.charAt(0).toUpperCase() + string.slice(1);
-          }
 
           var keyDescriptions = {
             "id": "Fortlaufende Nummer",

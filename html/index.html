@@ -12,6 +12,7 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
       <script src="/uikit/js/uikit.min.js"></script>
       <script src="/uikit/js/tooltip.js"></script>
+      <script src="/js/util.js"></script>
 
                   <link rel="stylesheet" href="/lib/leaflet.css" />
 
@@ -137,7 +138,6 @@
             </div>
         </div>
         <script>
-          var baseUrl = "http://localhost:3000";
           (function() {
               // generate map
               var map = L.map('map', {editable: true}).setView([51.96, 7.62], 13);
@@ -161,10 +161,19 @@
               // load remote json data
               function loadUnfallJson() {
 
+                //
+
                 span_vu_ort.textContent = "wird";
                 span_vu_hoehe.textContent = "geladen...";
 
-                $.ajax( baseUrl + "/random_unfall_as_geojson", {
+                var path = "/random_unfall_as_geojson";
+
+                var unfall_id = getParameterValue("unfall_id");
+                if (unfall_id !== "") {
+                  path = "/unfaelle_as_geojson?properties-%3E%3Eunfall_id=eq." + unfall_id;
+                }
+
+                $.ajax(baseUrl + path, {
                   dataType: "json",
                   headers: {
                     "Prefer": "plurality=singular"
@@ -188,6 +197,8 @@
 
                     unfall_detail_link.href = "unfall.html?unfall_id=" + data.properties.unfall_id;
                     unfall_detail_link.style.display = "block";
+
+                    history.pushState({}, document.title, "?unfall_id=" + data.properties.unfall_id);
                 })
                 .fail(ajaxFail);
               }
@@ -202,7 +213,8 @@
                 })
                 .done(function () {
                   UIkit.modal.confirm("Unfall erfolgreich gespeichert!", function(){
-                  window.location.reload(true);
+                  window.location.search = "";
+                  //window.location.reload(true);
                   }, {labels: {'Ok': 'Nächster Unfall', 'Cancel': 'nicht weitermachen'}});
                 })
                 .fail(ajaxFail)
@@ -216,7 +228,8 @@
               });
 
               $("#refresh").click(function () {
-                  window.location.reload(true);
+                  //window.location.reload(true);
+                  window.location.search = "";
               });
             })();
         </script>

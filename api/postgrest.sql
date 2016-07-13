@@ -40,11 +40,14 @@ CREATE VIEW postgrest_views.unfaelle_raw AS SELECT
     senioren as senioren
 FROM public.unfalldaten_raw;
 
-CREATE VIEW postgrest_views.random_unfall_as_geojson AS
+CREATE VIEW postgrest_views.unfaelle_as_geojson AS
     SELECT 'Feature' As type,
                  ST_AsGeoJSON(the_geom)::json As geometry,
                  row_to_json((SELECT l FROM (SELECT l.unfall_id AS unfall_id, trim(u.vu_ort) as vu_ort, nullif(trim(u.vu_hoehe), '') as vu_hoehe, l.source as source) As l)) As properties
-          FROM public.unfalldaten_geometries l JOIN public.unfalldaten_raw u ON l.unfall_id = u.id ORDER BY RANDOM() LIMIT 1;
+          FROM public.unfalldaten_geometries l JOIN public.unfalldaten_raw u ON l.unfall_id = u.id;
+
+CREATE VIEW postgrest_views.random_unfall_as_geojson AS
+    SELECT * FROM postgrest_views.unfaelle_as_geojson ORDER BY RANDOM() LIMIT 1;
 
 CREATE VIEW postgrest_views.unfaelle AS
     SELECT
@@ -61,8 +64,6 @@ CREATE FUNCTION create_location()
 RETURNS trigger
 LANGUAGE plpgsql
 AS $$
---DECLARE
---  vcompany_id int;
 BEGIN
   INSERT INTO public.unfalldaten_geometries (unfall_id, created_at, the_geom, source) VALUES (new.unfall_id, NOW(), ST_GeomFromText('POINT(' || concat_ws(' ', new.lon::text, new.lat::text) || ')', 4326), 'human');
 RETURN new;
@@ -73,3 +74,4 @@ CREATE TRIGGER create_location
 INSTEAD OF INSERT ON postgrest_views.unfaelle
 FOR EACH ROW
 EXECUTE PROCEDURE create_location();
+

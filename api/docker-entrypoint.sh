@@ -6,15 +6,19 @@ IFS=$'\n\t'
 
 SLEEPSECONDS=5
 
+set +e
 pg_isready -q -h ${PG_PORT_5432_TCP_ADDR} -p ${PG_PORT_5432_TCP_PORT} -U ${PG_ENV_POSTGRES_USER}
 ISREADY=$?
+set -e
 
 # sleep while postgres is initializing
 while [[ "$ISREADY" != 0 ]]; do
   echo "waiting $SLEEPSECONDS seconds for postgres.."
   sleep $SLEEPSECONDS
+  set +e
   pg_isready -q -h ${PG_PORT_5432_TCP_ADDR} -p ${PG_PORT_5432_TCP_PORT} -U ${PG_ENV_POSTGRES_USER}
   let ISREADY=$?
+  set -e
 done
 
 echo "postgres is now avaliable, starting postgrest"
