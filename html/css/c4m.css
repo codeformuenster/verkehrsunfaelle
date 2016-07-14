@@ -3,12 +3,15 @@
 /* footer */
 .tm-footer .uk-subnav-line > li:before { border-color: #ddd; }
 .tm-footer,
-.tm-footer a { color: #ddd !important; }
-.tm-footer a:hover { color: #fff !important; }
-.tm-footer {background-color: rgb(37, 37, 37);}
+.tm-footer a { color: #666 !important; }
+.tm-footer a:hover { color: #444 !important; }
+.tm-footer {background-color: white;}
 .tm-middle,
 .tm-section,
-.tm-footer { padding: 50px 0; }
+.tm-footer {
+  padding: 50px 0;
+  margin-top: 1em;
+}
 div.uk-navbar-brand {overflow: hidden; white-space: nowrap;}
 
 /* Tablet and bigger */
