@@ -53,7 +53,7 @@
         <div  class="uk-grid"  data-uk-grid-margin>
           <div class="uk-width-medium-1-1">
             <p>Dies ist der Unfall-Eintrag aus den Daten der Polizei. Die Bezeichner sind teilweise zusammengelegt. Leider kennen wir die Bedeutung teilweise auch nicht. Für Hinweise wären wir sehr dankbar! Die Rohdaten können nach Jahr sortiert <a href="https://github.com/codeformuenster/open-data/tree/master/Unfallstatistiken2007-2014/Rohdaten" target="_blank">heruntergeladen</a> werden.</p>
-            <a href="index.html">Zurück zur Verbesserungs-Karte</a>
+            <a id="backToMapLink" href="index.html">Zurück zur Verbesserungs-Karte</a>
           </div>
           <div class="uk-width-medium-1-1">
             <p id="info_table"></p>
@@ -166,6 +166,7 @@
           (function() {
               var tableElement = document.getElementById("unfall_table");
               var tableInfo = document.getElementById("info_table");
+              var backToMapLinkElement = document.getElementById("backToMapLink");
 
               function ajaxFail () {
                 UIkit.modal.alert("Fehler beim laden oder speichern. Dies sollte eigentlich nicht passieren. Bitte melde dich bei <a href=\"https://twitter.com/ubergesundheit\">@ubergesundheit auf Twitter</a>");
@@ -210,6 +211,7 @@
 
                       tableInfo.textContent = ""
                       document.getElementById("unfall_id").textContent = id;
+                      backToMapLinkElement.href = "index.html?unfall_id=" + id;
 
                   })
                   .fail(ajaxFail);
