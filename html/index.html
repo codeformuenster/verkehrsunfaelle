@@ -88,6 +88,9 @@
 
         <hr class="uk-grid-divider wider">
 
+        <div class="uk-container-center">
+          <p>Der Marker in der Karte lässt sich bei gedrückt gehaltener linker Maustaste verschieben.<br />Ein Doppelklick versetzt den Marker direkt an die neue Stelle</p>
+        </div>
     </div>
         </div>
 
@@ -199,6 +202,12 @@
                     unfall_detail_link.style.display = "block";
 
                     history.pushState({}, document.title, "?unfall_id=" + data.properties.unfall_id);
+                    // doubleclick moves marker
+                    map.off('dblclick');
+                    map.on('dblclick', function (e) {
+                      unfallMarker.setLatLng(e.latlng);
+                    });
+
                 })
                 .fail(ajaxFail);
               }
