@@ -14,11 +14,10 @@
       <script src="/uikit/js/tooltip.js"></script>
       <script src="/js/util.js"></script>
 
-                  <link rel="stylesheet" href="/lib/leaflet.css" />
+      <link rel="stylesheet" href="/lib/leaflet.css" />
 
-                  <script src="/lib/leaflet.js"></script>
-
-                  <script src="/lib/Leaflet.Editable.js"></script>
+      <script src="/lib/leaflet.js"></script>
+      <script src="/lib/Leaflet.Editable.js"></script>
 
       <style>
       .layerClick {
@@ -80,7 +79,9 @@
             </div>
             <div class="uk-container-center">
               <button id="refresh" class="uk-button uk-button-large uk-width-1-1 uk-margin-small-bottom" type="button">Neuer Unfall</button>
-              <button id="saveButton" class="uk-button uk-button-large uk-button-success uk-width-1-1" type="button">Speichern</button>
+              <button id="correctButton" class="uk-button uk-button-large uk-margin-small-bottom uk-button-primary uk-width-1-1" type="button">Stimmt so</button>
+              <button id="saveButton" class="uk-button uk-button-large uk-margin-small-bottom uk-button-success uk-width-1-1" type="button" disabled>Speichern</button>
+              <button id="resetLocationButton" class="uk-button uk-button-link uk-width-1-1" type="button" style="display: none">Ort zurücksetzen</button>
             </div>
           <div>
 
@@ -149,7 +150,13 @@
                   attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               }).addTo(map);
 
-              var unfallMarker;
+              map.on('editable:editing', function () {
+                $("#saveButton").prop("disabled", false);
+                $("#correctButton").prop("disabled", true);
+                $("#resetLocationButton").show();
+              });
+
+              var unfallMarker, originalLocation;
               var span_vu_ort = document.getElementById("vu_ort");
               var span_vu_hoehe = document.getElementById("vu_hoehe");
               var unfall_detail_link = document.getElementById("unfall_detail_link");
@@ -158,13 +165,17 @@
                 UIkit.modal.alert("Fehler beim laden oder speichern. Dies sollte eigentlich nicht passieren. Bitte melde dich bei <a href=\"https://twitter.com/ubergesundheit\">@ubergesundheit auf Twitter</a>");
                 span_vu_ort.textContent = "Fehler :(";
                 span_vu_hoehe.textContent = "Fehler :(";
-                $("#saveButton").removeProp("disabled");
+                resetButtons();
+              }
+
+              function resetButtons () {
+                $("#saveButton").prop("disabled", true);
+                $("#correctButton").prop("disabled", false);
+                $("#resetLocationButton").hide();
               }
 
               // load remote json data
               function loadUnfallJson() {
-
-                //
 
                 span_vu_ort.textContent = "wird";
                 span_vu_hoehe.textContent = "geladen...";
@@ -185,18 +196,18 @@
                 .done(function( data ) {
                     console.log("got data", data);
 
-                    var latLon = data.geometry.coordinates;
+                    var latLon = [data.geometry.coordinates[1], data.geometry.coordinates[0]];
                     console.log(latLon);
-                    map.setView([latLon[1], latLon[0]], 17);
+                    originalLocation = latLon;
+                    map.setView(latLon, 17);
 
                     span_vu_ort.textContent = data.properties.vu_ort;
                     span_vu_hoehe.textContent = data.properties.vu_hoehe;
 
-                    unfallMarker = L.marker([latLon[1], latLon[0]]);
+                    unfallMarker = L.marker(latLon);
                     unfallMarker._unfallProperties = data.properties;
                     map.addLayer(unfallMarker);
                     unfallMarker.enableEdit();
-                    $("#saveButton").prop("disabled", false);
 
                     unfall_detail_link.href = "unfall.html?unfall_id=" + data.properties.unfall_id;
                     unfall_detail_link.style.display = "block";
@@ -207,7 +218,7 @@
                     map.on('dblclick', function (e) {
                       unfallMarker.setLatLng(e.latlng);
                     });
-
+                    resetButtons();
                 })
                 .fail(ajaxFail);
               }
@@ -231,9 +242,15 @@
               // initial json load
               loadUnfallJson();
 
-              $("#saveButton").click(function () {
+              $("#saveButton, #correctButton").click(function () {
                 $("#saveButton").prop("disabled", true);
+                $("#correctButton").prop("disabled", true);
                 saveUnfall();
+              });
+
+              $("#resetLocationButton").click(function () {
+                unfallMarker.setLatLng(originalLocation);
+                resetButtons();
               });
 
               $("#refresh").click(function () {
