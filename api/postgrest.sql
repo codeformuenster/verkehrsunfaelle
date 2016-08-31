@@ -19,7 +19,7 @@ CREATE VIEW postgrest_views.unfaelle_raw AS SELECT
     rf as rf,
     mofa as mofa,
     kkr as kkr,
-    krad as kkrad,
+    krad as krad,
     pkw as pkw,
     lkw as lkw,
     kom as kom,
