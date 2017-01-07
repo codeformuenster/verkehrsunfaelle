@@ -1,0 +1,18 @@
+{
+  "name": "geocode_js",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@turf/centroid": "^3.7.0",
+    "@turf/helpers": "^3.7.1",
+    "async": "^2.1.4",
+    "async-for-of": "^1.0.1",
+    "fuzzyset": "^0.0.4",
+    "ora": "^0.4.0",
+    "pg": "^6.1.2",
+    "pg-query-stream": "^1.0.0",
+    "request": "^2.79.0",
+    "request-promise-native": "^1.0.3"
+  }
+}

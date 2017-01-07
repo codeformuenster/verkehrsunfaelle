@@ -1,0 +1,4 @@
+*.pbf
+*.bz2
+node_modules
+failed.csv
