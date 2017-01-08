@@ -30,9 +30,9 @@ RUN build_deps="g++ make expat libexpat1-dev zlib1g-dev curl" \
 
 WORKDIR /usr/src/app
 
-ARG PLANET_FILE=planet.osm.bz2
+ARG PLANET_FILE=muenster-regbez-latest.osm.bz2
 
-COPY planet.osm.bz2 .
+COPY muenster-regbez-latest.osm.bz2 .
 
 RUN /srv/osm3s/bin/init_osm3s.sh "$PLANET_FILE" "$DB_DIR" "$EXEC_DIR" \
   && rm -f "$PLANET_FILE"

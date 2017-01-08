@@ -18,9 +18,9 @@ const streamgeocoder = function (streamOptions) {
   streamOptions.decodeStrings = false;
   streamOptions.objectMode = true;
 
-  const failed = [];
+  const failedStream = fs.createWriteStream(`${__dirname}/failed.csv`, { flags: 'w' });;
+  this.failedStream = failedStream;
   const startAt = Date.now();
-  this.failedStream = fs.createWriteStream('failed.csv', { flags: 'w' });
 
   this.q = queue(worker, 25);
 
@@ -40,7 +40,7 @@ const streamgeocoder = function (streamOptions) {
 inherits(streamgeocoder, Transform);
 
 streamgeocoder.prototype._transform = function _transform (data, encoding, callback) {
-  this.q.push(data, this._onQueueFinish.bind({ failed: this.failed }));
+  this.q.push(data, this._onQueueFinish.bind({ failedStream: this.failedStream }));
 
   callback();
 };

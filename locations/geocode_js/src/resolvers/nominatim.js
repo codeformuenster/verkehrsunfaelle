@@ -2,9 +2,8 @@
 
 const request = require('request-promise-native');
 
-const host = 'localhost:8080',
+const host = 'proxy:8080',
   url = `http://${host}/search.php`;
-//const bbox = '7.7336883544921875,52.014472235614164,7.522888183593749,51.88454447438394';
 const bbox = '7.7743634,52.0600251,7.4737853,51.8401448';
 
 module.exports = function nominatim (streetNameA, streetNameB) {

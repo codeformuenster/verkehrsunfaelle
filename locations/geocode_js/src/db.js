@@ -4,6 +4,7 @@ const pg = require('pg'),
   QueryStream = require('pg-query-stream');
 
 const connectionOptions = {
+  host: 'postgis',
   user: 'postgres',
   password: 'unfaelle_aua_aua',
   database: 'ms_unfaelle'

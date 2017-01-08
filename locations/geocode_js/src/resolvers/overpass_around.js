@@ -3,7 +3,7 @@
 
 const request = require('request-promise-native');
 
-const host = 'localhost';
+const host = 'proxy';
 const overpass_url = `http://${host}/api/interpreter`;
 const bbox = '51.8401448,7.4737853,52.0600251,7.7743634';
 

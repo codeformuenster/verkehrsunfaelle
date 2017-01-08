@@ -1,23 +1,17 @@
-version: "2"
+version: "2.1"
 
 services:
-  html:
-    image: abiosoft/caddy
-    ports:
-      - "80:2015"
-    volumes:
-      - ./html:/srv
   postgis:
     image: mdillon/postgis:9.5
-    #image: postgis
     volumes:
       - ./api/data.sql.gz:/docker-entrypoint-initdb.d/0data.sql.gz
       - ./api/postgrest.sql:/docker-entrypoint-initdb.d/1postgrest.sql
     environment:
       - POSTGRES_PASSWORD=unfaelle_aua_aua
       - POSTGRES_DB=ms_unfaelle
+    networks:
+      - database
   postgrest:
-    #image: begriffs/postgrest:v0.3.2.0
     build:
       context: ./api
     environment:
@@ -31,3 +25,46 @@ services:
       - "3000:3000"
     depends_on:
       - postgis
+    networks:
+      - database
+
+# geocoders
+
+  # caddy image for load balancing
+  proxy:
+    image: abiosoft/caddy:latest
+    volumes:
+      - ./locations/Caddyfile:/etc/Caddyfile
+    networks:
+      - geocoding
+    depends_on:
+      - overpass
+      - nominatim
+  overpass:
+    build:
+      context: locations/overpass-mediasuite
+    networks:
+      - geocoding
+  nominatim:
+    build:
+      context: locations/nominatim-mediagis
+    networks:
+      - geocoding
+
+  runner:
+    image: node:7
+    volumes:
+      - ./locations/geocode_js:/geocode
+    command: [node, /geocode/index.js]
+    networks:
+      - database
+      - geocoding
+    depends_on:
+      - postgis
+      - proxy
+
+networks:
+  database:
+    driver: bridge
+  geocoding:
+    driver: bridge

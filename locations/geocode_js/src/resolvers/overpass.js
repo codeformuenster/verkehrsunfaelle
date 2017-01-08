@@ -2,9 +2,8 @@
 
 const request = require('request-promise-native');
 
-const host = 'localhost';
+const host = 'proxy';
 const overpass_url = `http://${host}/api/interpreter`;
-//const bbox = '51.88454447438394,7.522888183593749,52.014472235614164,7.7336883544921875';
 const bbox = '51.8401448,7.4737853,52.0600251,7.7743634';
 
 module.exports = function overpass (streetNameA, streetNameB) {
