@@ -20,24 +20,17 @@ const streamgeocoder = function (streamOptions) {
 
   const failed = [];
   const startAt = Date.now();
-  this.failed = failed;
+  this.failedStream = fs.createWriteStream('failed.csv', { flags: 'w' });
 
   this.q = queue(worker, 25);
 
   this.q.drain = function () {
-    console.log('queue end, writing failed to file');
-    fs.writeFile(
-      './failed.csv',
-      failed.join('\n'),
-      (err) => {
-        console.log(err ? `Error :${err}` : 'ok');
-        console.log('all items have been processed');
-        console.log(`took ${Date.now() - startAt} ms`);
-        DB.disconnect((disco_err) => {
-          console.log(disco_err);
-        });
-      }
-    );
+    console.log('queue end');
+    console.log(`took ${Date.now() - startAt} ms`);
+    DB.disconnect((err) => {
+      console.log(err ? `Error disconnecting db :${err}` : 'disconnected from db');
+      failedStream.end();
+    });
   };
 
 
@@ -63,7 +56,7 @@ streamgeocoder.prototype._onQueueFinish = function _onQueueFinish (err, result) 
     return;
   }
   if (result && result !== '') {
-    this.failed.push(result);
+    this.failedStream.write(`${result}\n`);
   }
 };
 
