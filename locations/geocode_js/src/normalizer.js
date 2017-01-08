@@ -30,7 +30,8 @@ const dictionary = {
   'hindenburgplatz': 'Schlossplatz',
   'zufahrt': '',
   'einfahrt': '',
-  'fa.': ''
+  'fa.': '',
+  'holspital': 'hospital'
 };
 const keys = Object.keys(dictionary).map(function (key) {
   return key.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
