@@ -9,14 +9,14 @@ services:
       - "80:80"
       - "8080:8080"
   overpass:
-    #build:
-    #  context: overpass
-    image: mediasuite/overpass-api:muenster
+    build:
+      context: overpass-mediasuite
+    #image: mediasuite/overpass-api:muenster
     #ports:
     #  - "81:80"
   nominatim:
     build:
-      context: nominatim-docker-mediagis
+      context: nominatim-mediagis
     #image: nominatim
     #ports:
     #  - "8081:8080"
