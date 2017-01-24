@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet Map Panes Example</title>
+	<meta charset="utf-8" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.vectorgrid@latest/dist/Leaflet.VectorGrid.bundled.js"></script>
+</head>
+<body style='margin:0'>
+	<div id="map" style="width: 100vw; height: 100vh"></div>
+
+
+<!--	<script type="text/javascript" src="../vendor/pbf-dev.js"></script>
+	<script type="text/javascript" src="../vendor/vector-tile-dev.js"></script>
+
+	<script type="text/javascript" src="../src/Leaflet.Renderer.SVG.Tile.js"></script>
+	<script type="text/javascript" src="../src/Leaflet.Renderer.Canvas.Tile.js"></script>
+	<script type="text/javascript" src="../src/Leaflet.VectorGrid.js"></script>
+	<script type="text/javascript" src="../src/Leaflet.VectorGrid.Protobuf.js"></script>-->
+
+	<script>
+
+		var map = L.map('map');
+
+		var cartodbAttribution = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
+
+		var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+			attribution: cartodbAttribution,
+			opacity: 0.5
+		}).addTo(map);
+
+
+    // tegola
+		var url = 'http://localhost:4000/maps/unfaelle/unfaelle/{z}/{x}/{y}.vector.pbf';
+
+		var vectorTileOptions = {
+			rendererFactory: L.canvas.tile,
+			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://www.mapbox.com/about/maps/">MapBox</a>',
+			vectorTileLayerStyles: {
+				unfaelle: function(properties, zoom) {
+					return {
+						weight: 0,
+						color: 'red',
+						opacity: 1,
+						fillColor: 'yellow',
+						fill: true,
+						radius: 3,
+						fillOpacity: 1
+					}
+				},
+			},
+		};
+
+		var pbfLayer = L.vectorGrid.protobuf(url, vectorTileOptions).addTo(map);
+
+		map.setView({ lat: 51.96, lng: 7.62 }, 14);
+
+
+	</script>
+</body>
+</html>
