@@ -27,6 +27,17 @@ services:
       - postgis
     networks:
       - database
+  protobuf:
+    build:
+      context: ./protobuf-server
+    volumes:
+      - ./protobuf-server/config.toml:/config.toml
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgis
+    networks:
+      - database
 
 # geocoders
 
