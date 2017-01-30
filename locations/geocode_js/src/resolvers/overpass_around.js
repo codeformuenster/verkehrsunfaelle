@@ -11,6 +11,11 @@ module.exports = function overpass_addr (streetNameA, streetNameB) {
   if (streetNameB === '') {
     return Promise.resolve({ resolver: 'overpass_around', subject: `${streetNameA} ${streetNameB}`, results: [] });
   }
+
+  if (streetNameB.includes('Parkplatz')) {
+    streetNameB = streetNameB.replace('Parkplatz', '').trim();
+  }
+
   const payload = `[bbox:${bbox}][out:json];way[highway][~"name"~"${streetNameA}",i]->.street;(way(around.street:100)[~"name"~"${streetNameB}",i];node(around.street:100)[~"name"~"${streetNameB}",i];relation(around.street:100)[~"name"~"${streetNameB}",i];);(._;>;);out qt center;`;
 
   return request.post(overpass_url, { form: { data: payload } })
@@ -34,5 +39,4 @@ module.exports = function overpass_addr (streetNameA, streetNameB) {
       return { resolver: 'overpass_around', subject: `${streetNameA} ${streetNameB}`, results: coords };
     });
 };
-
 

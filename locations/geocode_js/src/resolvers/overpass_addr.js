@@ -1,6 +1,7 @@
 'use strict';
 
-const request = require('request-promise-native');
+const request = require('request-promise-native'),
+  helpers = require('./helpers');
 
 const host = 'proxy';
 const overpass_url = `http://${host}/api/interpreter`;
@@ -10,6 +11,9 @@ module.exports = function overpass_addr (streetNameA, streetNameB) {
   if (streetNameB === '') {
     return Promise.resolve({ resolver: 'overpass_addr', subject: `${streetNameA} ${streetNameB}`, results: [] });
   }
+
+  streetNameB = helpers.extractHousenumber(streetNameB);
+
   const payload = `[bbox:${bbox}][out:json];way[~"addr:street"~"${streetNameA}",i]["addr:housenumber"="${streetNameB}"];out qt center;`;
 
   return request.post(overpass_url, { form: { data: payload } })

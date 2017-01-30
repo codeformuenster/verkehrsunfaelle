@@ -18,11 +18,11 @@ const streamgeocoder = function (streamOptions) {
   streamOptions.decodeStrings = false;
   streamOptions.objectMode = true;
 
-  const failedStream = fs.createWriteStream(`${__dirname}/failed.csv`, { flags: 'w' });;
+  const failedStream = fs.createWriteStream(`${__dirname}/failed.csv`, { flags: 'w' });
   this.failedStream = failedStream;
   const startAt = Date.now();
 
-  this.q = queue(worker, 25);
+  this.q = queue(worker, 5);
 
   this.q.drain = function () {
     console.log('queue end');
