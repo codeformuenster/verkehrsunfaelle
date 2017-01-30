@@ -68,6 +68,9 @@ module.exports = function geocodeworker (task, worker_callback) {
       });
 
 
+  })
+  .catch(function (err) {
+    return worker_callback(err, `${task.id},${vu_ort},${vu_hoehe},${task.vu_ort},${task.vu_hoehe}`);
   });
 
 };

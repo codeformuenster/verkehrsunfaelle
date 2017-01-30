@@ -33,7 +33,15 @@ const dictionary = {
   'zufahrt': '',
   'einfahrt': '',
   'fa.': '',
-  'holspital': 'hospital'
+  'holspital': 'hospital',
+  'rechtsabb': '',
+  'linksabb': '',
+  'einmündung': '',
+  'auffahrt': '',
+  'einw': '',
+  'ausw': '',
+  'geradeaus': '',
+  'geradeausspur': ''
 };
 const keys = Object.keys(dictionary).map(function (key) {
   return key.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
@@ -64,6 +72,7 @@ const normalize = function normalize (text) {
       return _;
     })
     .replace(/\s\s+/g, ' ')
+    .replace(/\/|\./g,'')
     //.replace(/(^\d+[a-z]*)/,'$1')
     .trim();
 
