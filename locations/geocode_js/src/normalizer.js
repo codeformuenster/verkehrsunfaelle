@@ -11,11 +11,14 @@ const dictionary = {
   'vorländerweg': 'Vorländerweg',
   'vorbergweg': 'Vorbergweg',
   'vor': '',
+  'vor dem': '',
+  'hinter dem': '',
   'ggü.': '',
   'ggü': '',
   'parkplatz': 'Parkplatz',
   'pakrplatz': 'Parkplatz',
-  'Pparkplatz': 'Parkplatz',
+  'pparkplatz': 'Parkplatz',
+  'parkkplatz': 'Parkplatz',
   'schiffahrter': 'Schifffahrter',
   '"': '',
   'habichtshöhe': 'Habichtshöhe',
@@ -38,10 +41,19 @@ const dictionary = {
   'linksabb': '',
   'einmündung': '',
   'auffahrt': '',
+  'steinweg': 'Steinweg',
   'einw': '',
+  'lohausweg': 'Lohausweg',
+  'ahausweg': 'Ahausweg',
+  'rüschhausweg': 'Rüschhausweg',
+  'althausweg': 'Althausweg',
   'ausw': '',
   'geradeaus': '',
-  'geradeausspur': ''
+  'geradeausspur': '',
+  'tankstelle': '',
+  'fußgängerfurt': '',
+  'brücke unter': '',
+  '100 m östl': '',
 };
 const keys = Object.keys(dictionary).map(function (key) {
   return key.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
@@ -71,8 +83,9 @@ const normalize = function normalize (text) {
 
       return _;
     })
+    .replace(/[^a-zA-Z0-9_ÖÄÜöüäß]+/g, ' ')
+    //.replace(/\/|\.|\(|\)/g,'')
     .replace(/\s\s+/g, ' ')
-    .replace(/\/|\./g,'')
     //.replace(/(^\d+[a-z]*)/,'$1')
     .trim();
 

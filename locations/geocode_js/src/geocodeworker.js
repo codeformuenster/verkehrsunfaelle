@@ -23,7 +23,7 @@ module.exports = function geocodeworker (task, worker_callback) {
     spinner: 'arc'
   }).start();
 
-  const resolverNames = ['overpass', 'overpass_addr', 'overpass_around', 'nominatim'];
+  const resolverNames = ['overpass', 'overpass_addr', 'overpass_around', 'overpass_street', 'nominatim'];
   let currResolverName;
 
   forOf(resolverNames, function (item, next, end) {
