@@ -60,7 +60,7 @@ CREATE VIEW postgrest_views.unfaelle AS
         public.unfalldaten_geometries g JOIN public.unfalldaten_raw u ON g.unfall_id = u.id;
 
 
-CREATE FUNCTION create_location()
+CREATE FUNCTION postgrest_views.create_location()
 RETURNS trigger
 LANGUAGE plpgsql
 AS $$
@@ -73,5 +73,59 @@ $$;
 CREATE TRIGGER create_location
 INSTEAD OF INSERT ON postgrest_views.unfaelle
 FOR EACH ROW
-EXECUTE PROCEDURE create_location();
+EXECUTE PROCEDURE postgrest_views.create_location();
 
+CREATE VIEW postgrest_views.unfaelle_as_geojson_all_fields AS
+    SELECT 'Feature' As type,
+                 ST_AsGeoJSON(the_geom)::json As geometry,
+                 row_to_json(
+                  (
+                    SELECT l FROM (
+                      SELECT
+                        geoms.unfall_id AS id,
+                        trim(raw.vu_ort) as vu_ort,
+                        nullif(trim(raw.vu_hoehe), '') as vu_hoehe,
+                        geoms.source as geocoding_source,
+                        timestamps.parsed_timestamp as parsed_timestamp,
+                        timestamps.missing_time as missing_time,
+                        tag as tag,
+                        datum as datum,
+                        uhrzeit as uhrzeit,
+                        kat as kat,
+                        flucht as flucht,
+                        row_t as row_t,
+                        sv as sv,
+                        lv as lv,
+                        anzahl_beteiligte as anzahl_beteiligte,
+                        fg as fg,
+                        rf as rf,
+                        mofa as mofa,
+                        kkr as kkr,
+                        krad as krad,
+                        pkw as pkw,
+                        lkw as lkw,
+                        kom as kom,
+                        sonstige as sonstige,
+                        "1" as "1",
+                        "2" as "2",
+                        alkohol as alkohol,
+                        typ as typ,
+                        "1_urs" as "1_urs",
+                        "2_urs" as "2_urs",
+                        "3_urs" as "3_urs",
+                        sonst_urs as sonst_urs,
+                        lichtverhaeltnisse as lichtverhaeltnisse,
+                        strassenzustand as strassenzustand,
+                        "01_alter_in_jahren" as "01_alter_in_jahren",
+                        kinder as kinder,
+                        "18_24" as "18_24",
+                        senioren as senioren
+                    ) As l
+                  )
+                 ) As properties
+          FROM
+            public.unfalldaten_geometries geoms
+          JOIN
+            public.unfalldaten_raw raw ON geoms.id = raw.id
+          JOIN
+            public.unfalldaten_timestamps timestamps ON geoms.id = timestamps.unfall_id
