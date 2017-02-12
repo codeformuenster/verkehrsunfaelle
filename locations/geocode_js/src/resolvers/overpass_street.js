@@ -10,13 +10,12 @@ const capitalize = function capitalize (s) {
   return s && `${s[0].toUpperCase()}${s.slice(1)}`;
 };
 
-const allowedTerms = ['platz', 'strasse', 'straße', 'damm', 'stiege', 'weg', 'mühle', 'burg', 'ring', 'georgskommende', 'pfad', 'tor', 'allee', 'nevinghoff', 'schanze', 'graben', 'heide', 'markt', 'breul', 'bült', 'bogen', 'asche', 'kirche', 'am burloh', 'eck', 'busch', 'gasse', 'nottebrock', 'kamp', 'garten', 'kreuz', 'hege', 'ufer', 'kleimannbrücke', 'ziegelei', 'mittelhafen', 'rieselfeld', 'see', 'feld', 'kotten', 'kanal', 'brock', 'campus', 'krummer timpen', 'woort', 'haskenau', 'haus', 'hoek'];
+const allowedTerms = ['platz', 'strasse', 'straße', 'damm', 'stiege', 'weg', 'mühle', 'burg', 'ring', 'georgskommende', 'pfad', 'tor', 'allee', 'nevinghoff', 'schanze', 'graben', 'heide', 'markt', 'breul', 'bült', 'bogen', 'asche', 'kirche', 'am burloh', 'eck', 'busch', 'gasse', 'nottebrock', 'kamp', 'garten', 'kreuz', 'hege', 'ufer', 'kleimannbrücke', 'ziegelei', 'mittelhafen', 'rieselfeld', 'see', 'feld', 'kotten', 'kanal', 'brock', 'campus', 'krummer timpen', 'woort', 'haskenau', 'haus', 'hoek', 'spiekerhof', 'gut insel', 'verth', 'oberort', 'habichtshöhe', 'vogelsang', 'bispinghof', 'coesfelder Kreuz', 'landwehr', 'hartmannsbrook', 'an der Hansalinie', 'bach', 'dorn', 'speichern', 'loddenbüschen', 'dachsleite', 'horst', 'egelshove', 'grafschaft', 'geest', 'krug', 'ventrup', 'berg', 'spieker', 'hook', 'schifffahrt', 'winkel', 'wald', 'friedhof', 'berdel', 'sang', 'campus', 'schlüppe', 'freiheit'];
 const allowedTermsCapitalized = [];
 
 for (const term of allowedTerms) {
   allowedTermsCapitalized.push(capitalize(term));
 }
-
 
 const checkAgainstTerms = function (name) {
   for (let i = 0, len = allowedTerms.length; i < len; i++) {
@@ -44,7 +43,7 @@ module.exports = function overpass (streetNameA, streetNameB) {
   if (placeName === '') {
     return Promise.resolve({ resolver: 'overpass_place', subject: `${streetNameA} ${streetNameB}`, results: [] });
   }
-  const payload = `[bbox:${bbox}][out:json];way[highway][~"name"~"${placeName}",i];out center qt;`;
+  const payload = `[bbox:${bbox}][out:json];(way[highway][~"name"~"${placeName}",i];way[highway][~"disused:name"~"${placeName}",i];way[highway][~"ref"~"${placeName}",i]);out center qt;`;
 
   return request.post(overpass_url, { form: { data: payload } })
     .then(function (result) {

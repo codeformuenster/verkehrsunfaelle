@@ -15,7 +15,7 @@ module.exports = function overpass_addr (streetNameA, streetNameB) {
     streetNameB = streetNameB.replace('Parkplatz', '').trim();
   }
 
-  const payload = `[bbox:${bbox}][out:json];way[highway][~"name"~"${streetNameA}",i]->.street;(way(around.street:100)[~"name"~"${streetNameB}",i];node(around.street:100)[~"name"~"${streetNameB}",i];relation(around.street:100)[~"name"~"${streetNameB}",i];);(._;>;);out qt center;`;
+  const payload = `[bbox:${bbox}][out:json];(way[highway][~"name"~"${streetNameA}",i];way[highway][~"disused:name"~"${streetNameA}",i];way[highway][~"ref"~"${streetNameA}",i])->.street;(way(around.street:100)[~"name"~"${streetNameB}",i];node(around.street:100)[~"name"~"${streetNameB}",i];relation(around.street:100)[~"name"~"${streetNameB}",i];way(around.street:100)[~"disused:name"~"${streetNameB}",i];node(around.street:100)[~"disused:name"~"${streetNameB}",i];relation(around.street:100)[~"disused:name"~"${streetNameB}",i]);(._;>;);out qt center;`;
 
   return request.post(overpass_url, { form: { data: payload } })
     .then(function (result) {

@@ -10,7 +10,7 @@ module.exports = function overpass (streetNameA, streetNameB) {
   if (streetNameB === '') {
     return Promise.resolve({ resolver: 'overpass', subject: `${streetNameA} ${streetNameB}`, results: [] });
   }
-  const payload = `[bbox:${bbox}][out:json];way[highway][~"name"~"${streetNameA}",i];node(w)->.n1;way[highway][~"name"~"${streetNameB}",i];node(w)->.n2;node.n1.n2;out qt;`;
+  const payload = `[bbox:${bbox}][out:json];(way[highway][~"name"~"${streetNameA}",i];way[highway][~"disused:name"~"${streetNameA}",i];way[highway][~"ref"~"${streetNameA}",i]);node(w)->.n1;(way[highway][~"name"~"${streetNameB}",i];way[highway][~"disused:name"~"${streetNameB}",i];way[highway][~"ref"~"${streetNameA}",i]);node(w)->.n2;node.n1.n2;out qt;`;
 
   return request.post(overpass_url, { form: { data: payload } })
     .then(function (result) {

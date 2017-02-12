@@ -14,7 +14,7 @@ module.exports = function overpass_addr (streetNameA, streetNameB) {
 
   streetNameB = helpers.extractHousenumber(streetNameB);
 
-  const payload = `[bbox:${bbox}][out:json];way[~"addr:street"~"${streetNameA}",i]["addr:housenumber"="${streetNameB}"];out qt center;`;
+  const payload = `[bbox:${bbox}][out:json];(way[~"addr:street"~"${streetNameA}",i]["addr:housenumber"="${streetNameB}"];way[~"disused:addr:street"~"${streetNameA}",i]["disused:addr:housenumber"="${streetNameB}"];way[~"ref"~"${streetNameA}",i]["disused:addr:housenumber"="${streetNameB}"]);out qt center;`;
 
   return request.post(overpass_url, { form: { data: payload } })
     .then(function (result) {
