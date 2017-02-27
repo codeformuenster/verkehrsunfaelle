@@ -126,6 +126,6 @@ CREATE VIEW postgrest_views.unfaelle_as_geojson_all_fields AS
           FROM
             public.unfalldaten_geometries geoms
           JOIN
-            public.unfalldaten_raw raw ON geoms.id = raw.id
+            public.unfalldaten_raw raw ON geoms.unfall_id = raw.id
           JOIN
-            public.unfalldaten_timestamps timestamps ON geoms.id = timestamps.unfall_id
+            public.unfalldaten_timestamps timestamps ON timestamps.unfall_id = raw.id
