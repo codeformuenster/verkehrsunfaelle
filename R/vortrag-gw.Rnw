@@ -1,0 +1,342 @@
+\documentclass{beamer}
+
+% opacity bugfix: see http://tug.org/pipermail/pdftex/2007-December/007480.html
+\pdfpageattr {/Group << /S /Transparency /I true /CS /DeviceRGB>>}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{tikz}
+\usetikzlibrary{%
+   arrows,%
+   calc,%
+   fit,%
+   patterns,%
+   plotmarks,%
+   shapes.geometric,%
+   shapes.misc,%
+   shapes.symbols,%
+   shapes.arrows,%
+   shapes.callouts,%
+   shapes.multipart,%
+   shapes.gates.logic.US,%
+   shapes.gates.logic.IEC,%
+   er,%
+   automata,%
+   backgrounds,%
+   chains,%
+   topaths,%
+   trees,%
+   petri,%
+   mindmap,%
+   matrix,%
+   calendar,%
+   folding,%
+   fadings,%
+   through,%
+   patterns,%
+   positioning,%
+   scopes,%
+   decorations.fractals,%
+   decorations.shapes,%
+   decorations.text,%
+   decorations.pathmorphing,%
+   decorations.pathreplacing,%
+   decorations.footprints,%
+   decorations.markings,%
+   shadows}
+\usepackage{amssymb, amsmath, amsfonts, enumerate}
+%\usepackage{bbold}
+\newcommand\hmmax{0}
+\usepackage{bm}
+%\usepackage{dsfont}
+\usepackage{pxfonts}
+\usepackage{xcolor}
+\usepackage{multirow}
+\usepackage{rotating}
+\usepackage{url}
+
+\usepackage{hyperref}
+
+\usetheme{Boadilla}
+\usecolortheme{default}
+%\usecolortheme{crane}
+
+%\usetheme[secheader]{Boadilla}
+\setbeamercovered{transparent}
+\setbeamercovered{invisible}
+\setbeamertemplate{navigation symbols}{}
+%\setbeamertemplate{bibliography item}[text] % numbered references
+\useoutertheme{infolines}
+%\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}{\hspace*{5mm}\hfill\insertframenumber\hspace*{5mm}\vspace{3mm}}
+\setbeamercolor{alerted text}{fg=orange!80!black}
+
+\def\then{{\structure{$\rule[0.35ex]{2ex}{0.5ex}\!\!\!\blacktriangleright$}}}
+\def\play{{\structure{$\blacktriangleright$}}}
+
+\title{Unfallstatistik 2016}
+\author{Gero Walter\\ \url{mailto:gero@gmx.at}\\ \url{https://github.com/geeeero/unfallstatistik-ms-2016}}
+\institute{Code for Münster -- Open Data Day 2017}
+\date{4.~März 2017}
+
+\begin{document}
+
+\frame{
+\titlepage
+}
+
+<<startup, include=FALSE>>=
+opts_chunk$set(warning = FALSE, message = FALSE, echo = FALSE, cache = TRUE,
+               out.height = "0.9\\textheight", fig.height = 5)
+# libraries
+library(ggplot2)
+library(productplots)
+library(reshape2)
+library(gridExtra)
+library(knitr)
+library(xtable)
+# install.packages("RPostgreSQL")
+library(RPostgreSQL)
+
+# einlesen
+vums2016 <- read.csv("VU PP 2016-varnamen.csv", header = TRUE)
+# neue variablen
+# X01 und X02 vergröbert: siehe Kommentare in "notizen.txt"
+X01g <- rep(NA, length(vums2016$X01))
+X02g <- rep(NA, length(vums2016$X02))
+X01g[vums2016$X01 %in% 70:79] <- "Rad"
+X01g[vums2016$X01 %in% c(10:59, 201, 221)] <- "KFZ"
+X01g[(vums2016$X01 %in% c(80:81, 83:88)) | (vums2016$X01 == 89 & vums2016$X2..Ursache %in% 60:69)] <- "Fuß"
+X01g[(vums2016$X01 %in% c(1:9, 60:69, 82, 90:99)) | (vums2016$X01 == 89 & !(vums2016$X2..Ursache %in% 60:69))] <- "sonst"
+X02g[vums2016$X02 %in% 70:79] <- "Rad"
+X02g[vums2016$X02 %in% c(10:59, 201, 221)] <- "KFZ"
+X02g[(vums2016$X02 %in% c(80:81, 83:88)) | (vums2016$X02 == 89 & vums2016$X2..Ursache %in% 60:69)] <- "Fuß"
+X02g[(vums2016$X02 %in% c(1:9, 60:69, 82, 90:99)) | (vums2016$X02 == 89 & !(vums2016$X2..Ursache %in% 60:69))] <- "sonst"
+vums2016g <- data.frame(vums2016, X01g, X02g)
+Folgen <- rep(NA, length(vums2016$T))
+Folgen[!is.na(vums2016$LV)] <- "LV"
+Folgen[!is.na(vums2016$SV)] <- "SV"
+Folgen[!is.na(vums2016$"T")] <- "T"
+Folgen[is.na(Folgen)] <- "Sach"
+#vums2016gnamed <- data.frame(vums2016gnamed, Folgen = Folgen)
+Ursache <- rep(NA, length(vums2016$X2..Ursache))
+Ursache[vums2016$X2..Ursache %in% c(1:4)] <- "nicht verkehrstüchtig"
+Ursache[vums2016$X2..Ursache %in% c(8:11)] <- "falsche Straßenbenutzung"
+Ursache[vums2016$X2..Ursache %in% c(12,13)] <- "zu schnell"
+Ursache[vums2016$X2..Ursache %in% c(14,15)] <- "zu geringer Abstand"
+Ursache[vums2016$X2..Ursache %in% c(16:23)] <- "Fehler beim Überholen"
+Ursache[vums2016$X2..Ursache %in% c(24:26)] <- "Fehler beim Spurwechsel, Vorbeifahren"
+Ursache[vums2016$X2..Ursache %in% c(27:33)] <- "Missachtung der Vorfahrt"
+Ursache[vums2016$X2..Ursache %in% c(34:37)] <- "Fehler beim Abbiegen"
+Ursache[vums2016$X2..Ursache %in% c(38:42)] <- "Fehlverhalten gegenüber Fußgängern"
+Ursache[vums2016$X2..Ursache %in% c(43:45)] <- "unzulässiges Parken / Halten"
+Ursache[vums2016$X2..Ursache %in% c(46,50)] <- "fehlendes / falsches Licht"
+Ursache[vums2016$X2..Ursache %in% c(47,48)] <- "Überbesetzung / Überladung"
+Ursache[vums2016$X2..Ursache %in% c(49,89)] <- "sonstige Fehler / Ursachen"
+Ursache[vums2016$X2..Ursache %in% c(51:55)] <- "technische Mängel"
+Ursache[vums2016$X2..Ursache %in% c(60:69)] <- "Fehler von Fußgängern"
+Ursache[vums2016$X2..Ursache %in% c(70:79)] <- "Straßenverhältnisse"
+Ursache[vums2016$X2..Ursache %in% c(80:84)] <- "Witterungseinflüsse"
+Ursache[vums2016$X2..Ursache %in% c(85:88, 90)] <- "Straßenverhältnisse"
+Ursache[is.na(Ursache)] <- "sonstige Fehler / Ursachen"
+#vums2016gnamed <- data.frame(vums2016gnamed, Ursache = Ursache)
+Typg <- rep(NA, length(vums2016$Typ))
+Typg[vums2016$Typ %in% 101:199] <- "Fahrunfall"
+Typg[vums2016$Typ %in% 201:299] <- "Abbiege-Unfall"
+Typg[vums2016$Typ %in% 301:399] <- "Einbiegen/Kreuzen-Unfall"
+Typg[vums2016$Typ %in% 401:499] <- "Überschreiten-Unfall"
+Typg[vums2016$Typ %in% 501:599] <- "Unfall durch ruhenden Verkehr"
+Typg[vums2016$Typ %in% 601:699] <- "Unfall im Längsverkehr"
+Typg[vums2016$Typ %in% 701:799] <- "sonstiger Unfall"
+vums2016gnamed <- data.frame(vums2016, Hauptverursacher = X01g, Zweitbeteiligter = X02g,
+                             Folgen = Folgen, Ursache = Ursache, Typg = Typg)
+vums2016gnamed$Folgen <- factor(vums2016gnamed$Folgen, levels = c("T", "SV", "LV", "Sach"))
+vums2016gnamed$Typg <- factor(vums2016gnamed$Typg, levels = c("Fahrunfall", "Abbiege-Unfall", "Einbiegen/Kreuzen-Unfall",
+                                                              "Überschreiten-Unfall", "Unfall durch ruhenden Verkehr",
+                                                              "Unfall im Längsverkehr", "sonstiger Unfall"))
+@
+
+<<specialdfs, include=FALSE>>=
+radbet <- subset(vums2016gnamed, Hauptverursacher == "Rad" | Zweitbeteiligter == "Rad")
+kfzbet <- subset(vums2016gnamed, Hauptverursacher == "KFZ" | Zweitbeteiligter == "KFZ")
+fusbet <- subset(vums2016gnamed, Hauptverursacher == "Fuß" | Zweitbeteiligter == "Fuß")
+KFZvsRad <- subset(vums2016gnamed, (Hauptverursacher == "KFZ" & Zweitbeteiligter == "Rad") | 
+                     (Hauptverursacher == "Rad" & Zweitbeteiligter == "KFZ"))
+KFZvsRad$Hauptverursacher <- factor(KFZvsRad$Hauptverursacher, levels = c("KFZ", "Rad"))
+KFZvsRad$Zweitbeteiligter <- factor(KFZvsRad$Zweitbeteiligter, levels = c("KFZ", "Rad"))
+@
+
+\begin{frame}{Der Datensatz}
+\begin{itemize}
+\item \Sexpr{dim(vums2016gnamed)[1]} Unfälle
+\item Zeit \& Ort (\play\ Gerald)
+\item Beteiligte, Folgen, Ursachen, Unfalltyp\\ codiert in 2- bzw.\ 3-stelligen Nummern
+\item Alter der Beteiligten, Fahrerflucht, \ldots
+\item \Sexpr{sum(vums2016gnamed$Folgen == "T")} Unfälle mit Toten,
+ \Sexpr{sum(vums2016gnamed$Folgen == "SV")} mit Schwer-,
+ \Sexpr{sum(vums2016gnamed$Folgen == "LV")} mit Leichtverletzten
+%\item \Sexpr{dim(kfzbet)[1]} Unfälle mit KFZ-Beteiligung,\\
+% \Sexpr{dim(radbet)[1]} mit Radfahrerbeteiligung,\\
+% \Sexpr{dim(fusbet)[1]} mit Fußgängerbeteiligung
+\item \Sexpr{dim(kfzbet)[1]} KFZ-Unfälle,\\
+ \hspace*{2.1ex}\Sexpr{dim(radbet)[1]} Radfahrer-Unfälle,\\
+ \hspace*{2.1ex}\Sexpr{dim(fusbet)[1]} Fußgänger-Unfälle
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Unfallbeteiligte}
+<<kreuztabelle, include=FALSE>>=
+# Spalten: X01, Zeilen: X02
+krtab <- table(vums2016g$X02g, vums2016g$X01g, useNA = "ifany")
+@
+\begin{tikzpicture}
+\node at (0,0) {\parbox{0.8\textwidth}{%
+\large
+\setlength{\tabcolsep}{10pt}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{r|r||rrrr}
+ & & \multicolumn{4}{c}{Hauptverursacher} \\
+\hline
+ & & Fuß & KFZ & Rad & sonst \\ 
+\hline\hline
+\multirow{5}{*}{\rotatebox{90}{Zweitbeteiligter}}
+ & Fuß   & \Sexpr{krtab[1,1]} & \Sexpr{krtab[1,2]} & \Sexpr{krtab[1,3]} & \Sexpr{krtab[1,4]} \\ 
+ & KFZ   & \Sexpr{krtab[2,1]} & \Sexpr{krtab[2,2]} & \Sexpr{krtab[2,3]} & \Sexpr{krtab[2,4]} \\ 
+ & Rad   & \Sexpr{krtab[3,1]} & \Sexpr{krtab[3,2]} & \Sexpr{krtab[3,3]} & \Sexpr{krtab[3,4]} \\ 
+ & sonst & \Sexpr{krtab[4,1]} & \Sexpr{krtab[4,2]} & \Sexpr{krtab[4,3]} & \Sexpr{krtab[4,4]} \\
+ & <NA>  & \Sexpr{krtab[5,1]} & \Sexpr{krtab[5,2]} & \Sexpr{krtab[5,3]} & \Sexpr{krtab[5,4]} \\
+\hline
+\end{tabular}
+}};
+\uncover<2>{%
+\draw[red, very thick] (-1.8, -0.42) rectangle ++(6.2, 0.75);
+\draw[red, very thick] (-0.25, -2.55) rectangle ++(1.2, 3.55);
+\node at (6, 0) {\parbox{10ex}{\large\color{red}KFZ-\\ Unfälle:\\
+\Sexpr{round(100*dim(kfzbet)[1]/dim(vums2016)[1], 0)}\%}};
+}
+\uncover<3>{%
+\draw[red, very thick] (-1.8, -1.17) rectangle ++(6.2, 0.75);
+\draw[red, very thick] ( 1.3, -2.55) rectangle ++(1.2, 3.55);
+\node at (6, -0.75) {\parbox{10ex}{\large\color{red}Rad-\\ Unfälle \\
+\Sexpr{round(100*dim(radbet)[1]/dim(vums2016)[1], 0)}\%}};
+}
+\uncover<4>{%
+\draw[red, very thick] (-1.8, -2.55) rectangle ++(6.2, 0.6);
+\node at (2, -3.2) {\parbox{14ex}{\large\color{red}Alleinunfälle: 
+\Sexpr{round(100*sum(is.na(vums2016$X02))/dim(vums2016)[1], 0)}\%}};
+}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Alleinunfälle}
+<<alleinunf, include = FALSE, fig.width = 4, fig.height = 4>>=
+alleinunf <- ggplot(subset(vums2016gnamed, is.na(Zweitbeteiligter)), aes(x = Hauptverursacher, fill = Folgen)) +
+  geom_bar(position = "stack") + scale_fill_manual(values = rep("light blue", 4)) +
+  xlab("") + ylab("Anzahl Alleinunfälle")
+alleinunf
+@
+<<alleinunfFolgen, include = FALSE, fig.width = 4, fig.height = 4>>=
+alleinunfFolgen <- ggplot(subset(vums2016gnamed, is.na(Zweitbeteiligter)), aes(x = Hauptverursacher, fill = Folgen)) + 
+  geom_bar(position = "stack") + scale_fill_brewer(palette = "YlOrRd", direction = -1) +
+  xlab("") + ylab("Anzahl Alleinunfälle")
+alleinunfFolgen
+@
+\begin{tikzpicture}
+\uncover<1>{\node {\includegraphics[height=0.9\textheight]{figure/alleinunf-1}};
+\path[fill=white] (2.25,-0.9) rectangle ++(1.5,3);}
+\uncover<2>{\node {\includegraphics[height=0.9\textheight]{figure/alleinunfFolgen-1}};}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Unfallbeteiligte}
+<<verursacherX01, include = FALSE>>=
+verursacherX01 <- prodplot(subset(vums2016gnamed, !is.na(Zweitbeteiligter)),
+                           ~ Hauptverursacher, mosaic(direction="h")) + #ylab("Zweitbeteiligter") + 
+  scale_y_continuous(name = "Zweitbeteiligter") +
+  theme(axis.text.y = element_text(colour = "white", margin = margin(l = 6)),
+        axis.title.y = element_text(colour = "white"),
+        axis.ticks.y = element_line(colour = "white")) +
+  aes(fill = Hauptverursacher) + scale_fill_manual(values = rep("white", 4), name = "Zweitbeteiligter")
+verursacherX01
+@
+<<verursacherMosaic, include = FALSE>>=
+verursacherMosaic <- prodplot(subset(vums2016gnamed, !is.na(Zweitbeteiligter)),
+                              ~ Zweitbeteiligter + Hauptverursacher, mosaic()) + 
+  aes(fill = Zweitbeteiligter) + scale_fill_brewer(palette = "Blues")
+verursacherMosaic
+@
+\begin{tikzpicture}
+\uncover<1>{\node {\includegraphics[height=0.9\textheight]{figure/verursacherX01-1}};
+\path[fill=white] (3.5,-0.75) rectangle ++(2,2);}
+\uncover<2->{\node {\includegraphics[height=0.9\textheight]{figure/verursacherMosaic-1}};}
+\uncover<3>{%
+\draw[fill=red] (-4.12, 3.12) rectangle ++(5.9,  0.35);
+\draw[fill=red] ( 1.85, 1.45 ) rectangle ++(0.3, -4.15);
+}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Unfälle KFZ--Rad\uncover<2>{: Folgen}}
+<<kfzvsrad, include = FALSE, fig.keep = "all", fig.width = 4, fig.height = 4>>=
+kfzvsrad1 <- ggplot(KFZvsRad, aes(x = Hauptverursacher, fill = Folgen)) +
+  geom_bar(position = "stack") + scale_fill_manual(values = rep("light blue", 4)) +
+  ylab("Anzahl Unfälle")
+kfzvsrad1
+kfzvsrad2 <- ggplot(KFZvsRad, aes(x = Hauptverursacher, fill = Folgen)) +
+  geom_bar(position = "stack") + scale_fill_brewer(palette = "YlOrRd", direction = -1) +
+  ylab("Anzahl Unfälle")
+kfzvsrad2
+kfzvsradtab <- round(100*prop.table(table(KFZvsRad$Hauptverursacher)), 0)
+@
+\begin{tikzpicture}
+\uncover<1>{\node {\includegraphics[height=0.9\textheight]{figure/kfzvsrad-1}};
+\path[fill=white] (2.25,-0.9) rectangle ++(1.5,3);
+\node[fill=white] at (-1.6, -2.5) {\Sexpr{kfzvsradtab[1]}\%};
+\node[fill=white] at ( 0.7, -2.5) {\Sexpr{kfzvsradtab[2]}\%};}
+\uncover<2>{\node {\includegraphics[height=0.9\textheight]{figure/kfzvsrad-2}};}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Unfälle KFZ--Rad: Ursachen}
+<<kfzvsradur, include = FALSE, fig.keep = "all">>=
+kfzvsradur1 <- ggplot(KFZvsRad, aes(x = Ursache, fill = Hauptverursacher)) +
+  geom_bar(position = "stack") + scale_fill_manual(values = rep("light blue", 2)) +
+  xlab("") + ylab("Anzahl Unfälle") + coord_flip()
+kfzvsradur1
+kfzvsradur2 <- ggplot(KFZvsRad, aes(x = Ursache, fill = Hauptverursacher)) +
+  geom_bar(position = "stack") + scale_fill_brewer(palette = "YlOrRd", direction = -1) +
+  xlab("") + ylab("Anzahl Unfälle") + coord_flip()
+kfzvsradur2
+@
+\begin{tikzpicture}
+\uncover<1>{\node {\includegraphics[height=0.9\textheight]{figure/kfzvsradur-1}};
+\path[fill=white] (3.3,-0.75) rectangle ++(2,2);}
+\uncover<2>{\node {\includegraphics[height=0.9\textheight]{figure/kfzvsradur-2}};}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Unfälle KFZ--Rad: Unfalltypen \uncover<3>{\small (nur Unfälle m.\ Toten u.\ Verletzten)}}
+<<kfzvsradtyp, include = FALSE, fig.keep = "all">>=
+kfzvsradtyp1 <- ggplot(KFZvsRad, aes(x = Typg, fill = Hauptverursacher)) +
+  geom_bar(position = "stack") + scale_fill_manual(values = rep("light blue", 2)) +
+  xlab("") + ylab("Anzahl Unfälle") + coord_flip(ylim = c(0, 250))
+kfzvsradtyp1
+kfzvsradtyp2 <- ggplot(KFZvsRad, aes(x = Typg, fill = Hauptverursacher)) +
+  geom_bar(position = "stack") + scale_fill_brewer(palette = "YlOrRd", direction = -1) +
+  xlab("") + ylab("Anzahl Unfälle") + coord_flip(ylim = c(0, 250))
+kfzvsradtyp2
+kfzvsradtyp3 <- ggplot(subset(KFZvsRad, Folgen %in% c("T", "SV", "LV")), aes(x = Typg, fill = Hauptverursacher)) +
+  geom_bar(position = "stack") + scale_fill_brewer(palette = "YlOrRd", direction = -1) +
+  xlab("") + ylab("Anzahl Unfälle") + coord_flip(ylim = c(0, 250))
+kfzvsradtyp3
+@
+\begin{tikzpicture}
+\uncover<1>{\node {\includegraphics[height=0.9\textheight]{figure/kfzvsradtyp-1}};
+\path[fill=white] (3.3,-0.75) rectangle ++(2,2);}
+\uncover<2>{\node {\includegraphics[height=0.9\textheight]{figure/kfzvsradtyp-2}};}
+\uncover<3>{\node {\includegraphics[height=0.9\textheight]{figure/kfzvsradtyp-3}};}
+\end{tikzpicture}
+\end{frame}
+
+\end{document}
