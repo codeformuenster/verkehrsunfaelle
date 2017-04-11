@@ -2,3 +2,15 @@
 *.bz2
 node_modules
 failed.csv
+.Rproj.user
+*~
+R/*.pdf
+R/*-concordance.tex
+R/*.log
+R/*.nav
+R/*.snm
+R/*.synctex.gz
+R/*.tex
+R/*.toc
+R/cache/*
+R/figure/*
