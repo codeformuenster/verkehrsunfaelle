@@ -22,16 +22,16 @@ const streamtimestampparser = function (streamOptions) {
   this.failedStream = failedStream;
   const startAt = Date.now();
 
-  this.q = queue(worker, 5);
+  this.q = queue(worker, 100);
 
-  //this.q.drain = function () {
-  //  console.log('queue end');
-  //  console.log(`took ${Date.now() - startAt} ms`);
-  //  //DB.disconnect((err) => {
-  //  //  console.log(err ? `Error disconnecting db :${err}` : 'disconnected from db');
-  //  //  failedStream.end();
-  //  //});
-  //};
+  this.q.drain = function () {
+    console.log('queue end');
+    console.log(`took ${Date.now() - startAt} ms`);
+    DB.disconnect((err) => {
+      console.log(err ? `Error disconnecting db :${err}` : 'disconnected from db');
+      failedStream.end();
+    });
+  };
 
 
   Transform.call(this, streamOptions);
@@ -51,12 +51,14 @@ streamtimestampparser.prototype._flush = function _flush (done) {
 
 streamtimestampparser.prototype._onQueueFinish = function _onQueueFinish (err, result) {
   if (err) {
-    console.log('Task Error', err);
+    //console.log('Task Error', err.message, err.errorData.id);
 
+    if (err.message === 'unable to parse datetimestring') {
+      this.failedStream.write(`${err.errorData.id}\n`);
+    } else {
+      console.err(err);
+    }
     return;
-  }
-  if (result && result !== '') {
-    this.failedStream.write(`${result}\n`);
   }
 };
 

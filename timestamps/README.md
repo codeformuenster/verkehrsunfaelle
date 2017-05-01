@@ -2,8 +2,8 @@ run it with
 
 node index.js
 
-watch the count of the rows in unfalldaten_timestamps
+some timestamps fail to parse because of ambiguity of the date formats
 
-if its equal to the count of rows in unfalldaten_raw
+then run
 
-stop the script
+node handlefailed.js
