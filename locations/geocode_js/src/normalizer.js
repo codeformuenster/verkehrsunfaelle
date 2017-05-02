@@ -54,6 +54,7 @@ const dictionary = {
   'fußgängerfurt': '',
   'brücke unter': '',
   '100 m östl': '',
+  'helene-Weige-Weg': 'Helene-Weigel-Weg'
 };
 const keys = Object.keys(dictionary).map(function (key) {
   return key.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');

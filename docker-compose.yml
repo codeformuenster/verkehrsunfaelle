@@ -2,10 +2,10 @@ version: "2.1"
 
 services:
   postgis:
-    image: mdillon/postgis:9.5
+    image: mdillon/postgis:9.6
     volumes:
       - ./api/data.sql.gz:/docker-entrypoint-initdb.d/0data.sql.gz
-      - ./api/postgrest.sql:/docker-entrypoint-initdb.d/1postgrest.sql
+        #      - ./api/postgrest.sql:/docker-entrypoint-initdb.d/1postgrest.sql
     environment:
       - POSTGRES_PASSWORD=unfaelle_aua_aua
       - POSTGRES_DB=ms_unfaelle
