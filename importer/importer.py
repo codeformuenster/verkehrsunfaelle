@@ -18,8 +18,6 @@ def execute(file_path):
         print(f"Unknown file {file_path}")
         exit(1)
 
-    print(f'importing {file_path}')
-
     _, file_extension = path.splitext(file_path)
 
     file_meta['source_file'] = path.basename(file_path)
@@ -40,33 +38,7 @@ def execute(file_path):
 if __name__ == '__main__':
     try:
         _, file_path = argv
-    except KeyError:
+        execute(file_path)
+    except ValueError:
         for file_path in files:
             Process(target=execute, args=(file_path,)).start()
-
-    execute(file_path)
-
-# def import_xlsb(file_path, file_meta):
-#    with open_workbook(file_path) as wb:
-#        with wb.get_sheet(file_meta['sheet_name']) as sheet:
-#            for row in sheet.rows():
-#
-#                # for file_path, file_meta in files.items():
-#    print(f"importing {file_path}")
-#
-#    file_meta['hash'] = hash_file(file_path)
-#
-#    print(f"File has hash {file_meta['hash']}")
-#
-#    _, file_extension = path.splitext(file_path)
-#
-#    if file_extension == ".xlsx":
-#        # import_xlsx(file_path, file_meta)
-#        print('skip')
-#    elif file_extension == ".xlsb":
-#        import_xlsb(file_path, file_meta)
-#    else:
-#        raise BaseException(f'Unknown file extension {file_extension}')
-#
-#    print(f"done importing {file_path}")
-#    print('-----')

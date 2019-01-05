@@ -8,7 +8,7 @@ def import_xlsx(file_path, file_meta):
     ws = wb[file_meta['sheet_name']]
 
     print(
-        f"Dimensions for sheet {file_meta['sheet_name']} is {ws.calculate_dimension()}")
+        f"Importing sheet '{file_meta['sheet_name']}' of file {file_meta['source_file']} ({ws.calculate_dimension()})")
 
     for row in ws.iter_rows(min_row=file_meta['first_data_row']):
         row_number = row[0].row

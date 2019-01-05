@@ -19,6 +19,8 @@ def extract_value(row, column_number, column_name):
 
 
 def import_xlsb(file_path, file_meta):
+    print(
+        f"Importing sheet '{file_meta['sheet_name']}' of file {file_meta['source_file']}")
     with open_workbook(file_path) as wb:
         with wb.get_sheet(file_meta['sheet_name']) as sheet:
             for row in sheet.rows():
@@ -39,8 +41,3 @@ def import_xlsb(file_path, file_meta):
                     raw_accident[key] = file_meta[key]
 
                 create_accident_raw(raw_accident)
-
-                # for cell in row:
-                #     print(cell)
-                #     break
-                # break
