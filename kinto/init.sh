@@ -9,6 +9,7 @@ curl -XPUT \
   -d "{\"data\": {\"password\": \"${KINTO_ADMIN_PASSWORD}\"}}" \
   "${KINTO_URL}/accounts/admin"
 
+echo
 echo "importing schema"
 kinto-wizard load \
   --server "${KINTO_URL}" \
