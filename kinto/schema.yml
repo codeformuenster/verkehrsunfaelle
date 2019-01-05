@@ -1,0 +1,188 @@
+buckets:
+  0eddc3ec-0700-da12-1d84-fe38a8deede7:
+    collections: {}
+    data:
+      id: 0eddc3ec-0700-da12-1d84-fe38a8deede7
+      last_modified: 1546107900610
+    groups: {}
+    permissions:
+      write:
+      - account:admin
+  accidents:
+    collections:
+      accidents_raw:
+        data:
+          attachment:
+            enabled: false
+            required: false
+          cache_expires: 0
+          displayFields:
+          - title
+          id: accidents_raw
+          last_modified: 1546128618320
+          schema:
+            properties:
+              accident_category:
+                type: string
+              accident_type:
+                type: string
+              alcoholized:
+                type: string
+              bicycle:
+                type: string
+              car:
+                type: string
+              cause_02:
+                type: string
+              cause_1_4:
+                type: string
+              cause_2:
+                type: string
+              cause_3:
+                type: string
+              cause_other:
+                type: string
+              date:
+                type: string
+              day_of_week:
+                type: string
+              deaths:
+                type: string
+              extra_urban:
+                type: string
+              helmet:
+                type: string
+              hit_and_run:
+                type: string
+              import_timestamp:
+                type: string
+              light_conditions:
+                type: string
+              lorry:
+                type: string
+              moped:
+                type: string
+              motorcycle:
+                type: string
+              number_of_participants:
+                type: string
+              omnibus:
+                type: string
+              other_road_user:
+                type: string
+              participants_01:
+                type: string
+              participants_01_registration:
+                type: string
+              participants_02:
+                type: string
+              participants_02_registration:
+                type: string
+              participants_18_24:
+                type: string
+              participants_age_01:
+                type: string
+              participants_age_02:
+                type: string
+              participants_child:
+                type: string
+              participants_senior:
+                type: string
+              pedestrian:
+                type: string
+              place:
+                type: string
+              place_near:
+                type: string
+              road_condition:
+                type: string
+              seriously_injured:
+                type: string
+              slightly_injured:
+                type: string
+              small_moped:
+                type: string
+              source_file:
+                type: string
+              source_file_hash:
+                type: string
+              source_row_number:
+                minimum: 1
+                type: integer
+              time_of_day:
+                type: string
+              urban:
+                type: string
+            required:
+            - source_file
+            - source_row_number
+            - source_file_hash
+            - import_timestamp
+            type: object
+          sort: -last_modified
+          uiSchema:
+            content:
+              ui:widget: textarea
+            ui:order:
+            - source_file
+            - source_row_number
+            - place
+            - place_near
+            - day_of_week
+            - date
+            - time_of_day
+            - accident_category
+            - hit_and_run
+            - urban
+            - extra_urban
+            - deaths
+            - seriously_injured
+            - slightly_injured
+            - number_of_participants
+            - pedestrian
+            - bicycle
+            - helmet
+            - small_moped
+            - moped
+            - motorcycle
+            - car
+            - lorry
+            - omnibus
+            - other_road_user
+            - participants_01
+            - participants_01_registration
+            - participants_02
+            - participants_02_registration
+            - alcoholized
+            - accident_type
+            - cause_1_4
+            - cause_2
+            - cause_3
+            - cause_other
+            - cause_02
+            - light_conditions
+            - road_condition
+            - participants_child
+            - participants_18_24
+            - participants_senior
+            - participants_age_01
+            - participants_age_02
+            - source_file_hash
+            - import_timestamp
+        permissions:
+          read:
+          - account:admin
+          - system.Authenticated
+          - system.Everyone
+          record:create:
+          - account:admin
+          write:
+          - account:admin
+          - system.Authenticated
+    data:
+      id: accidents
+      last_modified: 1546107900633
+    groups: {}
+    permissions:
+      write:
+      - account:admin

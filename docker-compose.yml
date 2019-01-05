@@ -1,0 +1,38 @@
+version: "2"
+
+services:
+  importer: &python
+    build: ./importer
+    volumes:
+      - ./data:/data
+      - ./importer:/importer
+      - ./kinto:/kinto
+    command: python importer/importer.py
+    environment:
+      KINTO_URL: http://kinto:8888/v1
+      KINTO_ADMIN: admin
+      KINTO_ADMIN_PASSWORD: banane
+    depends_on:
+      - kinto
+
+  initializer:
+    <<: *python
+    restart: "no"
+    command: bash /kinto/init.sh
+
+  kinto:
+    image: kinto/kinto-server:11.2.1
+    ports:
+      - 8888:8888
+    volumes:
+      - ./kinto/config:/etc/kinto
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:11-alpine
+    environment:
+      POSTGRES_USER: accidents
+      POSTGRES_PASSWORD: PASSWORD
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data

@@ -1,0 +1,3 @@
+openpyxl==2.5.12
+pyxlsb==1.0.4
+kinto-http==10.2.0
