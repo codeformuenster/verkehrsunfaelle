@@ -1,6 +1,7 @@
 from kinto_utils import create_accident_raw
 
 from pyxlsb import open_workbook, convert_date
+from tqdm import tqdm
 from datetime import datetime
 
 
@@ -18,12 +19,16 @@ def extract_value(row, column_number, column_name):
     return str(value)
 
 
-def import_xlsb(file_path, file_meta):
-    print(
-        f"Importing sheet '{file_meta['sheet_name']}' of file {file_meta['source_file']}")
+def import_xlsb(file_path, file_meta, position):
+    # print(
+    #     f"Importing sheet '{file_meta['sheet_name']}' of file {file_meta['source_file']}")
     with open_workbook(file_path) as wb:
         with wb.get_sheet(file_meta['sheet_name']) as sheet:
-            for row in sheet.rows():
+            for row in tqdm(sheet.rows(),
+                            desc=file_meta['source_file'],
+                            position=position,
+                            unit='row',
+                            dynamic_ncols=True):
                 row_number = row[0].r + 1
                 if row_number < file_meta['first_data_row']:
                     continue
