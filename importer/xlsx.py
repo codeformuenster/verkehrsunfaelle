@@ -15,8 +15,6 @@ def import_xlsx(file_path, file_meta, position):
                     dynamic_ncols=True):
         row_number = row[0].row
         raw_accident = {
-            # column_name: str(ws.cell(row=row_number,
-            #                          column=column_number).value)
             column_name: str(row[column_number - 1].value)
             for (column_name, column_number)
             in file_meta['columns_mapping'].items()
