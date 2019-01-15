@@ -17,9 +17,12 @@ buckets:
             required: false
           cache_expires: 0
           displayFields:
-          - title
+          - source_file
+          - source_row_number
+          - place
+          - place_near
           id: accidents_raw
-          last_modified: 1546128618320
+          last_modified: 1547581106626
           schema:
             properties:
               accident_category:
@@ -119,10 +122,96 @@ buckets:
             - source_file_hash
             - import_timestamp
             type: object
-          sort: -last_modified
+          sort: source_file
           uiSchema:
-            content:
-              ui:widget: textarea
+            accident_category:
+              ui:readonly: true
+            accident_type:
+              ui:readonly: true
+            alcoholized:
+              ui:readonly: true
+            bicycle:
+              ui:readonly: true
+            car:
+              ui:readonly: true
+            cause_02:
+              ui:readonly: true
+            cause_1_4:
+              ui:readonly: true
+            cause_2:
+              ui:readonly: true
+            cause_3:
+              ui:readonly: true
+            cause_other:
+              ui:readonly: true
+            date:
+              ui:readonly: true
+            day_of_week:
+              ui:readonly: true
+            deaths:
+              ui:readonly: true
+            extra_urban:
+              ui:readonly: true
+            helmet:
+              ui:readonly: true
+            hit_and_run:
+              ui:readonly: true
+            import_timestamp:
+              ui:readonly: true
+            light_conditions:
+              ui:readonly: true
+            lorry:
+              ui:readonly: true
+            moped:
+              ui:readonly: true
+            motorcycle:
+              ui:readonly: true
+            number_of_participants:
+              ui:readonly: true
+            omnibus:
+              ui:readonly: true
+            other_road_user:
+              ui:readonly: true
+            participants_01:
+              ui:readonly: true
+            participants_01_registration:
+              ui:readonly: true
+            participants_02:
+              ui:readonly: true
+            participants_02_registration:
+              ui:readonly: true
+            participants_18_24:
+              ui:readonly: true
+            participants_age_01:
+              ui:readonly: true
+            participants_age_02:
+              ui:readonly: true
+            participants_child:
+              ui:readonly: true
+            participants_senior:
+              ui:readonly: true
+            pedestrian:
+              ui:readonly: true
+            place:
+              ui:readonly: true
+            place_near:
+              ui:readonly: true
+            road_condition:
+              ui:readonly: true
+            seriously_injured:
+              ui:readonly: true
+            slightly_injured:
+              ui:readonly: true
+            small_moped:
+              ui:readonly: true
+            source_file:
+              ui:readonly: true
+            source_file_hash:
+              ui:readonly: true
+            source_row_number:
+              ui:readonly: true
+            time_of_day:
+              ui:readonly: true
             ui:order:
             - source_file
             - source_row_number
@@ -169,6 +258,8 @@ buckets:
             - participants_age_02
             - source_file_hash
             - import_timestamp
+            urban:
+              ui:readonly: true
         permissions:
           read:
           - account:admin
