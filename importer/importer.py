@@ -32,13 +32,12 @@ def execute(file_path, position):
         print(f'Unknown file extension {file_extension}')
         exit(1)
 
-    # print(f"done importing {file_path}")
-
 
 if __name__ == '__main__':
     try:
         _, file_path = argv
         execute(file_path, 0)
+        exit(0)
     except ValueError:
         pass
 

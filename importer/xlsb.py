@@ -11,7 +11,16 @@ def extract_value(row, column_number, column_name):
         value = convert_date(value)
 
     if column_name == 'time_of_day':
-        value = value.time()
+        try:
+            value = value.time()
+        except AttributeError:
+            # VU PP 2015.xlsb contains in row 8057 in the time_of_day column
+            # the value "'13.15". We grab the value again from the row[column_number].v
+            # and check for string "'13.15", and create a datetime
+            if row[column_number].v == "13.15":
+                value = datetime.strptime('13:15', '%H:%M').time()
+            else:
+                raise
 
     if type(value) is float and value == int(value):
         value = int(value)
@@ -20,8 +29,6 @@ def extract_value(row, column_number, column_name):
 
 
 def import_xlsb(file_path, file_meta, position):
-    # print(
-    #     f"Importing sheet '{file_meta['sheet_name']}' of file {file_meta['source_file']}")
     with open_workbook(file_path) as wb:
         with wb.get_sheet(file_meta['sheet_name']) as sheet:
             for row in tqdm(sheet.rows(),
