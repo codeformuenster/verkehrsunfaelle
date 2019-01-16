@@ -4,6 +4,8 @@ from pyxlsb import open_workbook, convert_date
 from tqdm import tqdm
 from datetime import datetime
 
+from re import match
+
 
 def extract_value(row, column_number, column_name):
     value = row[column_number].v
@@ -14,13 +16,28 @@ def extract_value(row, column_number, column_name):
         try:
             value = value.time()
         except AttributeError:
-            # VU PP 2015.xlsb contains in row 8057 in the time_of_day column
-            # the value "'13.15". We grab the value again from the row[column_number].v
-            # and check for string "'13.15", and create a datetime
-            if row[column_number].v == "13.15":
-                value = datetime.strptime('13:15', '%H:%M').time()
+            # VU PP 2015.xlsb contains the following errors in the time_of_day
+            # column:
+            #   row     value
+            #   8056    13.15
+            #   9687    14.45
+            #   9749    14.30
+            #   9764    15.15
+            #   9776    15.20
+            #   9927    14.45
+            #   10068   20.30
+            #
+            # Note the pattern of all faulty values having a dot instead of a
+            # colon. We simply replace the dot (.) with a colon (:) and create
+            # a datetime from the original string with the replaced dot.
+            value = row[column_number].v
+            if value and match(r'\d{2}\.\d{2}', value):
+                value = datetime.strptime(
+                    value.replace('.', ':'), '%H:%M').time()
             else:
-                raise
+                print(
+                    f"Invalid time value '{row[column_number].v}' in row {row[0].r}")
+                return None
 
     if type(value) is float and value == int(value):
         value = int(value)
@@ -46,6 +63,13 @@ def import_xlsb(file_path, file_meta, position):
                     in file_meta['columns_mapping'].items()
                     if column_number
                 }
+
+                # check for empty row, checking the first 5 columns for
+                # emptyness should be enough
+                if not all([raw_accident[k] for k in ['place', 'place_near',
+                                                      'day_of_week', 'date',
+                                                      'time_of_day']]):
+                    break
 
                 raw_accident['source_row_number'] = row_number
 
