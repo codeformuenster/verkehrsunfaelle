@@ -2,12 +2,12 @@ version: "2"
 
 services:
   importer: &python
-    build: ./importer
+    build: ./processing
     volumes:
       - ./data:/data
-      - ./importer:/importer
+      - ./processing:/processing
       - ./kinto:/kinto
-    command: python importer/importer.py
+    command: python processing/importer.py
     environment:
       KINTO_URL: http://kinto:8888/v1
       KINTO_ADMIN: admin
