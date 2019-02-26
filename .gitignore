@@ -2,3 +2,5 @@
 .vscode
 postgres_data
 *.pyc
+*.pbf
+nominatim/postgresdata
