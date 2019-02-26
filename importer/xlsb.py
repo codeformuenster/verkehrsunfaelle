@@ -64,13 +64,6 @@ def import_xlsb(file_path, file_meta, position):
                     if column_number
                 }
 
-                # check for empty row, checking the first 5 columns for
-                # emptyness should be enough
-                if not all([raw_accident[k] for k in ['place', 'place_near',
-                                                      'day_of_week', 'date',
-                                                      'time_of_day']]):
-                    break
-
                 raw_accident['source_row_number'] = row_number
 
                 for key in ['source_file', 'import_timestamp', 'source_file_hash']:

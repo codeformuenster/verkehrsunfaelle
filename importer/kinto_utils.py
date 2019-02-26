@@ -8,9 +8,14 @@ client = Client(server_url=kinto_url,
 
 
 def create_accident_raw(accident):
-    client.create_record(data=accident,
-                         collection='accidents_raw',
-                         bucket='accidents',
-                         permissions={
-                             'read': ['system.Authenticated', 'system.Everyone']
-                         })
+    # check for empty row, checking the first 5 columns for
+    # emptyness should be enough
+    if all([accident[k] for k in ['place', 'place_near',
+                                  'day_of_week', 'date',
+                                  'time_of_day']]):
+        client.create_record(data=accident,
+                             collection='accidents_raw',
+                             bucket='accidents',
+                             permissions={
+                                 'read': ['system.Authenticated', 'system.Everyone']
+                             })
