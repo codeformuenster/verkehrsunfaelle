@@ -20,6 +20,11 @@ services:
     restart: "no"
     command: bash /kinto/init.sh
 
+  geocoder:
+    <<: *python
+    restart: "no"
+    command: python processing/geocoder.py
+
   kinto:
     image: kinto/kinto-server:13.0.1
     ports:
@@ -36,3 +41,18 @@ services:
       POSTGRES_PASSWORD: PASSWORD
     volumes:
       - ./postgres_data:/var/lib/postgresql/data
+
+  nominatim-import:
+    image: mediagis/nominatim:3.1
+    volumes:
+      - ./nominatim/muenster-regbez.osm.pbf:/data/muenster-regbez.osm.pbf
+      - ./nominatim/postgres_data:/data/postgres_data
+    command: sh /app/init.sh /data/muenster-regbez.osm.pbf postgres_data 4
+
+  nominatim:
+    image: mediagis/nominatim:3.1
+    volumes:
+      - ./nominatim/postgres_data:/var/lib/postgresql/9.5/main
+    ports:
+      - "8080:8080"
+    command: bash /app/start.sh
