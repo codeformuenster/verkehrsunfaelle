@@ -21,7 +21,7 @@ services:
     command: bash /kinto/init.sh
 
   kinto:
-    image: kinto/kinto-server:11.2.1
+    image: kinto/kinto-server:13.0.1
     ports:
       - 8888:8888
     volumes:
