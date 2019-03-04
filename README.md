@@ -21,7 +21,7 @@ Run the importer
 
 Or just import a single file
 
-    docker-compose run --rm importer python importer/importer.py '/data/VU PP 2015.xlsb'
+    docker-compose run --rm importer python processing/importer.py '/data/VU PP 2015.xlsb'
 
 ## Geocoding
 
