@@ -475,6 +475,53 @@ files = {
             'participants_age_02': 39
         }
     },
+    '/data/VU PP 2017.xlsx': {
+        'sheet_name': '2017',
+        'first_data_row': 8,
+        'columns_mapping': {
+            'place': 2,
+            'place_near': 3,
+            'day_of_week': 4,
+            'date': 5,
+            'time_of_day': 6,
+            'accident_category': 7,
+            'hit_and_run': 8,
+            'urban': 9,
+            'extra_urban': 10,
+            'deaths': 11,
+            'seriously_injured': 12,
+            'slightly_injured': 13,
+            'number_of_participants': 14,
+            'pedestrian': 15,
+            'bicycle': 16,
+            'helmet': 17,
+            'small_moped': 18,
+            'moped': 19,
+            'motorcycle': 20,
+            'car': 21,
+            'lorry': 22,
+            'omnibus': 23,
+            'other_road_user': 24,
+            'participants_01': 25,
+            'participants_01_registration': 26,
+            'participants_02': 27,
+            'participants_02_registration': 28,
+            'alcoholized': 29,
+            'accident_type': 30,
+            'cause_1_4': 31,
+            'cause_2': 32,
+            'cause_3': 33,
+            'cause_other': 34,
+            'cause_02': 35,
+            'light_conditions': 36,
+            'road_condition': 37,
+            'participants_child': None,
+            'participants_18_24': None,
+            'participants_senior': None,
+            'participants_age_01': 38,
+            'participants_age_02': 39
+        }
+    },
     '/data/VU PP 2018.xlsx': {
         'sheet_name': '2018',
         'first_data_row': 8,
@@ -522,5 +569,4 @@ files = {
             'participants_age_02': 39
         }
     }
-
 }
