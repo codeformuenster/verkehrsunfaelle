@@ -3,3 +3,4 @@ pyxlsb==1.0.4
 kinto-http==10.2.0
 tqdm==4.29.0
 geopy==1.18.1
+overpass==0.6.1

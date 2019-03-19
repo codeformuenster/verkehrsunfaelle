@@ -24,6 +24,9 @@ services:
     <<: *python
     restart: "no"
     command: python processing/geocoder.py
+    depends_on:
+      - nominatim
+      - kinto
 
   kinto:
     image: kinto/kinto-server:13.0.1
@@ -45,9 +48,9 @@ services:
   nominatim-import:
     image: mediagis/nominatim:3.1
     volumes:
-      - ./nominatim/muenster-regbez.osm.pbf:/data/muenster-regbez.osm.pbf
+      - ./nominatim/muenster-regbez-latest.osm.pbf:/data/dump.osm.pbf
       - ./nominatim/postgres_data:/data/postgres_data
-    command: sh /app/init.sh /data/muenster-regbez.osm.pbf postgres_data 4
+    command: sh /app/init.sh /data/dump.osm.pbf postgres_data 4
 
   nominatim:
     image: mediagis/nominatim:3.1
@@ -56,3 +59,15 @@ services:
     ports:
       - "8080:8080"
     command: bash /app/start.sh
+
+  overpass:
+    image: wiktorn/overpass-api:0.7.55
+    environment:
+      OVERPASS_PLANET_URL: file:///planet/muenster-regbez-latest.osm.bz2
+    volumes:
+      - ./overpass/db:/db
+      - ./overpass/muenster-regbez-latest.osm.bz2:/planet/muenster-regbez-latest.osm.bz2
+      - ./overpass/supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
+      - ./overpass/docker-entrypoint.sh:/app/docker-entrypoint.sh
+    ports:
+      - "80:80"
