@@ -26,3 +26,12 @@ def create_accident_raw(accident):
                              permissions={
                                  'read': ['system.Authenticated', 'system.Everyone']
                              })
+
+
+def create_geometry(geometry):
+    client.create_record(data=geometry,
+                         collection='geometries',
+                         bucket='accidents',
+                         permissions={
+                             'read': ['system.Authenticated', 'system.Everyone']
+                         })

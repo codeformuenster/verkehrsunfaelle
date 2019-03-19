@@ -4,3 +4,5 @@ postgres_data
 *.pyc
 *.pbf
 nominatim/postgresdata
+*.bz2
+overpass/db
