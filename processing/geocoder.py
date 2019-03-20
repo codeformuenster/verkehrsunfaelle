@@ -35,7 +35,7 @@ if __name__ == '__main__':
     pqueue = Queue(5)
 
     records = client.get_records(
-        bucket='accidents', collection='accidents_raw', source_file="VU PP 2018.xlsx", not_place='None')
+        bucket='accidents', collection='accidents_raw', not_place='None')
 
     reader_p = Process(target=handle_location, args=((pqueue),))
     reader_p.daemon = True
