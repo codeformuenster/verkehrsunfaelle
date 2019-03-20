@@ -30,10 +30,9 @@ Download OSM extract of Münster for Nominatim & Overpass
     wget -O nominatim/muenster-regbez-latest.osm.pbf http://download.geofabrik.de/europe/germany/nordrhein-westfalen/muenster-regbez-latest.osm.pbf
     wget -O overpass/muenster-regbez-latest.osm.bz2 http://download.geofabrik.de/europe/germany/nordrhein-westfalen/muenster-regbez-latest.osm.bz2
 
-Initialize Nominatim (4 is the number of you CPU cores) This will take a long time!
+Initialize Nominatim and Overpass. This will take a long time!
 
-    docker-compose run --rm nominatim-import sh /app/init.sh /data/muenster-regbez-latest.osm.pbf postgresdata 4
-    docker-compose run --rm overpass-import
+    docker-compose run --rm nominatim-import
 
 Initialize Overpass
 
