@@ -15,20 +15,30 @@ def handle_location(queue):
         if record == 'no-records-left':
             break
 
-        nominatim_geometries = nominatim_geocoder.geocode(
-            record['place'], record['place_near'])
-        if nominatim_geometries:
-            for geometry in nominatim_geometries:
-                geometry['accident_id'] = record['id']
-                geometry['geocoded_timestamp'] = import_timestamp
-                create_geometry(geometry)
-        overpass_geometries = overpass_geocoder.geocode(
-            record['place'], record['place_near'])
-        if overpass_geometries:
-            for geometry in overpass_geometries:
-                geometry['accident_id'] = record['id']
-                geometry['geocoded_timestamp'] = import_timestamp
-                create_geometry(geometry)
+        try:
+            nominatim_geometries = nominatim_geocoder.geocode(
+                record['place'], record['place_near'])
+            if nominatim_geometries:
+                for geometry in nominatim_geometries:
+                    geometry['accident_id'] = record['id']
+                    geometry['geocoded_timestamp'] = import_timestamp
+                    create_geometry(geometry)
+        except Exception as e:
+            print('Nominatim exception')
+            print(e)
+            print('End Nominatim exception')
+        try:
+            overpass_geometries = overpass_geocoder.geocode(
+                record['place'], record['place_near'])
+            if overpass_geometries:
+                for geometry in overpass_geometries:
+                    geometry['accident_id'] = record['id']
+                    geometry['geocoded_timestamp'] = import_timestamp
+                    create_geometry(geometry)
+        except Exception as e:
+            print('Overpass exception')
+            print(e)
+            print('End Overpass exception')
 
 
 if __name__ == '__main__':
