@@ -40,11 +40,12 @@ def import_xlsx(file_path, file_meta, position):
     wb = load_workbook(filename=file_path, read_only=True)
     ws = wb[file_meta['sheet_name']]
 
-    for row in tqdm(ws.iter_rows(min_row=file_meta['first_data_row']),
-                    desc=file_meta['source_file'],
-                    position=position,
-                    unit='row',
-                    dynamic_ncols=True):
+    # for row in tqdm(ws.iter_rows(min_row=file_meta['first_data_row']),
+    #                 desc=file_meta['source_file'],
+    #                 position=position,
+    #                 unit='row',
+    #                 dynamic_ncols=True):
+    for row in ws.iter_rows(min_row=file_meta['first_data_row']):
         row_number = row[0].row
         raw_accident = {
             column_name: transform_value(
