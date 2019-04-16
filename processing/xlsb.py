@@ -52,11 +52,12 @@ def extract_value(row, column_number, column_name):
 def import_xlsb(file_path, file_meta, position):
     with open_workbook(file_path) as wb:
         with wb.get_sheet(file_meta['sheet_name']) as sheet:
-            for row in tqdm(sheet.rows(),
-                            desc=file_meta['source_file'],
-                            position=position,
-                            unit='row',
-                            dynamic_ncols=True):
+            # for row in tqdm(sheet.rows(),
+            #                 desc=file_meta['source_file'],
+            #                 position=position,
+            #                 unit='row',
+            #                 dynamic_ncols=True):
+            for row in sheet.rows():
                 row_number = row[0].r + 1
                 if row_number < file_meta['first_data_row']:
                     continue
