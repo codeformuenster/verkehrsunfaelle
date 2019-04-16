@@ -7,7 +7,7 @@ buckets:
     groups: {}
     permissions:
       write:
-      - account:admin
+        - account:admin
   accidents:
     collections:
       accidents_raw:
@@ -17,40 +17,40 @@ buckets:
             required: false
           cache_expires: 0
           displayFields:
-          - source_file
-          - source_row_number
-          - place
-          - place_near
+            - source_file
+            - source_row_number
+            - place
+            - place_near
           id: accidents_raw
           last_modified: 1547581106626
           schema:
             properties:
               accident_category:
-                type: string
+                type: integer
               accident_type:
-                type: string
+                type: integer
               alcoholized:
                 type: string
               bicycle:
-                type: string
+                type: integer
               car:
-                type: string
+                type: integer
               cause_02:
                 type: string
               cause_1_4:
-                type: string
+                type: integer
               cause_2:
-                type: string
+                type: integer
               cause_3:
-                type: string
+                type: integer
               cause_other:
-                type: string
+                type: integer
               date:
                 type: string
               day_of_week:
                 type: string
               deaths:
-                type: string
+                type: integer
               extra_urban:
                 type: string
               helmet:
@@ -62,37 +62,37 @@ buckets:
               light_conditions:
                 type: string
               lorry:
-                type: string
+                type: integer
               moped:
-                type: string
+                type: integer
               motorcycle:
-                type: string
+                type: integer
               number_of_participants:
-                type: string
+                type: integer
               omnibus:
-                type: string
+                type: integer
               other_road_user:
-                type: string
+                type: integer
               participants_01:
-                type: string
+                type: integer
               participants_01_registration:
                 type: string
               participants_02:
-                type: string
+                type: integer
               participants_02_registration:
                 type: string
               participants_18_24:
-                type: string
+                type: integer
               participants_age_01:
-                type: string
+                type: integer
               participants_age_02:
-                type: string
+                type: integer
               participants_child:
                 type: string
               participants_senior:
-                type: string
+                type: integer
               pedestrian:
-                type: string
+                type: integer
               place:
                 type: string
               place_near:
@@ -100,11 +100,11 @@ buckets:
               road_condition:
                 type: string
               seriously_injured:
-                type: string
+                type: integer
               slightly_injured:
-                type: string
+                type: integer
               small_moped:
-                type: string
+                type: integer
               source_file:
                 type: string
               source_file_hash:
@@ -117,10 +117,10 @@ buckets:
               urban:
                 type: string
             required:
-            - source_file
-            - source_row_number
-            - source_file_hash
-            - import_timestamp
+              - source_file
+              - source_row_number
+              - source_file_hash
+              - import_timestamp
             type: object
           sort: source_file
           uiSchema:
@@ -213,67 +213,67 @@ buckets:
             time_of_day:
               ui:readonly: true
             ui:order:
-            - source_file
-            - source_row_number
-            - place
-            - place_near
-            - day_of_week
-            - date
-            - time_of_day
-            - accident_category
-            - hit_and_run
-            - urban
-            - extra_urban
-            - deaths
-            - seriously_injured
-            - slightly_injured
-            - number_of_participants
-            - pedestrian
-            - bicycle
-            - helmet
-            - small_moped
-            - moped
-            - motorcycle
-            - car
-            - lorry
-            - omnibus
-            - other_road_user
-            - participants_01
-            - participants_01_registration
-            - participants_02
-            - participants_02_registration
-            - alcoholized
-            - accident_type
-            - cause_1_4
-            - cause_2
-            - cause_3
-            - cause_other
-            - cause_02
-            - light_conditions
-            - road_condition
-            - participants_child
-            - participants_18_24
-            - participants_senior
-            - participants_age_01
-            - participants_age_02
-            - source_file_hash
-            - import_timestamp
+              - source_file
+              - source_row_number
+              - place
+              - place_near
+              - day_of_week
+              - date
+              - time_of_day
+              - accident_category
+              - hit_and_run
+              - urban
+              - extra_urban
+              - deaths
+              - seriously_injured
+              - slightly_injured
+              - number_of_participants
+              - pedestrian
+              - bicycle
+              - helmet
+              - small_moped
+              - moped
+              - motorcycle
+              - car
+              - lorry
+              - omnibus
+              - other_road_user
+              - participants_01
+              - participants_01_registration
+              - participants_02
+              - participants_02_registration
+              - alcoholized
+              - accident_type
+              - cause_1_4
+              - cause_2
+              - cause_3
+              - cause_other
+              - cause_02
+              - light_conditions
+              - road_condition
+              - participants_child
+              - participants_18_24
+              - participants_senior
+              - participants_age_01
+              - participants_age_02
+              - source_file_hash
+              - import_timestamp
             urban:
               ui:readonly: true
         permissions:
           read:
-          - account:admin
-          - system.Authenticated
-          - system.Everyone
+            - account:admin
+            - system.Authenticated
+            - system.Everyone
           record:create:
-          - account:admin
+            - account:admin
           write:
-          - account:admin
-          - system.Authenticated
+            - account:admin
+            - system.Authenticated
     data:
       id: accidents
       last_modified: 1546107900633
     groups: {}
     permissions:
       write:
-      - account:admin
+        - account:admin

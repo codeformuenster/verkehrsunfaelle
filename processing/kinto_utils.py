@@ -7,25 +7,25 @@ client = Client(server_url=kinto_url,
                 retry=10)
 
 required_colums = [
-    'place', 'place_near', 'day_of_week', 'date', 'time_of_day'
+    'place', 'day_of_week', 'date', 'time_of_day'
 ]
 
 
-def create_accident_raw(accident):
-    # check for empty row, checking the first 5 columns for
-    # emptyness should be enough
-    required_colums_values = [
-        accident[k] for k in required_colums
-        if accident[k] is not None and accident[k] != 'None'
-    ]
+def get_schema(collection_id):
+    collection = client.get_collection(bucket='accidents', id=collection_id)
+    return collection['data']['schema']['properties']
 
-    if len(required_colums) == len(required_colums_values):
+
+def create_accident_raw(accident):
+    try:
         client.create_record(data=accident,
                              collection='accidents_raw',
                              bucket='accidents',
                              permissions={
                                  'read': ['system.Authenticated', 'system.Everyone']
                              })
+    except TypeError:
+        print(f'ERROR creating accident {accident}')
 
 
 def create_geometry(geometry):

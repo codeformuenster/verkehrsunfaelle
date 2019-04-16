@@ -14,3 +14,20 @@ def hash_file(file_path):
             file_hash.update(data)
 
     return file_hash.hexdigest()
+
+
+required_colums = ['place', 'date']
+
+
+def accident_is_valid(accident):
+    # check for empty row, checking the first 5 columns for
+    # emptyness should be enough
+    try:
+        required_colums_values = [
+            accident[k] for k in required_colums
+            if accident[k] is not None and accident[k] != 'None'
+        ]
+
+        return len(required_colums) == len(required_colums_values)
+    except KeyError:
+        return False
