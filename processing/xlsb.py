@@ -1,4 +1,5 @@
 from kinto_utils import create_accident_raw
+from utils import accident_is_valid
 
 from pyxlsb import open_workbook, convert_date
 from tqdm import tqdm
@@ -9,10 +10,12 @@ from re import match
 
 def extract_value(row, column_number, column_name):
     value = row[column_number].v
-    if column_name == 'date' or column_name == 'time_of_day':
+    if column_name == 'date':
         value = convert_date(value)
+        value = str(value)[0:10]
 
     if column_name == 'time_of_day':
+        value = convert_date(value)
         try:
             value = value.time()
         except AttributeError:
@@ -38,11 +41,12 @@ def extract_value(row, column_number, column_name):
                 print(
                     f"Invalid time value '{row[column_number].v}' in row {row[0].r}")
                 return None
+        value = str(value)
 
     if type(value) is float and value == int(value):
         value = int(value)
 
-    return str(value)
+    return value
 
 
 def import_xlsb(file_path, file_meta, position):
@@ -69,4 +73,5 @@ def import_xlsb(file_path, file_meta, position):
                 for key in ['source_file', 'import_timestamp', 'source_file_hash']:
                     raw_accident[key] = file_meta[key]
 
+            if accident_is_valid(raw_accident) == True:
                 create_accident_raw(raw_accident)
