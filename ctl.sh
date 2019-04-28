@@ -6,7 +6,7 @@ IFS=$'\n\t'
 
 command=${1:-}
 if [[ -z "$command" ]]; then
-    echo "usage: $0 COMMAND (down|init|reinit|import)"
+    echo "usage: $0 COMMAND (down|init|reinit|import|geocode)"
     exit 1
 fi
 
@@ -24,6 +24,10 @@ _import () {
   docker-compose run --rm importer
 }
 
+_geocode () {
+  docker-compose run --rm geocoder
+}
+
 
 case "$command" in
   down)
@@ -38,6 +42,9 @@ case "$command" in
       ;;
   import)
     _import
+      ;;
+  geocode)
+    _geocode
       ;;
 esac
 
