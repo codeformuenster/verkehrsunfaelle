@@ -1,64 +1,95 @@
-from kinto_utils import create_accident_raw, get_schema
-from tqdm import tqdm
-from datetime import datetime, time
-from utils import accident_is_valid
-import sys
+import xlrd
+import re
+from datetime import datetime
 
-from openpyxl import load_workbook
-
-schema = get_schema('accidents_raw')
+from kinto_utils import create_accident_raw, raw_accident_schema
 
 
-def transform_value(value, key):
-    if value is None:
-        return value
+def extract_value(cell, column_name, datemode):
+    # 0 == empty
+    # 1 == string
+    # 2 == float
+    # 3 == date
+    schema = raw_accident_schema[column_name]
+    if cell.ctype == 0 and schema['type'] == 'integer':
+        return 0
+    if cell.ctype == 0 and schema['type'] == 'string':
+        return ''
 
-    if isinstance(value, datetime):
-        return str(value)[0:10]
+    value = cell.value
 
-    if isinstance(value, time):
-        return str(value)
+    if column_name == 'date':
+        try:  # try the excel date first
+            d = xlrd.xldate.xldate_as_datetime(value, datemode)
+            value = str(d)[0:10]
+        except:
+            # remove leading and trailing spaces
+            value = value.strip()
 
-    # find in schema
-    schema_property_type = schema[key]['type']
-    if schema_property_type == 'integer' and not isinstance(value, int):
-        try:
+            # parse the string
+            value = str(datetime.strptime(value, '%d.%m.%Y'))[0:10]
+
+    if column_name == 'time_of_day':
+        try:  # try the excel date first
+            d = xlrd.xldate.xldate_as_datetime(value, datemode)
+            value = str(d)[11:]
+        except:
+            # remove leading and trailing spaces
+            value = value.strip()
+
+            # replace dots and double colons with single colon
+            value = re.sub(r'::|\.', ':', value)
+            # parse the string
+            value = str(datetime.strptime(value, '%H:%M'))[11:]
+
+    if schema.get('pattern') is not None:
+        if schema['pattern'].match(value) is not None:
+            return value
+        else:
+            print(
+                f'Final fail for {value} (Column: {column_name}, Celltype: {cell.ctype})')
+            raise Exception
+
+    if schema['type'] == 'integer':
+        if cell.ctype == 1:  # cell is string
+            value = re.sub(r'\D', '', value)
+        # VU PP 2018.xlsx row 8144 column lorry
+        if column_name == 'lorry' and value == 'ms':
+            value = 1
+
+        if value != '':
             return int(value)
-        except ValueError:
-            return -1
-    if schema_property_type == 'string' and not isinstance(value, str):
-        if key == 'date':
-            print(f'date {value} not of type datetime')
-        if key == 'time_of_day':
-            print(f'time_of_day {value} not of type time')
+        return -1
+    if schema['type'] == 'string':
         return str(value)
 
     return value
 
 
 def import_xlsx(file_path, file_meta, position):
-    wb = load_workbook(filename=file_path, read_only=True)
-    ws = wb[file_meta['sheet_name']]
+    book = xlrd.open_workbook(filename=file_path)
+    sheet = book.sheet_by_name(file_meta['sheet_name'])
 
-    # for row in tqdm(ws.iter_rows(min_row=file_meta['first_data_row']),
-    #                 desc=file_meta['source_file'],
-    #                 position=position,
-    #                 unit='row',
-    #                 dynamic_ncols=True):
-    for row in ws.iter_rows(min_row=file_meta['first_data_row']):
-        row_number = row[0].row
+    for row_idx in range(file_meta['first_data_row'] - 1, sheet.nrows):
+        row_number = row_idx + 1
+        row = sheet.row(row_idx)
+
         raw_accident = {
-            column_name: transform_value(
-                row[column_number - 1].value, column_name)
-            for (column_name, column_number)
-            in file_meta['columns_mapping'].items()
-            if column_number and row[column_number - 1].value is not None
+            key: file_meta[key]
+            for key in ['source_file', 'import_timestamp', 'source_file_hash']
         }
-
         raw_accident['source_row_number'] = row_number
 
-        for key in ['source_file', 'import_timestamp', 'source_file_hash']:
-            raw_accident[key] = file_meta[key]
-
-        if accident_is_valid(raw_accident) == True:
+        for (column_name, column_number) in file_meta['columns_mapping'].items():
+            if column_number is None:
+                continue
+            try:
+                raw_accident[column_name] = extract_value(
+                    row[column_number - 1], column_name, book.datemode)
+            except:
+                print(
+                    f'{file_meta["source_file"]}:{row_number}:{column_name} {cell.value} {cell.ctype} failed to import')
+        try:
             create_accident_raw(raw_accident)
+        except:
+            print(f'{file_meta["source_file"]}:{row_number} failed to import')

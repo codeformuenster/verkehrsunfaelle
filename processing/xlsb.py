@@ -1,15 +1,21 @@
-from kinto_utils import create_accident_raw
-from utils import accident_is_valid
+from kinto_utils import create_accident_raw, raw_accident_schema
 
 from pyxlsb import open_workbook, convert_date
-from tqdm import tqdm
 from datetime import datetime
 
-from re import match
+from re import match, sub
 
 
 def extract_value(row, column_number, column_name):
+    schema = raw_accident_schema[column_name]
     value = row[column_number].v
+
+    if value is None:
+        if schema['type'] == 'integer':
+            return 0
+        if schema['type'] == 'string':
+            return ''
+
     if column_name == 'date':
         value = convert_date(value)
         value = str(value)[0:10]
@@ -38,13 +44,29 @@ def extract_value(row, column_number, column_name):
                 value = datetime.strptime(
                     value.replace('.', ':'), '%H:%M').time()
             else:
-                print(
-                    f"Invalid time value '{row[column_number].v}' in row {row[0].r}")
                 return None
         value = str(value)
 
-    if type(value) is float and value == int(value):
-        value = int(value)
+    if schema.get('pattern') is not None:
+        if schema['pattern'].match(value) is not None:
+            return value
+        else:
+            raise Exception
+
+    if schema['type'] == 'integer':
+        if type(value) is float and value == int(value):
+            value = int(value)
+        else:
+            value = str(value)
+            value = sub(r'\D', '', value)
+
+            if value != '':
+                value = int(value)
+            else:
+                value = -1
+
+    if schema['type'] == 'string':
+        value = str(value)
 
     return value
 
@@ -52,11 +74,6 @@ def extract_value(row, column_number, column_name):
 def import_xlsb(file_path, file_meta, position):
     with open_workbook(file_path) as wb:
         with wb.get_sheet(file_meta['sheet_name']) as sheet:
-            # for row in tqdm(sheet.rows(),
-            #                 desc=file_meta['source_file'],
-            #                 position=position,
-            #                 unit='row',
-            #                 dynamic_ncols=True):
             for row in sheet.rows():
                 row_number = row[0].r + 1
                 if row_number < file_meta['first_data_row']:
@@ -74,5 +91,8 @@ def import_xlsb(file_path, file_meta, position):
                 for key in ['source_file', 'import_timestamp', 'source_file_hash']:
                     raw_accident[key] = file_meta[key]
 
-            if accident_is_valid(raw_accident) == True:
-                create_accident_raw(raw_accident)
+                try:
+                    create_accident_raw(raw_accident)
+                except:
+                    print(
+                        f'{file_meta["source_file"]}:{row_number} failed to import')
