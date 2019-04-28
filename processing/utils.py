@@ -1,4 +1,5 @@
 from hashlib import sha1
+import re
 
 BUF_SIZE = 65536  # specify 64kb chunks for file hashing input streaming
 
@@ -25,9 +26,12 @@ def accident_is_valid(accident):
     try:
         required_colums_values = [
             accident[k] for k in required_colums
-            if accident[k] is not None and accident[k] != 'None'
+            if accident.get(k) is not None and accident[k] != '' and accident[k] != 'None'
         ]
 
-        return len(required_colums) == len(required_colums_values)
+        if len(required_colums) != len(required_colums_values):
+            return False
+
+        return True
     except KeyError:
         return False

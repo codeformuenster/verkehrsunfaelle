@@ -1,13 +1,4 @@
 buckets:
-  0eddc3ec-0700-da12-1d84-fe38a8deede7:
-    collections: {}
-    data:
-      id: 0eddc3ec-0700-da12-1d84-fe38a8deede7
-      last_modified: 1546107900610
-    groups: {}
-    permissions:
-      write:
-        - account:admin
   accidents:
     collections:
       accidents_raw:
@@ -17,12 +8,12 @@ buckets:
             required: false
           cache_expires: 0
           displayFields:
-            - source_file
-            - source_row_number
-            - place
-            - place_near
+          - source_file
+          - source_row_number
+          - place
+          - place_near
           id: accidents_raw
-          last_modified: 1547581106626
+          last_modified: 1556457209943
           schema:
             properties:
               accident_category:
@@ -46,6 +37,8 @@ buckets:
               cause_other:
                 type: integer
               date:
+                format: date
+                pattern: ^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$
                 type: string
               day_of_week:
                 type: string
@@ -113,14 +106,16 @@ buckets:
                 minimum: 1
                 type: integer
               time_of_day:
+                format: time
+                pattern: ^(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)|^(?![\s\S])$
                 type: string
               urban:
                 type: string
             required:
-              - source_file
-              - source_row_number
-              - source_file_hash
-              - import_timestamp
+            - source_file
+            - import_timestamp
+            - source_file_hash
+            - source_row_number
             type: object
           sort: source_file
           uiSchema:
@@ -213,67 +208,127 @@ buckets:
             time_of_day:
               ui:readonly: true
             ui:order:
-              - source_file
-              - source_row_number
-              - place
-              - place_near
-              - day_of_week
-              - date
-              - time_of_day
-              - accident_category
-              - hit_and_run
-              - urban
-              - extra_urban
-              - deaths
-              - seriously_injured
-              - slightly_injured
-              - number_of_participants
-              - pedestrian
-              - bicycle
-              - helmet
-              - small_moped
-              - moped
-              - motorcycle
-              - car
-              - lorry
-              - omnibus
-              - other_road_user
-              - participants_01
-              - participants_01_registration
-              - participants_02
-              - participants_02_registration
-              - alcoholized
-              - accident_type
-              - cause_1_4
-              - cause_2
-              - cause_3
-              - cause_other
-              - cause_02
-              - light_conditions
-              - road_condition
-              - participants_child
-              - participants_18_24
-              - participants_senior
-              - participants_age_01
-              - participants_age_02
-              - source_file_hash
-              - import_timestamp
+            - source_file
+            - source_row_number
+            - place
+            - place_near
+            - day_of_week
+            - date
+            - time_of_day
+            - accident_category
+            - hit_and_run
+            - urban
+            - extra_urban
+            - deaths
+            - seriously_injured
+            - slightly_injured
+            - number_of_participants
+            - pedestrian
+            - bicycle
+            - helmet
+            - small_moped
+            - moped
+            - motorcycle
+            - car
+            - lorry
+            - omnibus
+            - other_road_user
+            - participants_01
+            - participants_01_registration
+            - participants_02
+            - participants_02_registration
+            - alcoholized
+            - accident_type
+            - cause_1_4
+            - cause_2
+            - cause_3
+            - cause_other
+            - cause_02
+            - light_conditions
+            - road_condition
+            - participants_child
+            - participants_18_24
+            - participants_senior
+            - participants_age_01
+            - participants_age_02
+            - source_file_hash
+            - import_timestamp
             urban:
               ui:readonly: true
         permissions:
           read:
-            - account:admin
-            - system.Authenticated
-            - system.Everyone
+          - account:admin
+          - system.Authenticated
+          - system.Everyone
           record:create:
-            - account:admin
+          - account:admin
           write:
-            - account:admin
-            - system.Authenticated
+          - account:admin
+      geometries:
+        data:
+          attachment:
+            enabled: false
+            required: false
+          cache_expires: 0
+          displayFields:
+          - accident_id
+          - used_geocoder
+          - comment
+          - lat
+          - lon
+          id: geometries
+          last_modified: 1556457207702
+          schema:
+            properties:
+              accident_id:
+                type: string
+              comment:
+                type: string
+              geocoded_timestamp:
+                type: string
+              lat:
+                maximum: 52.5
+                minimum: 51.5
+                type: number
+              lon:
+                maximum: 7.9
+                minimum: 7.2
+                type: number
+              used_geocoder:
+                type: string
+              used_query:
+                type: string
+            required:
+            - lat
+            - lon
+            - geocoded_timestamp
+            - accident_id
+            type: object
+          sort: -accident_id
+          uiSchema:
+            content:
+              ui:widget: textarea
+            ui:order:
+            - accident_id
+            - used_geocoder
+            - comment
+            - lat
+            - lon
+            - geocoded_timestamp
+            - used_query
+        permissions:
+          read:
+          - system.Authenticated
+          - system.Everyone
+          write:
+          - account:admin
     data:
       id: accidents
-      last_modified: 1546107900633
+      last_modified: 1556457381955
     groups: {}
     permissions:
+      read:
+      - system.Authenticated
+      - system.Everyone
       write:
-        - account:admin
+      - account:admin
