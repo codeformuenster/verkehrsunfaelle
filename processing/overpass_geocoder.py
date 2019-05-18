@@ -29,4 +29,4 @@ def geocode(place, place_near):
                 'lat': location['lat'],
                 'lon': location['lon'],
             } for location in response['elements'] if location['lat']
-        ]
+        ][:1]
