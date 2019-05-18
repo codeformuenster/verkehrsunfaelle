@@ -45,3 +45,7 @@ Start Nominatim & Overpass
 Execute the geocoder
 
     docker-compose run --rm geocoder
+
+## Exporting a database dump
+
+    docker-compose exec postgres pg_dump postgres://accidents@/accidents --encoding=utf8 --format=plain --no-owner --no-acl --no-privileges | gzip -9 > dump.sql.gz
