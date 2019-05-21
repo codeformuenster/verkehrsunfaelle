@@ -56,3 +56,23 @@ Execute the geocoder
 Container images with built in data are available from [quay.io/repository/codeformuenster/verkehrsunfaelle](https://quay.io/repository/codeformuenster/verkehrsunfaelle).
 
 The images are based on the [official postgres container images](https://hub.docker.com/_/postgres) from the docker hub. Just treat them as such.
+
+### Simple Usage
+
+Find the latest container image tag on [the quay.io repository](https://quay.io/repository/codeformuenster/verkehrsunfaelle) and start a container from it and wait until `database system is ready to accept connections` is printed.
+
+    docker run --rm --name verkehrsunfaelle -p 5432:5432 quay.io/codeformuenster/verkehrsunfaelle:2019-05-18
+
+Open a second terminal. Execute psql inside the container
+
+    docker exec -it verkehrsunfaelle psql -U postgres
+
+The data lives in the table `objects` in the column `data` as [JSON](https://www.postgresql.org/docs/11/datatype-json.html).
+
+Get all accidents
+
+    SELECT id, data FROM objects WHERE resource_name = 'record' AND parent_id = '/buckets/accidents/collections/accidents_raw';
+
+Get all geometries
+
+    SELECT id, data FROM objects WHERE resource_name = 'record' AND parent_id = '/buckets/accidents/collections/geometries';
