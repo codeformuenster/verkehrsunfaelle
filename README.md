@@ -76,3 +76,5 @@ Get all accidents
 Get all geometries
 
     SELECT id, data FROM objects WHERE resource_name = 'record' AND parent_id = '/buckets/accidents/collections/geometries';
+
+Available fields inside `data` can be found in the file [kinto/schema.yml](kinto/schema.yml)
