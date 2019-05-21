@@ -4,6 +4,7 @@ Daten und Tools für die Verarbeitung von Verkehrsunfalldaten der Polizei Münst
 
 - [Quickstart](#quickstart) importing raw data
 - [Geocoding](#geocoding) try to guess the location of the accident
+- [I just want the data](#data-container-images) Container images with built in data
 
 ## Quickstart
 
@@ -49,3 +50,9 @@ Execute the geocoder
 ## Exporting a database dump
 
     docker-compose exec postgres pg_dump postgres://accidents@/accidents --encoding=utf8 --format=plain --no-owner --no-acl --no-privileges | gzip -9 > dump.sql.gz
+
+## Data container images
+
+Container images with built in data are available from [quay.io/repository/codeformuenster/verkehrsunfaelle](https://quay.io/repository/codeformuenster/verkehrsunfaelle).
+
+The images are based on the [official postgres container images](https://hub.docker.com/_/postgres) from the docker hub. Just treat them as such.
