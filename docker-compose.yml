@@ -64,6 +64,15 @@ services:
       timeout: 5s
       retries: 5
 
+  random-accident:
+    build:
+      context: random-accident
+    ports:
+      - "9000:9000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   nominatim-import:
     image: mediagis/nominatim:3.1
     volumes:
