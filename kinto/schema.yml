@@ -322,6 +322,61 @@ buckets:
           - system.Everyone
           write:
           - account:admin
+      geometries_corrections:
+        data:
+          attachment:
+            enabled: false
+            required: false
+          cache_expires: 0
+          displayFields:
+          - bogus
+          - timestamp
+          - accident_id
+          - geometry_id
+          id: geometries_corrections
+          last_modified: 1559474325189
+          schema:
+            properties:
+              accident_id:
+                type: string
+              bogus:
+                type: boolean
+              comment:
+                type: string
+              geometry_id:
+                type: string
+              lat:
+                maximum: 52.5
+                minimum: 51.5
+                type: number
+              lon:
+                maximum: 7.9
+                minimum: 7.2
+                type: number
+              timestamp:
+                type: string
+            type: object
+          sort: -last_modified
+          uiSchema:
+            content:
+              ui:widget: textarea
+            ui:order:
+            - accident_id
+            - geometry_id
+            - lat
+            - lon
+            - comment
+            - bogus
+            - timestamp
+        permissions:
+          read:
+          - system.Authenticated
+          - system.Everyone
+          record:create:
+          - system.Authenticated
+          - system.Everyone
+          write:
+          - account:admin
     data:
       id: accidents
       last_modified: 1556457381955
