@@ -1,6 +1,7 @@
 import re
 from config import kinto_url, kinto_admin, kinto_password
 from utils import accident_is_valid
+from uuid import uuid5, NAMESPACE_URL
 
 from kinto_http import Client
 
@@ -20,12 +21,28 @@ for key, value in raw_accident_schema.items():
         value['pattern'] = re.compile(value['pattern'])
 
 
+def make_safe_value(s):
+    def safe_char(c):
+        if c.isalnum():
+            return c
+        else:
+            return "_"
+    return "".join(safe_char(c) for c in str(s))
+
+
+def create_id(accident):
+    return str(uuid5(NAMESPACE_URL, make_safe_value(
+        f"{accident['source_file']}{accident['source_row_number']}"))
+    )
+
+
 def create_accident_raw(accident):
     if accident_is_valid(accident) == False:
         print(
             f'Row {accident["row_number"]} in file {accident["source_file"]} seems to be invalid')
         return
     try:
+        accident['id'] = create_id(accident)
         client.create_record(data=accident,
                              collection='accidents_raw',
                              bucket='accidents',
