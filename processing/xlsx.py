@@ -61,6 +61,9 @@ def extract_value(cell, column_name, datemode):
             return int(value)
         return -1
     if schema['type'] == 'string':
+        # if the cell is a float, prevent saving 166.0 instead of 166
+        if cell.ctype == 2 and value == int(value):
+            value = int(value)
         return str(value)
 
     return value

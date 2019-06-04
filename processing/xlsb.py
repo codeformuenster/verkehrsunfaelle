@@ -66,6 +66,9 @@ def extract_value(row, column_number, column_name):
                 value = -1
 
     if schema['type'] == 'string':
+        # if the cell is a float, prevent saving 166.0 instead of 166
+        if type(value) is float and value == int(value):
+            value = int(value)
         value = str(value)
 
     return value
