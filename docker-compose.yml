@@ -34,7 +34,7 @@ services:
         condition: service_started
 
   kinto:
-    image: kinto/kinto-server:13.0.1
+    image: kinto/kinto-server:13.1.1
     ports:
       - 8888:8888
     volumes:
