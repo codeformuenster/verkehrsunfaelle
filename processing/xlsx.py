@@ -18,6 +18,10 @@ def extract_value(cell, column_name, datemode):
 
     value = cell.value
 
+    # sometimes, place_near is of type date, discard the value
+    if column_name == 'place_near' and cell.ctype == 3:
+        value = ''
+
     if column_name == 'date':
         try:  # try the excel date first
             d = xlrd.xldate.xldate_as_datetime(value, datemode)
