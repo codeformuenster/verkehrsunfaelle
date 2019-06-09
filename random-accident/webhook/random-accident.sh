@@ -25,7 +25,9 @@ psql -qtAX postgresql://accidents:PASSWORD@postgres/accidents -c "
         g.lat,
         g.lon,
         a.data->'place' AS place,
-        a.data->'place_near' AS place_near
+        a.data->'place_near' AS place_near,
+        a.data->'source_file' AS source_file,
+        a.data->'source_row_number' AS source_row_number
       FROM objects AS a, geometries AS g
       WHERE a.resource_name = 'record'
         AND a.parent_id = '/buckets/accidents/collections/accidents_raw'
