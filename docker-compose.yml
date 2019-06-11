@@ -64,6 +64,17 @@ services:
       timeout: 5s
       retries: 5
 
+  random-accident:
+    build:
+      context: random-accident
+    ports:
+      - "9000:9000"
+    environment:
+      POSTGRES_URL: postgresql://accidents:PASSWORD@postgres/accidents
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   nominatim-import:
     image: mediagis/nominatim:3.1
     volumes:

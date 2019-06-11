@@ -1,0 +1,29 @@
+[
+  {
+    "id": "random-accident",
+    "execute-command": "/webhook/random-accident.sh",
+    "include-command-output-in-response": true,
+    "response-headers": [
+      {
+        "name": "Content-Type",
+        "value": "application/json; charset=utf-8"
+      },
+      {
+        "name": "Access-Control-Max-Age",
+        "value": "1728000"
+      },
+      {
+        "name": "Access-Control-Allow-Origin",
+        "value": "*"
+      },
+      {
+        "name": "Access-Control-Allow-Methods",
+        "value": "GET"
+      },
+      {
+        "name": "Access-Control-Expose-Headers",
+        "value": "Content-Length,Content-Range"
+      }
+    ]
+  }
+]
