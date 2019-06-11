@@ -69,6 +69,8 @@ services:
       context: random-accident
     ports:
       - "9000:9000"
+    environment:
+      POSTGRES_URL: postgresql://accidents:PASSWORD@postgres/accidents
     depends_on:
       postgres:
         condition: service_healthy

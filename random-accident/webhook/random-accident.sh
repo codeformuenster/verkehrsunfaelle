@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # TODO move this into container initialization
-COUNT=$(psql -qtAX postgresql://accidents:PASSWORD@postgres/accidents -c "
+COUNT=$(psql -qtAX ${POSTGRES_URL} -c "
   SELECT count(id) FROM objects
   WHERE resource_name = 'record'
     AND parent_id = '/buckets/accidents/collections/geometries';")
 
-psql -qtAX postgresql://accidents:PASSWORD@postgres/accidents -c "
+psql -qtAX ${POSTGRES_URL} -c "
   WITH
     geometries AS (
       SELECT
