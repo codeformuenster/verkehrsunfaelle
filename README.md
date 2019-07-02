@@ -16,7 +16,7 @@ Initialize Kinto
 
     docker-compose run --rm initializer
 
-Run the importer
+Run the importer. This takes a long time (> 1 hour). If you are not that patient consider using a ready-made container instead (see "Data container images").
 
     docker-compose run --rm importer
 
