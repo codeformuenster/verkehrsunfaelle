@@ -568,5 +568,15 @@ files = {
             'participants_age_01': 38,
             'participants_age_02': 39
         }
+    },
+    '/data/meta/unfallkategorien.csv': {
+        'columns_mapping': {
+            'key': 'Kategorie',
+            'title': 'Bezeichnung',
+            'measures': 'Maßnahmen',
+            'igvp_subject': 'Fertigung im IGVP unter Unfallgruppe/Schlagwort',
+            'meta_category': 'KategorieMeta',
+            'most_serious_consequence': 'Schwerste Folge'
+        }
     }
 }

@@ -60,3 +60,19 @@ def create_geometry(geometry):
                          permissions={
                              'read': ['system.Authenticated', 'system.Everyone']
                          })
+
+
+def create_accident_category(category: dict):
+    """
+    Create a accident category record on kinto.
+    Arguments:
+        category {dict} -- a dictionary with the following keys: 
+            key, title, measures, igvp_subject, meta_category, most_serious_consequence
+    """
+    category['key'] = int(category['key'])
+    client.create_record(data=category,
+                         collection='accident_category',
+                         bucket='accidents',
+                         permissions={
+                             'read': ['system.Authenticated', 'system.Everyone']
+                         })

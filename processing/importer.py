@@ -2,6 +2,7 @@ from config import files
 from utils import hash_file
 from xlsx import import_xlsx
 from xlsb import import_xlsb
+from csv_ import import_csv
 
 from os import path
 from sys import argv, exit
@@ -24,10 +25,12 @@ def execute(file_path, position):
     file_meta['import_timestamp'] = import_timestamp
     file_meta['source_file_hash'] = hash_file(file_path)
 
-    if file_extension == ".xlsx":
+    if file_extension == '.xlsx':
         import_xlsx(file_path, file_meta, position)
-    elif file_extension == ".xlsb":
+    elif file_extension == '.xlsb':
         import_xlsb(file_path, file_meta, position)
+    elif file_extension == '.csv':
+        import_csv(file_path, file_meta, position)
     else:
         print(f'Unknown file extension {file_extension}')
         exit(1)

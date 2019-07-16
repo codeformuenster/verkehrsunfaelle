@@ -1,0 +1,80 @@
+Nr,Beschreibung,Kategorie,Subkategorie
+1,Alkoholeinfluss,Verkehrstüchtigkeit,
+2,"Einfluss anderer berauschender Mittel (z.B. Drogen, Rauschgift)",Verkehrstüchtigkeit,
+3,Übermüdung,Verkehrstüchtigkeit,
+4,Sonstige körperliche oder gesitige Mängel,Verkehrstüchtigkeit,
+10,Benutzung der falschen Fahrbahn (auch Richtungsfahrbahn) oder verbotswidrige Benutzung anderer Straßenteile,Fehler der Fahrzeugführer,Straßenbenutzung
+11,Verstoß gegen das Rechtsfahrgebot,Fehler der Fahrzeugführer,Straßenbenutzung
+12,Nicht angepasste Geschwindigkeit mit gleichzeitigem Überschreiten der zulässigen Höchstgeschwindigkeit,Fehler der Fahrzeugführer,Geschwindigkeit
+13,Nicht angepasste Geschwindigkeit ohne Überschreiten der zulässigen Höchstgeschwindigkeit,Fehler der Fahrzeugführer,Geschwindigkeit
+14,"Ungenügender Sicherheitsabstand (sonstige Ursachen, die zu einem Verkehrsunfall führen, sind den zutreffenden Positionen, wie Geschwindigkeit, Übermüdung usw. zuzuordnen)",Fehler der Fahrzeugführer,Abstand
+15,Starkes Bremsen des Vorausfahrenden ohne zwingenden Grund,Fehler der Fahrzeugführer,Abstand
+16,Unzulässiges Rechtsüberholen,Fehler der Fahrzeugführer,Überholen
+17,Überholen trotz Gegenverkehrs,Fehler der Fahrzeugführer,Überholen
+18,Überholen trotz unklarer Verkehrslage,Fehler der Fahrzeugführer,Überholen
+19,Überholen trotz unzureichender Sichtverhältnisse,Fehler der Fahrzeugführer,Überholen
+20,Überholen ohne Beachtung des nachfolgenden Verkehrs und/oder ohne rechtzeitige und deutliche Ankündigung des Ausscherens,Fehler der Fahrzeugführer,Überholen
+21,Fehler beim Wiedereinordnen nach rechts,Fehler der Fahrzeugführer,Überholen
+22,"Sonstige Fehler beim Überholen (z.B. ohne genügenden Seitenabstand; an Fußgängerüberwegen siehe Pos. 38, 39)",Fehler der Fahrzeugführer,Überholen
+23,Fehler beim Überholtwerden,Fehler der Fahrzeugführer,Überholen
+24,"Nichtbeachten des Vorranges entgegenkommender Fahrzeuge beim Vorbeifahren an haltenden Fahrzeugen, Absperrungen oder Hindernissen (§ 6) (ausgenommen Pos. 32)",Fehler der Fahrzeugführer,Vorbeifahren
+25,"Nichtbeachten des nachfolgenden Verkehrs beim Vorbeifahren an haltenden Fahrzeugen, Absperrungen oder Hindernissen und/oder rechtzeitige und deutliche Ankündigen des Ausscherens",Fehler der Fahrzeugführer,Vorbeifahren
+26,"Fehlerhaftes Wechseln des Fahrstreifens beim Nebeneinanderfahren oder Nichtbeachten des Reißverschlussverfahrens (§ 7) (ausgenommen Pos. 20, 25)",Fehler der Fahrzeugführer,Nebeneinanderfahren
+27,Nichtbeachten der Regel „rechts vor links“,Fehler der Fahrzeugführer,"Vorfahrt, Vorrang"
+28,Benutzung der falschen Fahrbahn (auch Richtungsfahrbahn) oder verbotswidrige Benutzung anderer Straßenteile,Fehler der Fahrzeugführer,"Vorfahrt, Vorrang"
+29,Nichtbeachten der Vorfahrt des durchgehenden Verkehrs auf Autobahnen oder Kraftfahrstraßen (§ 18 Abs. 3),Fehler der Fahrzeugführer,"Vorfahrt, Vorrang"
+30,"Nichtbeachten der Vorfahrt durch Fahrzeuge, die aus Feld- und Waldwegen kommen",Fehler der Fahrzeugführer,"Vorfahrt, Vorrang"
+31,Nichtbeachten der Verkehrsregelung durch Polizeibeamte oder Lichtzeichen (ausgenommen Pos. 39),Fehler der Fahrzeugführer,"Vorfahrt, Vorrang"
+32,Nichtbeachten des Vorranges entgegenkommender Fahrzeuge (Zeichen 208 StVO),Fehler der Fahrzeugführer,"Vorfahrt, Vorrang"
+33,Nichtbeachten des Vorranges von Schienenfahrzeugen an Bahnübergängen,Fehler der Fahrzeugführer,"Vorfahrt, Vorrang"
+35,"Fehler beim Abbiegen (§ 9) (ausgenommen Pos. 33, 40)",Fehler der Fahrzeugführer,"Abbiegen, Wenden, Rückwärtsfahren, Ein- und Ausfahren"
+36,Fehler beim Wenden oder Rückwärtsfahren,Fehler der Fahrzeugführer,"Abbiegen, Wenden, Rückwärtsfahren, Ein- und Ausfahren"
+37,"Fehler beim Einfahren in den fließenden Verkehr (z.B. aus einem Grundstück, von einem anderen Straßenteil oder beim Anfahren vom Fahrbahnrand)",Fehler der Fahrzeugführer,"Abbiegen, Wenden, Rückwärtsfahren, Ein- und Ausfahren"
+38,Falsches Verhalten gegenüber Fußgängern an Fußgängerüberwegen,Fehler der Fahrzeugführer,Falsches Verhalten gegenüber Fußgängern
+39,Falsches Verhalten gegenüber Fußgängern an Fußgängerfurten,Fehler der Fahrzeugführer,Falsches Verhalten gegenüber Fußgängern
+40,Falsches Verhalten gegenüber Fußgängern beim Abbiegen,Fehler der Fahrzeugführer,Falsches Verhalten gegenüber Fußgängern
+41,Falsches Verhalten gegenüber Fußgängern an Haltestellen (auch an haltenden Schulbussen mit eingeschaltetem Warnblinklicht),Fehler der Fahrzeugführer,Falsches Verhalten gegenüber Fußgängern
+42,Falsches Verhalten gegenüber Fußgängern an anderen Stellen,Fehler der Fahrzeugführer,Falsches Verhalten gegenüber Fußgängern
+43,Unzulässiges Halten oder Parken,Fehler der Fahrzeugführer,"Ruhender Verkehr, Verkehrssicherung"
+44,"Mangelnde Sicherung haltender oder liegengebliebender Fahrzeuge und von Unfallstellen sowie von Schulbussen, bei denen Kinder ein- oder aussteigen",Fehler der Fahrzeugführer,"Ruhender Verkehr, Verkehrssicherung"
+45,"Verkehrswidriges Verhalten beim Ein- oder Aussteigen, Be- oder Entladen",Fehler der Fahrzeugführer,"Ruhender Verkehr, Verkehrssicherung"
+46,Nichtbeachten der Beleuchtungsvorschriften (ausgenommen Pos. 50),Fehler der Fahrzeugführer,"Ruhender Verkehr, Verkehrssicherung"
+47,"Überladung, Überbesetzung",Fehler der Fahrzeugführer,"Ladung, Besetzung"
+48,Unzureichend gesicherte Ladung oder Fahrzeugzubehörteile,Fehler der Fahrzeugführer,"Ladung, Besetzung"
+49,Andere Fehler beim Fahrzeugführer,Fehler der Fahrzeugführer,"Ladung, Besetzung"
+50,Beleuchtung,Fehler der Fahrzeugführer,"Technische Mängel, Wartungsmängel"
+51,Bereifung,Fehler der Fahrzeugführer,"Technische Mängel, Wartungsmängel"
+52,Bremsen,Fehler der Fahrzeugführer,"Technische Mängel, Wartungsmängel"
+53,Lenkung,Fehler der Fahrzeugführer,"Technische Mängel, Wartungsmängel"
+54,Zugvorrichtung,Fehler der Fahrzeugführer,"Technische Mängel, Wartungsmängel"
+55,Andere Mängel,Fehler der Fahrzeugführer,"Technische Mängel, Wartungsmängel"
+60,"Falsches Verhalten beim Überschreiten der Fahrbahn an Stellen, an denen der Fußgängerverkehr durch Polizeibeamte oder Lichtzeichen geregelt war",Falsches Verhalten der Fußgänger,Falsches Verhalten beim Überschreiten der Fahrbahn
+61,Falsches Verhalten beim Überschreiten der Fahrbahn auf Fußgängerüberwegen ohne Verkehrsregelung durch Polizeibeamte oder Lichtzeichen,Falsches Verhalten der Fußgänger,Falsches Verhalten beim Überschreiten der Fahrbahn
+62,"Falsches Verhalten beim Überschreiten der Fahrbahn in der Nähe von Kreuzungen oder Einmündungen, Lichtzeichenanlagen oder Fußgängerüberwegen bei dichtem Verkehr an anderen Stellen.",Falsches Verhalten der Fußgänger,Falsches Verhalten beim Überschreiten der Fahrbahn
+63,Falsches Verhalten beim Überschreiten der Fahrbahn durch plötzliches Hervortreten hinter Sichthindernissen,Falsches Verhalten der Fußgänger,Falsches Verhalten beim Überschreiten der Fahrbahn
+64,Falsches Verhalten beim Überschreiten der Fahrbahn ohne auf den Fahrzeugverkehr zu achten,Falsches Verhalten der Fußgänger,Falsches Verhalten beim Überschreiten der Fahrbahn
+65,"Falsches Verhalten beim Überschreiten der Fahrbahn, sonstiges",Falsches Verhalten der Fußgänger,Falsches Verhalten beim Überschreiten der Fahrbahn
+66,Nichtbenutzung des Gehwegs,Falsches Verhalten der Fußgänger,
+67,Nichtbenutzen der vorgeschriebenen Straßenseite,Falsches Verhalten der Fußgänger,
+68,Spielen auf oder neben der Fahrbahn,Falsches Verhalten der Fußgänger,
+69,Andere Fehler der Fußgänger,Falsches Verhalten der Fußgänger,
+70,Verunreinigung durch ausgeflossenes Öl,Straßenverhältnisse,Glätte oder Schlüpfrigkeit der Fahrbahn
+71,Andere Verunreinigungen durch Straßenbenutzer,Straßenverhältnisse,Glätte oder Schlüpfrigkeit der Fahrbahn
+72,"Schnee, Eis",Straßenverhältnisse,Glätte oder Schlüpfrigkeit der Fahrbahn
+73,Regen,Straßenverhältnisse,Glätte oder Schlüpfrigkeit der Fahrbahn
+74,"Andere Einflüsse (u. a. Laub, angeschwemmter Lehm)",Straßenverhältnisse,Glätte oder Schlüpfrigkeit der Fahrbahn
+75,"Spurrillen, im Zusammenhang mit Regen, Schnee oder Eis",Straßenverhältnisse,Zustand der Straße
+76,Anderer Zustand der Straße,Straßenverhältnisse,Zustand der Straße
+77,Nicht ordnungsgemäßer Zustand der Verkehrszeichen oder -einrichtungen,Straßenverhältnisse,Zustand der Straße
+78,Mangelhafte Beleuchtung der Straße,Straßenverhältnisse,Zustand der Straße
+79,Mangelhafte Sicherung von Bahnübergängen,Straßenverhältnisse,Zustand der Straße
+80,Sichbehinderung durch Nebel,Witterungseinflüsse,
+81,"Sichbehinderung durch Starken Regen, Hagel, Schneegestöber usw.",Witterungseinflüsse,
+82,Sichbehinderung durch Blendende Sonne,Witterungseinflüsse,
+83,Sichbehinderung durch Seitenwind,Witterungseinflüsse,
+84,Sichbehinderung durch Unwetter oder sonstige Witterungseinflüsse,Witterungseinflüsse,
+85,Nicht oder unzureichend gesicherte Arbeitsstelle auf der Fahrbahn,Hindernisse,
+86,Wild auf der Fahrbahn,Hindernisse,
+87,Anderes Tier auf der Fahrbahn,Hindernisse,
+88,"Sonstiges Hindernis auf der Fahrbahn (ausgenommen Pos. 43, 44)",Hindernisse,
+89,Sonstige Ursachen (mit kurzer Beschreibung aufführen),Hindernisse,
