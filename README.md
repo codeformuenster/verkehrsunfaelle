@@ -5,6 +5,7 @@ Daten und Tools für die Verarbeitung von Verkehrsunfalldaten der Polizei Münst
 - [Quickstart](#quickstart) importing raw data
 - [Geocoding](#geocoding) try to guess the location of the accident
 - [I just want the data](#data-container-images) Container images with built in data
+- [CSV](#csv-files) csv files
 
 ## Quickstart
 
@@ -82,3 +83,11 @@ Get all geometries
     SELECT id, data FROM objects WHERE resource_name = 'record' AND parent_id = '/buckets/accidents/collections/geometries';
 
 Available fields inside `data` can be found in the file [kinto/schema.yml](kinto/schema.yml)
+
+## CSV files
+
+[Container images](#data-container-images) mentioned above can be used to create csv files of the data.
+
+To create the file `export.csv` containing the imported raw accidents, use:
+
+    cat csv-export.sql | docker-compose exec -T postgres psql -qt postgres://accidents@/accidents > export.csv
