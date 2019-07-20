@@ -26,7 +26,7 @@ Or just import a single file
 
 ### I am getting import errors!?
 
-Rows 10120 to 10142 in file [`VU PP 2015.xlsb`](data/VU PP 2015.xlsb), row 10482 in file [`VU PP 2016.xlsx`](data/VU PP 2016.xlsx), row 10902 in file [`VU PP 2017.xlsx`](data/VU PP 2017.xlsx) and row 10901 in file [`VU PP 2017.xlsx`](data/VU PP 2017.xlsx) are known to produce `failed to import` errors. These rows are the very last rows in each of these files and are empty. The import error is produced because empty rows cannot be imported.
+Rows 10120 to 10142 in file [`VU PP 2015.xlsb`](https://github.com/codeformuenster/verkehrsunfaelle/blob/master/data/VU%20PP%202015.xlsb), row 10482 in file [`VU PP 2016.xlsx`](https://github.com/codeformuenster/verkehrsunfaelle/blob/master/data/VU%20PP%202016.xlsx), row 10902 in file [`VU PP 2017.xlsx`](https://github.com/codeformuenster/verkehrsunfaelle/blob/master/data/VU%20PP%202017.xlsx) and row 10901 in file [`VU PP 2018.xlsx`](https://github.com/codeformuenster/verkehrsunfaelle/blob/master/data/VU%20PP%202018.xlsx) are known to produce `failed to import` errors. These rows are the very last rows in each of these files and are empty. The import error is produced because empty rows cannot be imported.
 
 ## Geocoding
 
