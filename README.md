@@ -88,6 +88,6 @@ Available fields inside `data` can be found in the file [kinto/schema.yml](kinto
 
 [Container images](#data-container-images) mentioned above can be used to create csv files of the data.
 
-To create the file `export.csv` containing the imported raw accidents, use:
+You can either download the csv from [this release](https://github.com/codeformuenster/verkehrsunfaelle/releases/tag/csv-data-2019-06-06) or create the file `export.csv` containing the imported raw accidents:
 
     cat csv-export.sql | docker-compose exec -T postgres psql -qt postgres://accidents@/accidents > export.csv
