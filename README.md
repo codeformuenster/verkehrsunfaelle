@@ -54,7 +54,7 @@ Execute the geocoder
 
 ## Exporting a database dump
 
-    docker-compose exec postgres pg_dump postgres://accidents@/accidents --encoding=utf8 --format=plain --no-owner --no-acl --no-privileges | gzip -9 > dump.sql.gz
+    docker-compose exec postgres pg_dump postgres://postgres@/accidents --encoding=utf8 --format=plain --no-owner --no-acl --no-privileges | gzip -9 > dump.sql.gz
 
 ## Data container images
 
@@ -66,11 +66,11 @@ The images are based on the [official postgres container images](https://hub.doc
 
 Find the latest container image tag on [the quay.io repository](https://quay.io/repository/codeformuenster/verkehrsunfaelle) and start a container from it and wait until `database system is ready to accept connections` is printed.
 
-    docker run --rm --name verkehrsunfaelle -p 5432:5432 quay.io/codeformuenster/verkehrsunfaelle:2019-06-06
+    docker run --rm --name verkehrsunfaelle -e POSTGRES_DB=accidents -p 5432:5432 quay.io/codeformuenster/verkehrsunfaelle:2019-06-06
 
 Open a second terminal. Execute psql inside the container
 
-    docker exec -it verkehrsunfaelle psql -U postgres
+    docker exec -it verkehrsunfaelle psql -U postgres accidents
 
 The data lives in the table `objects` in the column `data` as [JSON](https://www.postgresql.org/docs/11/datatype-json.html).
 
@@ -90,4 +90,4 @@ Available fields inside `data` can be found in the file [kinto/schema.yml](kinto
 
 You can either download the csv from [this release](https://github.com/codeformuenster/verkehrsunfaelle/releases/tag/csv-data-2019-06-06) or create the file `export.csv` containing the imported raw accidents:
 
-    cat csv-export.sql | docker-compose exec -T postgres psql -qt postgres://accidents@/accidents > export.csv
+    cat csv-export.sql | docker-compose exec -T postgres psql -qt postgres://postgres@/accidents > export.csv

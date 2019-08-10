@@ -54,12 +54,13 @@ services:
   postgres:
     image: postgres:11-alpine
     environment:
-      POSTGRES_USER: accidents
+      POSTGRES_USER: postgres
+      POSTGRES_DB: accidents
       POSTGRES_PASSWORD: PASSWORD
     volumes:
       - ./postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U accidents"]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -70,7 +71,7 @@ services:
     ports:
       - "9000:9000"
     environment:
-      POSTGRES_URL: postgresql://accidents:PASSWORD@postgres/accidents
+      POSTGRES_URL: postgresql://postgres:PASSWORD@postgres/accidents
     depends_on:
       postgres:
         condition: service_healthy
