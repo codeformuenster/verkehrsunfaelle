@@ -573,6 +573,7 @@ files = {
         'columns_mapping': {
             'key': 'Kategorie',
             'title': 'Bezeichnung',
+            'title_brief': 'BezeichnungKurz',
             'measures': 'Maßnahmen',
             'igvp_subject': 'Fertigung im IGVP unter Unfallgruppe/Schlagwort',
             'meta_category': 'KategorieMeta',

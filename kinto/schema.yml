@@ -11,7 +11,7 @@ buckets:
           - key
           - title
           id: accident_category
-          last_modified: 1562695287118
+          last_modified: 1565725875022
           schema:
             properties:
               igvp_subject:
@@ -38,6 +38,10 @@ buckets:
                 description: A brief description of the category.
                 title: Title
                 type: string
+              title_brief:
+                description: A label which makes sense to display later in the editor
+                title: Brief title
+                type: string
             type: object
           sort: key
           uiSchema:
@@ -50,6 +54,7 @@ buckets:
             - igvp_subject
             - measures
             - meta_category
+            - title_brief
         permissions:
           write:
           - account:admin
@@ -65,7 +70,7 @@ buckets:
           - place
           - place_near
           id: accidents_raw
-          last_modified: 1562693672952
+          last_modified: 1556457209943
           schema:
             properties:
               accident_category:
@@ -329,7 +334,7 @@ buckets:
           - lat
           - lon
           id: geometries
-          last_modified: 1556457207702
+          last_modified: 1565719238403
           schema:
             properties:
               accident_id:
@@ -431,7 +436,7 @@ buckets:
           - account:admin
     data:
       id: accidents
-      last_modified: 1562695421128
+      last_modified: 1556457381955
     groups: {}
     permissions:
       read:
