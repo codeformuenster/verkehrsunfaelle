@@ -1,6 +1,7 @@
 import csv
 
-from kinto_utils import create_accident_category
+from kinto_utils import create_record
+
 
 def import_csv(file_path, file_meta, position):
     """
@@ -19,10 +20,13 @@ def import_csv(file_path, file_meta, position):
                     key: row[file_meta['columns_mapping'][key]]
                     for key in file_meta['columns_mapping']
                 }
+                data_dict['key'] = int(data_dict['key'])
 
                 if file_meta['source_file'] == 'unfallkategorien.csv':
-                    create_accident_category(data_dict)
+                    create_record(
+                        data_dict, collection=file_meta['collection'])
                 else:
                     print(f'{file_meta["source_file"]} cannot be handled')
             except Exception as e:
-                print(f'{file_meta["source_file"]} failed to import: ' + str(e))
+                print(
+                    f'{file_meta["source_file"]} failed to import: ' + str(e))

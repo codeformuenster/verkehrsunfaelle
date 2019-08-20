@@ -570,6 +570,7 @@ files = {
         }
     },
     '/data/meta/unfallkategorien.csv': {
+        'collection': 'accident_category',
         'columns_mapping': {
             'key': 'Kategorie',
             'title': 'Bezeichnung',
