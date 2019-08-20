@@ -11,7 +11,6 @@ buckets:
           - key
           - title
           id: accident_category
-          last_modified: 1565725875022
           schema:
             properties:
               igvp_subject:
@@ -70,7 +69,6 @@ buckets:
           - place
           - place_near
           id: accidents_raw
-          last_modified: 1556457209943
           schema:
             properties:
               accident_category:
@@ -334,7 +332,6 @@ buckets:
           - lat
           - lon
           id: geometries
-          last_modified: 1565719238403
           schema:
             properties:
               accident_id:
@@ -391,7 +388,6 @@ buckets:
           - accident_id
           - geometry_id
           id: geometries_corrections
-          last_modified: 1559474325189
           schema:
             properties:
               accident_id:
@@ -436,7 +432,6 @@ buckets:
           - account:admin
     data:
       id: accidents
-      last_modified: 1556457381955
     groups: {}
     permissions:
       read:
