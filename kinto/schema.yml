@@ -55,6 +55,12 @@ buckets:
             - meta_category
             - title_brief
         permissions:
+          read:
+          - account:admin
+          - system.Authenticated
+          - system.Everyone
+          record:create:
+          - account:admin
           write:
           - account:admin
       accidents_raw:
@@ -372,8 +378,11 @@ buckets:
             - used_query
         permissions:
           read:
+          - account:admin
           - system.Authenticated
           - system.Everyone
+          record:create:
+          - account:admin
           write:
           - account:admin
       geometries_corrections:
@@ -423,11 +432,59 @@ buckets:
             - timestamp
         permissions:
           read:
+          - account:admin
           - system.Authenticated
           - system.Everyone
           record:create:
+          - account:admin
+          write:
+          - account:admin
+      traffic_involvement:
+        data:
+          attachment:
+            enabled: false
+            required: false
+          cache_expires: 0
+          displayFields:
+          - key
+          - title
+          id: traffic_involvement
+          last_modified: 1566331421260
+          schema:
+            properties:
+              category:
+                description: A category this road user belongs to. Does not correspond
+                  to accident categories.
+                title: Category
+                type: string
+              description:
+                description: A description of the road user.
+                title: Description
+                type: string
+              key:
+                title: Key
+                type: integer
+              title:
+                description: Short title
+                title: Title
+                type: string
+            type: object
+          sort: key
+          uiSchema:
+            content:
+              ui:widget: textarea
+            ui:order:
+            - key
+            - title
+            - description
+            - category
+        permissions:
+          read:
+          - account:admin
           - system.Authenticated
           - system.Everyone
+          record:create:
+          - account:admin
           write:
           - account:admin
     data:
@@ -435,7 +492,10 @@ buckets:
     groups: {}
     permissions:
       read:
+      - account:admin
       - system.Authenticated
       - system.Everyone
+      record:create:
+      - account:admin
       write:
       - account:admin
