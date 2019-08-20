@@ -580,5 +580,37 @@ files = {
             'meta_category': 'KategorieMeta',
             'most_serious_consequence': 'Schwerste Folge'
         }
+    },
+    '/data/meta/unfallarten.csv': {
+        'columns_mapping': {
+            'key': 'Unfallart',
+            'title': 'Titel',
+            'description': 'Beschreibung'
+        }
+    },
+    '/data/meta/unfalltypen.csv': {
+        'columns_mapping': {
+            'key': 'Unfalltyp',
+            'color': 'Farbe',
+            'code': 'Kürzel',
+            'title': 'Titel',
+            'description': 'Beschreibung'
+        }
+    },
+    '/data/meta/unfallursachen.csv': {
+        'columns_mapping': {
+            'key': 'Nr',
+            'category': 'Kategorie',
+            'description': 'Beschreibung',
+            'subcategory': 'Subkategorie'
+        }
+    },
+    '/data/meta/verkehrsbeteiligung.csv': {
+        'columns_mapping': {
+            'key': 'Schlüsselnummer',
+            'title': 'Art der Verkehrsbeteiligung',
+            'category': 'Kategorie',
+            'description': 'Erläuterungen'
+        }
     }
 }
