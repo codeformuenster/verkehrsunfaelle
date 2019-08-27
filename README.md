@@ -66,7 +66,7 @@ The images are based on the [official postgres container images](https://hub.doc
 
 Find the latest container image tag on [the quay.io repository](https://quay.io/repository/codeformuenster/verkehrsunfaelle) and start a container from it and wait until `database system is ready to accept connections` is printed.
 
-    docker run --rm --name verkehrsunfaelle -e POSTGRES_DB=accidents -p 5432:5432 quay.io/codeformuenster/verkehrsunfaelle:2019-06-06
+    docker run --rm --name verkehrsunfaelle -p 5432:5432 quay.io/codeformuenster/verkehrsunfaelle:2019-08-27_editor-web
 
 Open a second terminal. Execute psql inside the container
 
