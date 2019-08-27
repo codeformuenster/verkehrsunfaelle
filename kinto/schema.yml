@@ -449,7 +449,6 @@ buckets:
           - key
           - title
           id: traffic_involvement
-          last_modified: 1566331421260
           schema:
             properties:
               category:
@@ -495,7 +494,5 @@ buckets:
       - account:admin
       - system.Authenticated
       - system.Everyone
-      record:create:
-      - account:admin
       write:
       - account:admin
