@@ -74,7 +74,7 @@ def extract_value(row, column_number, column_name):
     return value
 
 
-def import_xlsb(file_path, file_meta, position):
+def import_xlsb(file_path, file_meta):
     with open_workbook(file_path) as wb:
         with wb.get_sheet(file_meta['sheet_name']) as sheet:
             for row in sheet.rows():

@@ -63,6 +63,114 @@ buckets:
           - account:admin
           write:
           - account:admin
+      accident_cause:
+        data:
+          attachment:
+            enabled: false
+            required: false
+          cache_expires: 0
+          displayFields:
+          - title
+          id: accident_cause
+          schema:
+            properties:
+              category:
+                title: Category
+                type: string
+              description:
+                title: Description
+                type: string
+              key:
+                title: Key
+                type: integer
+              subcategory:
+                title: Subcategory
+                type: string
+            type: object
+          sort: -last_modified
+          uiSchema:
+            content:
+              ui:widget: textarea
+            ui:order:
+            - key
+            - subcategory
+            - category
+            - description
+        permissions:
+          write:
+          - account:admin
+      accident_kind:
+        data:
+          attachment:
+            enabled: false
+            required: false
+          cache_expires: 0
+          displayFields:
+          - title
+          id: accident_kind
+          schema:
+            properties:
+              description:
+                title: Description
+                type: string
+              key:
+                title: Key
+                type: integer
+              title:
+                title: Title
+                type: string
+            type: object
+          sort: -last_modified
+          uiSchema:
+            content:
+              ui:widget: textarea
+            ui:order:
+            - title
+            - key
+            - description
+        permissions:
+          write:
+          - account:admin
+      accident_type:
+        data:
+          attachment:
+            enabled: false
+            required: false
+          cache_expires: 0
+          displayFields:
+          - title
+          id: accident_type
+          schema:
+            properties:
+              code:
+                title: Code
+                type: string
+              color:
+                title: Color
+                type: string
+              description:
+                title: Description
+                type: string
+              key:
+                title: Key
+                type: integer
+              title:
+                title: Title
+                type: string
+            type: object
+          sort: -last_modified
+          uiSchema:
+            content:
+              ui:widget: textarea
+            ui:order:
+            - title
+            - key
+            - description
+            - color
+            - code
+        permissions:
+          write:
+          - account:admin
       accidents_raw:
         data:
           attachment:

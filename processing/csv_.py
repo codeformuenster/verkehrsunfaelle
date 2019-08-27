@@ -3,7 +3,7 @@ import csv
 from kinto_utils import create_record
 
 
-def import_csv(file_path, file_meta, position):
+def import_csv(file_path, file_meta):
     """
     Read the given csv file
 
@@ -22,11 +22,7 @@ def import_csv(file_path, file_meta, position):
                 }
                 data_dict['key'] = int(data_dict['key'])
 
-                if file_meta['source_file'] == 'unfallkategorien.csv':
-                    create_record(
-                        data_dict, collection=file_meta['collection'])
-                else:
-                    print(f'{file_meta["source_file"]} cannot be handled')
+                create_record(data_dict, collection=file_meta['collection'])
             except Exception as e:
                 print(
                     f'{file_meta["source_file"]} failed to import: ' + str(e))

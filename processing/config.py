@@ -582,6 +582,7 @@ files = {
         }
     },
     '/data/meta/unfallarten.csv': {
+        'collection': 'accident_kind',
         'columns_mapping': {
             'key': 'Unfallart',
             'title': 'Titel',
@@ -589,6 +590,7 @@ files = {
         }
     },
     '/data/meta/unfalltypen.csv': {
+        'collection': 'accident_type',
         'columns_mapping': {
             'key': 'Unfalltyp',
             'color': 'Farbe',
@@ -598,6 +600,7 @@ files = {
         }
     },
     '/data/meta/unfallursachen.csv': {
+        'collection': 'accident_cause',
         'columns_mapping': {
             'key': 'Nr',
             'category': 'Kategorie',
@@ -606,6 +609,7 @@ files = {
         }
     },
     '/data/meta/verkehrsbeteiligung.csv': {
+        'collection': 'traffic_involvement',
         'columns_mapping': {
             'key': 'Schlüsselnummer',
             'title': 'Art der Verkehrsbeteiligung',
