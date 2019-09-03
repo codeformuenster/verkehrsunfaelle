@@ -1,7 +1,7 @@
 buckets:
   accidents:
     collections:
-      accident_category:
+      accident_type:
         data:
           attachment:
             enabled: false
@@ -10,7 +10,7 @@ buckets:
           displayFields:
           - key
           - title
-          id: accident_category
+          id: accident_type
           schema:
             properties:
               igvp_subject:
@@ -131,7 +131,7 @@ buckets:
         permissions:
           write:
           - account:admin
-      accident_type:
+      accident_category:
         data:
           attachment:
             enabled: false
@@ -139,7 +139,7 @@ buckets:
           cache_expires: 0
           displayFields:
           - title
-          id: accident_type
+          id: accident_category
           schema:
             properties:
               code:

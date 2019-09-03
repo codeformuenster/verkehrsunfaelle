@@ -570,7 +570,7 @@ files = {
         }
     },
     '/data/meta/unfallkategorien.csv': {
-        'collection': 'accident_category',
+        'collection': 'accident_type',
         'columns_mapping': {
             'key': 'Kategorie',
             'title': 'Bezeichnung',
@@ -590,7 +590,7 @@ files = {
         }
     },
     '/data/meta/unfalltypen.csv': {
-        'collection': 'accident_type',
+        'collection': 'accident_category',
         'columns_mapping': {
             'key': 'Unfalltyp',
             'color': 'Farbe',

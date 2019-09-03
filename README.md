@@ -5,6 +5,7 @@ Daten und Tools für die Verarbeitung von Verkehrsunfalldaten der Polizei Münst
 - [Quickstart](#quickstart) importing raw data
 - [Geocoding](#geocoding) try to guess the location of the accident
 - [I just want the data](#data-container-images) Container images with built in data
+- [Metadata] Metadata
 - [CSV](#csv-files) csv files
 
 ## Quickstart
@@ -66,7 +67,7 @@ The images are based on the [official postgres container images](https://hub.doc
 
 Find the latest container image tag on [the quay.io repository](https://quay.io/repository/codeformuenster/verkehrsunfaelle) and start a container from it and wait until `database system is ready to accept connections` is printed.
 
-    docker run --rm --name verkehrsunfaelle -p 5432:5432 quay.io/codeformuenster/verkehrsunfaelle:2019-08-27_editor-web
+    docker run --rm --name verkehrsunfaelle -p 5432:5432 quay.io/codeformuenster/verkehrsunfaelle:2019-09-03_editor-web
 
 Open a second terminal. Execute psql inside the container
 
@@ -83,6 +84,22 @@ Get all geometries
     SELECT id, data FROM objects WHERE resource_name = 'record' AND parent_id = '/buckets/accidents/collections/geometries';
 
 Available fields inside `data` can be found in the file [kinto/schema.yml](kinto/schema.yml)
+
+## Metadata
+
+Some columns in the `accidents_raw` collection contain numbers referencing values in metadata collections.
+
+| Column in `accidents_raw` | Collection            |
+|---------------------------|-----------------------|
+| `accident_category`       | `accident_category`   |
+| `accident_type`           | `accident_type`       |
+| `cause_1_4`               | `accident_cause`      |
+| `cause_2`                 | `accident_cause`      |
+| `cause_3`                 | `accident_cause`      |
+| `cause_other`             | `accident_cause`      |
+| `cause_02`                | `accident_cause`      |
+| `participants_01`         | `traffic_involvement` |
+| `participants_02`         | `traffic_involvement` |
 
 ## CSV files
 
