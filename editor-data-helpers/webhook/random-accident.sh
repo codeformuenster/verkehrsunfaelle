@@ -18,14 +18,6 @@ psql -qtAX ${POSTGRES_URL} -c "
       WHERE resource_name = 'record'
         AND parent_id = '/buckets/accidents/collections/geometries'
       OFFSET floor(random()*${COUNT}) LIMIT 1),
-    category as (
-      SELECT
-        data->'key' as category_key,
-        data->'title_brief' as category_title,
-        data->'meta_category' as category_meta
-      FROM objects
-      WHERE resource_name = 'record'
-        AND parent_id = '/buckets/accidents/collections/accident_category'),
     result AS (
       SELECT
         g.geometry_id,
@@ -36,12 +28,18 @@ psql -qtAX ${POSTGRES_URL} -c "
         a.data->'place_near' AS place_near,
         a.data->'source_file' AS source_file,
         a.data->'source_row_number' AS source_row_number,
-        c.category_title,
-        c.category_meta
-      FROM objects AS a, geometries AS g, category as c
+        a.data->'accident_category' AS accident_category,
+        a.data->'accident_type' AS accident_type,
+        a.data->'cause_1_4' AS cause_1_4,
+        a.data->'cause_2' AS cause_2,
+        a.data->'cause_3' AS cause_3,
+        a.data->'cause_other' AS cause_other,
+        a.data->'cause_02' AS cause_02,
+        a.data->'participants_01' AS participants_01,
+        a.data->'participants_02' AS participants_02
+      FROM objects AS a, geometries AS g
       WHERE a.resource_name = 'record'
         AND a.parent_id = '/buckets/accidents/collections/accidents_raw'
-        AND a.id = g.accident_id
-        and a.data->'accident_category' = c.category_key)
+        AND a.id = g.accident_id)
   SELECT row_to_json(result) FROM result;
 "
