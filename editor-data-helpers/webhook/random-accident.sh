@@ -36,7 +36,10 @@ psql -qtAX ${POSTGRES_URL} -c "
         a.data->'cause_other' AS cause_other,
         a.data->'cause_02' AS cause_02,
         a.data->'participants_01' AS participants_01,
-        a.data->'participants_02' AS participants_02
+        a.data->'participants_02' AS participants_02,
+        a.data->'deaths' AS deaths,
+        a.data->'seriously_injured' AS seriously_injured,
+        a.data->'slightly_injured' AS slightly_injured
       FROM objects AS a, geometries AS g
       WHERE a.resource_name = 'record'
         AND a.parent_id = '/buckets/accidents/collections/accidents_raw'
