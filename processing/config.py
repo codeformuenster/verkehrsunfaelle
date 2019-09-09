@@ -568,5 +568,53 @@ files = {
             'participants_age_01': 38,
             'participants_age_02': 39
         }
+    },
+    '/data/meta/unfallkategorien.csv': {
+        'collection': 'accident_type',
+        'columns_mapping': {
+            'key': 'Kategorie',
+            'title': 'Bezeichnung',
+            'title_brief': 'BezeichnungKurz',
+            'measures': 'Maßnahmen',
+            'igvp_subject': 'Fertigung im IGVP unter Unfallgruppe/Schlagwort',
+            'meta_category': 'KategorieMeta',
+            'most_serious_consequence': 'Schwerste Folge'
+        }
+    },
+    '/data/meta/unfallarten.csv': {
+        'collection': 'accident_kind',
+        'columns_mapping': {
+            'key': 'Unfallart',
+            'title': 'Titel',
+            'description': 'Beschreibung'
+        }
+    },
+    '/data/meta/unfalltypen.csv': {
+        'collection': 'accident_category',
+        'columns_mapping': {
+            'key': 'Unfalltyp',
+            'color': 'Farbe',
+            'code': 'Kürzel',
+            'title': 'Titel',
+            'description': 'Beschreibung'
+        }
+    },
+    '/data/meta/unfallursachen.csv': {
+        'collection': 'accident_cause',
+        'columns_mapping': {
+            'key': 'Nr',
+            'category': 'Kategorie',
+            'description': 'Beschreibung',
+            'subcategory': 'Subkategorie'
+        }
+    },
+    '/data/meta/verkehrsbeteiligung.csv': {
+        'collection': 'traffic_involvement',
+        'columns_mapping': {
+            'key': 'Schlüsselnummer',
+            'title': 'Art der Verkehrsbeteiligung',
+            'category': 'Kategorie',
+            'description': 'Erläuterungen'
+        }
     }
 }

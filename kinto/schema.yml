@@ -1,6 +1,176 @@
 buckets:
   accidents:
     collections:
+      accident_type:
+        data:
+          attachment:
+            enabled: false
+            required: false
+          cache_expires: 0
+          displayFields:
+          - key
+          - title
+          id: accident_type
+          schema:
+            properties:
+              igvp_subject:
+                description: Some internal heading of the police
+                title: IGVP Subject
+                type: string
+              key:
+                title: Key
+                type: integer
+              measures:
+                description: A list of appropriate measures when this category occurs
+                title: Measured
+                type: string
+              meta_category:
+                description: Higher level category
+                title: Meta Category
+                type: string
+              most_serious_consequence:
+                description: Usually describes criteria that need to be fulfilled
+                  for qualify as this category.
+                title: Most serious consequence
+                type: string
+              title:
+                description: A brief description of the category.
+                title: Title
+                type: string
+              title_brief:
+                description: A label which makes sense to display later in the editor
+                title: Brief title
+                type: string
+            type: object
+          sort: key
+          uiSchema:
+            content:
+              ui:widget: textarea
+            ui:order:
+            - key
+            - title
+            - most_serious_consequence
+            - igvp_subject
+            - measures
+            - meta_category
+            - title_brief
+        permissions:
+          read:
+          - account:admin
+          - system.Authenticated
+          - system.Everyone
+          record:create:
+          - account:admin
+          write:
+          - account:admin
+      accident_cause:
+        data:
+          attachment:
+            enabled: false
+            required: false
+          cache_expires: 0
+          displayFields:
+          - title
+          id: accident_cause
+          schema:
+            properties:
+              category:
+                title: Category
+                type: string
+              description:
+                title: Description
+                type: string
+              key:
+                title: Key
+                type: integer
+              subcategory:
+                title: Subcategory
+                type: string
+            type: object
+          sort: -last_modified
+          uiSchema:
+            content:
+              ui:widget: textarea
+            ui:order:
+            - key
+            - subcategory
+            - category
+            - description
+        permissions:
+          write:
+          - account:admin
+      accident_kind:
+        data:
+          attachment:
+            enabled: false
+            required: false
+          cache_expires: 0
+          displayFields:
+          - title
+          id: accident_kind
+          schema:
+            properties:
+              description:
+                title: Description
+                type: string
+              key:
+                title: Key
+                type: integer
+              title:
+                title: Title
+                type: string
+            type: object
+          sort: -last_modified
+          uiSchema:
+            content:
+              ui:widget: textarea
+            ui:order:
+            - title
+            - key
+            - description
+        permissions:
+          write:
+          - account:admin
+      accident_category:
+        data:
+          attachment:
+            enabled: false
+            required: false
+          cache_expires: 0
+          displayFields:
+          - title
+          id: accident_category
+          schema:
+            properties:
+              code:
+                title: Code
+                type: string
+              color:
+                title: Color
+                type: string
+              description:
+                title: Description
+                type: string
+              key:
+                title: Key
+                type: integer
+              title:
+                title: Title
+                type: string
+            type: object
+          sort: -last_modified
+          uiSchema:
+            content:
+              ui:widget: textarea
+            ui:order:
+            - title
+            - key
+            - description
+            - color
+            - code
+        permissions:
+          write:
+          - account:admin
       accidents_raw:
         data:
           attachment:
@@ -13,7 +183,6 @@ buckets:
           - place
           - place_near
           id: accidents_raw
-          last_modified: 1556457209943
           schema:
             properties:
               accident_category:
@@ -277,7 +446,6 @@ buckets:
           - lat
           - lon
           id: geometries
-          last_modified: 1556457207702
           schema:
             properties:
               accident_id:
@@ -318,8 +486,11 @@ buckets:
             - used_query
         permissions:
           read:
+          - account:admin
           - system.Authenticated
           - system.Everyone
+          record:create:
+          - account:admin
           write:
           - account:admin
       geometries_corrections:
@@ -334,7 +505,6 @@ buckets:
           - accident_id
           - geometry_id
           id: geometries_corrections
-          last_modified: 1559474325189
           schema:
             properties:
               accident_id:
@@ -370,19 +540,69 @@ buckets:
             - timestamp
         permissions:
           read:
+          - account:Anonym
+          - account:admin
           - system.Authenticated
           - system.Everyone
           record:create:
+          - account:Anonym
+          - account:admin
+          - system.Authenticated
+          write:
+          - account:admin
+      traffic_involvement:
+        data:
+          attachment:
+            enabled: false
+            required: false
+          cache_expires: 0
+          displayFields:
+          - key
+          - title
+          id: traffic_involvement
+          schema:
+            properties:
+              category:
+                description: A category this road user belongs to. Does not correspond
+                  to accident categories.
+                title: Category
+                type: string
+              description:
+                description: A description of the road user.
+                title: Description
+                type: string
+              key:
+                title: Key
+                type: integer
+              title:
+                description: Short title
+                title: Title
+                type: string
+            type: object
+          sort: key
+          uiSchema:
+            content:
+              ui:widget: textarea
+            ui:order:
+            - key
+            - title
+            - description
+            - category
+        permissions:
+          read:
+          - account:admin
           - system.Authenticated
           - system.Everyone
+          record:create:
+          - account:admin
           write:
           - account:admin
     data:
       id: accidents
-      last_modified: 1556457381955
     groups: {}
     permissions:
       read:
+      - account:admin
       - system.Authenticated
       - system.Everyone
       write:

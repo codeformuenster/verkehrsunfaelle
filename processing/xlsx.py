@@ -73,7 +73,7 @@ def extract_value(cell, column_name, datemode):
     return value
 
 
-def import_xlsx(file_path, file_meta, position):
+def import_xlsx(file_path, file_meta):
     book = xlrd.open_workbook(filename=file_path)
     sheet = book.sheet_by_name(file_meta['sheet_name'])
 

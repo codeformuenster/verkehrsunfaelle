@@ -43,20 +43,19 @@ def create_accident_raw(accident):
         return
     try:
         accident['id'] = create_id(accident)
-        client.create_record(data=accident,
-                             collection='accidents_raw',
-                             bucket='accidents',
-                             permissions={
-                                 'read': ['system.Authenticated', 'system.Everyone']
-                             })
+        create_record(data=accident, collection='accidents_raw')
     except TypeError:
         print(f'ERROR creating accident {accident}')
 
 
 def create_geometry(geometry):
-    client.create_record(data=geometry,
-                         collection='geometries',
-                         bucket='accidents',
+    create_record(data=geometry, collection='geometries')
+
+
+def create_record(data, collection, bucket='accidents'):
+    client.create_record(data=data,
+                         collection=collection,
+                         bucket=bucket,
                          permissions={
                              'read': ['system.Authenticated', 'system.Everyone']
                          })
