@@ -92,7 +92,6 @@ Some columns in the `accidents_raw` collection contain numbers referencing value
 | Column in `accidents_raw` | Collection            |
 |---------------------------|-----------------------|
 | `accident_category`       | `accident_category`   |
-| `accident_type`           | `accident_type`       |
 | `cause_1_4`               | `accident_cause`      |
 | `cause_2`                 | `accident_cause`      |
 | `cause_3`                 | `accident_cause`      |
@@ -100,6 +99,8 @@ Some columns in the `accidents_raw` collection contain numbers referencing value
 | `cause_02`                | `accident_cause`      |
 | `participants_01`         | `traffic_involvement` |
 | `participants_02`         | `traffic_involvement` |
+
+Collection `accident_type` is NOT related to the `accident_type` column in the `accidents_raw` collection.
 
 ## CSV files
 
