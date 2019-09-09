@@ -540,11 +540,14 @@ buckets:
             - timestamp
         permissions:
           read:
+          - account:Anonym
           - account:admin
           - system.Authenticated
           - system.Everyone
           record:create:
+          - account:Anonym
           - account:admin
+          - system.Authenticated
           write:
           - account:admin
       traffic_involvement:
