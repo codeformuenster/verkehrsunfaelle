@@ -17,4 +17,4 @@ WORKDIR /webhook
 
 COPY webhook /webhook
 
-CMD ["/usr/bin/webhook", "-verbose"]
+CMD ["/usr/bin/webhook", "-verbose", "-header", "Content-Type=application/json; charset=utf-8", "-header", "Access-Control-Max-Age=1728000", "-header", "Access-Control-Allow-Origin=*", "-header", "Access-Control-Allow-Methods=GET", "-header", "Access-Control-Expose-Headers=Content-Length,Content-Range"]
