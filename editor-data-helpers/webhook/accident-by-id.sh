@@ -2,11 +2,11 @@
 
 ID=${1:-}
 if [[ -z "$ID" ]]; then
-    echo '{ "error": "missing id url parameter" }'
+    echo -n '{ "error": "missing id url parameter", "missingParameter": true }'
     exit 0
 fi
 
-psql -qtAX ${POSTGRES_URL} -c "
+RESULT=$(psql -qtAX ${POSTGRES_URL} -c "
 WITH
     geometries AS (
       SELECT
@@ -47,5 +47,11 @@ WITH
         AND a.parent_id = '/buckets/accidents/collections/accidents_raw'
         AND a.id = g.accident_id)
   SELECT row_to_json(result) FROM result;
-"
+")
 
+if [[ -z "$RESULT" ]]; then
+    echo -n '{ "error": "empty result", "empty": true }'
+    exit 0
+fi
+
+echo -n "$RESULT"
