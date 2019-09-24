@@ -12,7 +12,13 @@ from multiprocessing import Process
 import_timestamp = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()
 
 
-def execute(file_path):
+def execute(file_path: str):
+    """
+    Given a file path, look up the meta data from the config (where each file path is a key),
+    and depending on the file extension call the appropriate handler.
+    Each handler will ultimately attempt to create a record, either a raw accident (from Excel files)
+    or one of the meta information collections (from csv files).
+    """
     try:
         file_meta = files[file_path]
     except KeyError:

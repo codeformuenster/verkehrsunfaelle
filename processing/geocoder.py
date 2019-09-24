@@ -9,7 +9,15 @@ import overpass_geocoder
 import_timestamp = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()
 
 
-def handle_location(queue):
+def handle_location(queue: Queue):
+    """
+    Handle elements from a Queue.
+
+    Expects to either find a string 'no-records-left', which when encountered will break
+    the loop, or a dictionary with the keys 'id', 'place' and 'place-near'.
+    Will attempt to pass the elements to the Nominatim and Overpass geocoders and on success
+    create geometry entries based on the geocoder results.
+    """
     while True:
         record = queue.get()
         if record == 'no-records-left':

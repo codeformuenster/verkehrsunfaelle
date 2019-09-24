@@ -6,7 +6,20 @@ api = overpass.API(endpoint='http://overpass/api/interpreter')
 bbox = '51.8375,7.471,52.061,7.775'
 
 
-def geocode(place, place_near):
+def geocode(place: str, place_near: str) -> list:
+    """
+    Given a place and place_near string, poll the Overpass Geocoder and
+    return all returned elements as a list of dictionaries.
+
+    The dictionaries have the following form:
+
+    {
+        'used_geocoder': 'overpass',
+        'used_query': <the query that was used>,
+        'lat': <latitude>,
+        'lon': <longitude>,
+    }
+    """
     place_near = re.sub(r'"|\?', ' ', place_near)
     place_near = " ".join(place_near.split())
 
