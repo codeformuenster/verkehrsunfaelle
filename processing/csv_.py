@@ -1,16 +1,20 @@
 import csv
+from os import PathLike
 
 from kinto_utils import create_record
 
 
-def import_csv(file_path, file_meta):
+def import_csv(file_path: PathLike, file_meta: dict):
     """
-    Read the given csv file
+    Given a csv file and dictionary of meta info, map the values of each row to keys according
+    to a columns mapping contained in the meta info, convert the row keys into integers and 
+    create a database record for each row.
 
+    Failed rows will produce an error message, but not interupt.
+    
     Arguments:
-        file_path {[type]} -- [description]
-        file_meta {[type]} -- [description]
-        position {[type]} -- [description]
+        file_path {PathLike} -- a path to a csv file (delimiter: ',', quotechar: '"')
+        file_meta {dict} -- a dictionary containing the keys 'columns_mapping', 'collection', 'source_file'
     """
     with open(file_path, 'r') as csvfile:
         reader = csv.DictReader(csvfile, delimiter=',', quotechar='"', )

@@ -8,6 +8,20 @@ geocoder = Nominatim(format_string="%s Münster", view_box=[
 
 
 def geocode(place, place_near):
+    """
+    Given a place and place_near string, poll the Nominatim Geocoder and
+    return all returned elements as a list of dictionaries.
+
+    The dictionaries have the following form:
+
+    {
+        'used_geocoder': 'nominatim',
+        'used_query': <the query that was used>,
+        'lat': <latitude>,
+        'lon': <longitude>,
+    }
+    """
+
     place_str = ""
 
     if place != 'None':

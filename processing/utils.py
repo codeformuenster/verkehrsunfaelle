@@ -1,10 +1,14 @@
-from hashlib import sha1
 import re
+from hashlib import sha1
+from os import PathLike
 
 BUF_SIZE = 65536  # specify 64kb chunks for file hashing input streaming
 
 
-def hash_file(file_path):
+def hash_file(file_path: PathLike) -> str:
+    """
+    Given a file path, read the file and compute a SHA1 hash for it.
+    """
     file_hash = sha1()
 
     with open(file_path, 'rb') as f:
@@ -20,7 +24,11 @@ def hash_file(file_path):
 required_colums = ['place', 'date']
 
 
-def accident_is_valid(accident):
+def accident_is_valid(accident: dict) -> bool:
+    """
+    Return True if the given accident dictionary contains all required columns.
+    """
+
     # check for empty row, checking the first 5 columns for
     # emptyness should be enough
     try:

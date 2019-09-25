@@ -9,6 +9,7 @@ client = Client(server_url=kinto_url,
                 auth=(kinto_admin, kinto_password),
                 retry=10)
 
+# TODO is this still needed? synchronize with required_columns in utils
 required_colums = [
     'place', 'day_of_week', 'date', 'time_of_day'
 ]
@@ -21,7 +22,10 @@ for key, value in raw_accident_schema.items():
         value['pattern'] = re.compile(value['pattern'])
 
 
-def make_safe_value(s):
+def make_safe_value(s: str) -> str:
+    """
+    Replace all non-alphanumeric characters in a string with underscores.
+    """
     def safe_char(c):
         if c.isalnum():
             return c
@@ -30,13 +34,34 @@ def make_safe_value(s):
     return "".join(safe_char(c) for c in str(s))
 
 
-def create_id(accident):
+def create_id(accident: dict) -> str:
+    """
+    Given an accident dict return a unique, deterministic identifier based on the
+    accidents source file and source row number.
+
+    The id will be shaped something like 'abcd1234-ab12-ab12-ab12-abcdef123456' with
+    random characters and numbers.
+    
+    Arguments:
+        accident {dict} -- a dictionary with the keys 'source_file' and 'source_row_number'
+    
+    Returns:
+        str -- a unique, deterministic identifier
+    """
     return str(uuid5(NAMESPACE_URL, make_safe_value(
         f"{accident['source_file']}{accident['source_row_number']}"))
     )
 
 
-def create_accident_raw(accident):
+def create_accident_raw(accident: dict):
+    """
+    Given an accident dictionary, check if the dictionary is valid (:= all required columns are present).
+    If the accident is invalid, print a warning and return, else add a unique, distinct ID to it and
+    create the recored in the database.
+    
+    Arguments:
+        accident {dict} -- An accident dictionary. Will fail if it does not contain all required columns/keys.
+    """
     if accident_is_valid(accident) == False:
         print(
             f'Row {accident["row_number"]} in file {accident["source_file"]} seems to be invalid')
@@ -48,11 +73,21 @@ def create_accident_raw(accident):
         print(f'ERROR creating accident {accident}')
 
 
-def create_geometry(geometry):
+def create_geometry(geometry: dict):
+    """
+    A wrapper around the kinto client's 'create_geometry', pushing to the 'geometries' collection.
+    
+    Arguments:
+        geometry {dict} -- the data to push
+    """
     create_record(data=geometry, collection='geometries')
 
 
-def create_record(data, collection, bucket='accidents'):
+def create_record(data: dict, collection: str, bucket: str='accidents'):
+    """
+    A wrapper around the kinto client's 'create_record', adding the read permissions
+    to everyone.
+    """
     client.create_record(data=data,
                          collection=collection,
                          bucket=bucket,
