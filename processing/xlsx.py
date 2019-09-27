@@ -98,5 +98,5 @@ def import_xlsx(file_path, file_meta):
                     f'{file_meta["source_file"]}:{row_number}:{column_name} {cell.value} {cell.ctype} failed to import')
         try:
             create_accident_raw(raw_accident)
-        except:
-            print(f'{file_meta["source_file"]}:{row_number} failed to import')
+        except Exception as e:
+            print(f'{file_meta["source_file"]}:{row_number} failed to import {e}')

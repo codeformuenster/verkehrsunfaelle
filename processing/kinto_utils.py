@@ -83,9 +83,18 @@ def create_record(data: dict, collection: str, bucket: str = 'accidents'):
     A wrapper around the kinto client's 'create_record', adding the read permissions
     to everyone.
     """
-    client.create_record(data=data,
-                         collection=collection,
-                         bucket=bucket,
-                         permissions={
-                             'read': ['system.Authenticated', 'system.Everyone']
-                         })
+    if 'id' in data:
+        client.update_record(id=data['id'],
+                             data=data,
+                             collection=collection,
+                             bucket=bucket,
+                             permissions={
+                                 'read': ['system.Authenticated', 'system.Everyone']
+                             })
+    else:
+        client.create_record(data=data,
+                             collection=collection,
+                             bucket=bucket,
+                             permissions={
+                                 'read': ['system.Authenticated', 'system.Everyone']
+                             })
