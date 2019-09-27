@@ -29,8 +29,7 @@ def accident_is_valid(accident: dict) -> bool:
     Return True if the given accident dictionary contains all required columns.
     """
 
-    # check for empty row, checking the first 5 columns for
-    # emptyness should be enough
+    # check for empty row, we only require a place and a date
     try:
         required_colums_values = [
             accident[k] for k in required_colums

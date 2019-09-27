@@ -9,11 +9,6 @@ client = Client(server_url=kinto_url,
                 auth=(kinto_admin, kinto_password),
                 retry=10)
 
-# TODO is this still needed? synchronize with required_columns in utils
-required_colums = [
-    'place', 'day_of_week', 'date', 'time_of_day'
-]
-
 raw_accident_schema = client.get_collection(bucket='accidents', id='accidents_raw')[
     'data']['schema']['properties']
 
@@ -41,10 +36,10 @@ def create_id(accident: dict) -> str:
 
     The id will be shaped something like 'abcd1234-ab12-ab12-ab12-abcdef123456' with
     random characters and numbers.
-    
+
     Arguments:
         accident {dict} -- a dictionary with the keys 'source_file' and 'source_row_number'
-    
+
     Returns:
         str -- a unique, deterministic identifier
     """
@@ -58,7 +53,7 @@ def create_accident_raw(accident: dict):
     Given an accident dictionary, check if the dictionary is valid (:= all required columns are present).
     If the accident is invalid, print a warning and return, else add a unique, distinct ID to it and
     create the recored in the database.
-    
+
     Arguments:
         accident {dict} -- An accident dictionary. Will fail if it does not contain all required columns/keys.
     """
@@ -76,14 +71,14 @@ def create_accident_raw(accident: dict):
 def create_geometry(geometry: dict):
     """
     A wrapper around the kinto client's 'create_geometry', pushing to the 'geometries' collection.
-    
+
     Arguments:
         geometry {dict} -- the data to push
     """
     create_record(data=geometry, collection='geometries')
 
 
-def create_record(data: dict, collection: str, bucket: str='accidents'):
+def create_record(data: dict, collection: str, bucket: str = 'accidents'):
     """
     A wrapper around the kinto client's 'create_record', adding the read permissions
     to everyone.
