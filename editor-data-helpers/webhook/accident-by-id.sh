@@ -5,9 +5,13 @@ if [[ -z "$ID" ]]; then
     echo -n '{ "error": "missing id url parameter", "missingParameter": true }'
     exit 0
 fi
+shift
+
+RND=$(date +%s%N)
 
 RESULT=$(psql -qtAX ${POSTGRES_URL} -c "
-WITH
+  PREPARE accidentbyid$RND (text) AS
+  WITH
     geometries AS (
       SELECT
         id as geometry_id,
@@ -15,7 +19,7 @@ WITH
         data->'lat' AS lat,
         data->'lon' AS lon
       FROM objects
-      WHERE data->>'accident_id' = '$ID'
+      WHERE data->>'accident_id' = \$1
         AND resource_name = 'record'
         AND parent_id = '/buckets/accidents/collections/geometries'),
     result AS (
@@ -42,11 +46,12 @@ WITH
         a.data->'slightly_injured' AS slightly_injured
       FROM objects AS a, geometries AS g
       WHERE
-        a.id = '$ID'
+        a.id = \$1
         AND a.resource_name = 'record'
         AND a.parent_id = '/buckets/accidents/collections/accidents_raw'
         AND a.id = g.accident_id)
-  SELECT row_to_json(result) FROM result;
+    SELECT row_to_json(result) FROM result;
+  EXECUTE accidentbyid$RND('$ID');
 ")
 
 if [[ -z "$RESULT" ]]; then
