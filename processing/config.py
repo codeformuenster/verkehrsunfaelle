@@ -3,9 +3,10 @@ import os
 kinto_url = os.getenv('KINTO_URL', 'http://localhost:8888/v1')
 kinto_admin = os.getenv('KINTO_ADMIN', 'admin')
 kinto_password = os.getenv('KINTO_ADMIN_PASSWORD', 'banane')
+data_directory = os.getenv('DATA_DIRECTORY', '/data')
 
 files = {
-    '/data/VU2007.xlsx': {
+    'VU2007.xlsx': {
         'sheet_name': 'Tabelle1',
         'first_data_row': 5,
         'columns_mapping': {
@@ -52,9 +53,9 @@ files = {
             'participants_age_02': None
         }
     },
-    '/data/VU2008.xlsx': {
+    'VU2008.xlsx': {
         'sheet_name': 'Tabelle1',
-        'first_data_row': 7,
+        'first_data_row': 6,
         'columns_mapping': {
             'place': 2,
             'place_near': 3,
@@ -99,7 +100,7 @@ files = {
             'participants_age_02': None
         }
     },
-    '/data/VU2009.xlsx': {
+    'VU2009.xlsx': {
         'sheet_name': 'Tabelle1',
         'first_data_row': 6,
         'columns_mapping': {
@@ -146,7 +147,7 @@ files = {
             'participants_age_02': None
         }
     },
-    '/data/VU2010.xlsx': {
+    'VU2010.xlsx': {
         'sheet_name': 'Tabelle1',
         'first_data_row': 8,
         'columns_mapping': {
@@ -193,7 +194,7 @@ files = {
             'participants_age_02': None
         }
     },
-    '/data/VU2011.xlsx': {
+    'VU2011.xlsx': {
         'sheet_name': 'Tabelle1',
         'first_data_row': 8,
         'columns_mapping': {
@@ -240,7 +241,7 @@ files = {
             'participants_age_02': None
         }
     },
-    '/data/VU2012.xlsx': {
+    'VU2012.xlsx': {
         'sheet_name': 'Tabelle1',
         'first_data_row': 8,
         'columns_mapping': {
@@ -287,7 +288,7 @@ files = {
             'participants_age_02': None
         }
     },
-    '/data/VU2013.xlsx': {
+    'VU2013.xlsx': {
         'sheet_name': 'Tabelle1',
         'first_data_row': 8,
         'columns_mapping': {
@@ -334,7 +335,7 @@ files = {
             'participants_age_02': None
         }
     },
-    '/data/VU2014.xlsx': {
+    'VU2014.xlsx': {
         'sheet_name': 'Tabelle1',
         'first_data_row': 8,
         'columns_mapping': {
@@ -381,7 +382,7 @@ files = {
             'participants_age_02': None
         }
     },
-    '/data/VU PP 2015.xlsb': {
+    'VU PP 2015.xlsb': {
         'sheet_name': '2015',
         'first_data_row': 8,
         'columns_mapping': {
@@ -428,7 +429,7 @@ files = {
             'participants_age_02': 39
         }
     },
-    '/data/VU PP 2016.xlsx': {
+    'VU PP 2016.xlsx': {
         'sheet_name': '2016',
         'first_data_row': 8,
         'columns_mapping': {
@@ -475,7 +476,7 @@ files = {
             'participants_age_02': 39
         }
     },
-    '/data/VU PP 2017.xlsx': {
+    'VU PP 2017.xlsx': {
         'sheet_name': '2017',
         'first_data_row': 8,
         'columns_mapping': {
@@ -522,7 +523,7 @@ files = {
             'participants_age_02': 39
         }
     },
-    '/data/VU PP 2018.xlsx': {
+    'VU PP 2018.xlsx': {
         'sheet_name': '2018',
         'first_data_row': 8,
         'columns_mapping': {
@@ -569,7 +570,7 @@ files = {
             'participants_age_02': 39
         }
     },
-    '/data/meta/unfallkategorien.csv': {
+    'meta/unfallkategorien.csv': {
         'collection': 'accident_type',
         'columns_mapping': {
             'key': 'Kategorie',
@@ -581,7 +582,7 @@ files = {
             'most_serious_consequence': 'Schwerste Folge'
         }
     },
-    '/data/meta/unfallarten.csv': {
+    'meta/unfallarten.csv': {
         'collection': 'accident_kind',
         'columns_mapping': {
             'key': 'Unfallart',
@@ -589,7 +590,7 @@ files = {
             'description': 'Beschreibung'
         }
     },
-    '/data/meta/unfalltypen.csv': {
+    'meta/unfalltypen.csv': {
         'collection': 'accident_category',
         'columns_mapping': {
             'key': 'Unfalltyp',
@@ -599,7 +600,7 @@ files = {
             'description': 'Beschreibung'
         }
     },
-    '/data/meta/unfallursachen.csv': {
+    'meta/unfallursachen.csv': {
         'collection': 'accident_cause',
         'columns_mapping': {
             'key': 'Nr',
@@ -608,7 +609,7 @@ files = {
             'subcategory': 'Subkategorie'
         }
     },
-    '/data/meta/verkehrsbeteiligung.csv': {
+    'meta/verkehrsbeteiligung.csv': {
         'collection': 'traffic_involvement',
         'columns_mapping': {
             'key': 'Schlüsselnummer',

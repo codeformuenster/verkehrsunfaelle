@@ -24,7 +24,7 @@ Run the importer. This takes a long time (> 1 hour). If you are not that patient
 
 Or just import a single file
 
-    docker-compose run --rm importer python processing/importer.py '/data/VU PP 2015.xlsb'
+    docker-compose run --rm importer python processing/importer.py 'VU PP 2015.xlsb'
 
 ### I am getting import errors!?
 
