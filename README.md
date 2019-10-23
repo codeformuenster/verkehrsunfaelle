@@ -1,5 +1,7 @@
 # Verkehrsunfälle in Münster
 
+![Diskussion im Chat](https://img.shields.io/matrix/verkehrsunfaelle-muenster:matrix.org?label=Diskussion%20im%20Chat&style=for-the-badge)
+
 Daten und Tools für die Verarbeitung von Verkehrsunfalldaten der Polizei Münster.
 
 - [Quickstart](#quickstart) importing raw data
