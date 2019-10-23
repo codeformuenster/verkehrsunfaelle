@@ -9,8 +9,18 @@ client = Client(server_url=kinto_url,
                 auth=(kinto_admin, kinto_password),
                 retry=10)
 
-raw_accident_schema = client.get_collection(bucket='accidents', id='accidents_raw')[
-    'data']['schema']['properties']
+raw_accident_schema = client.get_collection(
+    bucket='accidents', id='accidents_raw')
+
+# use only the first type of the schema, we're having some fields with for
+# example type: ["string", null] in there
+raw_accident_schema = {
+    key: {
+        **value,
+        **{'type': value['type'][0] if value['type'][0] else value['type']}}
+    for (key, value) in (
+        raw_accident_schema['data']['schema']['properties'].items())
+}
 
 for key, value in raw_accident_schema.items():
     if value.get('pattern') is not None:
@@ -90,7 +100,7 @@ def create_record(data: dict, collection: str, bucket: str = 'accidents'):
                              bucket=bucket,
                              permissions={
                                  'read': ['system.Authenticated', 'system.Everyone']
-                             })
+        })
     else:
         client.create_record(data=data,
                              collection=collection,

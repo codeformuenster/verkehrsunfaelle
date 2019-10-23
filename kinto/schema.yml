@@ -186,87 +186,165 @@ buckets:
           schema:
             properties:
               accident_category:
-                type: integer
+                type:
+                - integer
+                - 'null'
               accident_type:
-                type: integer
+                type:
+                - integer
+                - 'null'
               alcoholized:
-                type: string
+                type:
+                - string
+                - 'null'
               bicycle:
-                type: integer
+                type:
+                - integer
+                - 'null'
               car:
-                type: integer
+                type:
+                - integer
+                - 'null'
               cause_02:
-                type: string
+                type:
+                - string
+                - 'null'
               cause_1_4:
-                type: integer
+                type:
+                - integer
+                - 'null'
               cause_2:
-                type: integer
+                type:
+                - integer
+                - 'null'
               cause_3:
-                type: integer
+                type:
+                - integer
+                - 'null'
               cause_other:
-                type: integer
+                type:
+                - integer
+                - 'null'
               date:
                 format: date
                 pattern: ^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$
-                type: string
+                type:
+                - string
+                - 'null'
               day_of_week:
-                type: string
+                type:
+                - string
+                - 'null'
               deaths:
-                type: integer
+                type:
+                - integer
+                - 'null'
               extra_urban:
-                type: string
+                type:
+                - string
+                - 'null'
               helmet:
-                type: string
+                type:
+                - string
+                - 'null'
               hit_and_run:
-                type: string
+                type:
+                - string
+                - 'null'
               import_timestamp:
                 type: string
               light_conditions:
-                type: string
+                type:
+                - string
+                - 'null'
               lorry:
-                type: integer
+                type:
+                - integer
+                - 'null'
               moped:
-                type: integer
+                type:
+                - integer
+                - 'null'
               motorcycle:
-                type: integer
+                type:
+                - integer
+                - 'null'
               number_of_participants:
-                type: integer
+                type:
+                - integer
+                - 'null'
               omnibus:
-                type: integer
+                type:
+                - integer
+                - 'null'
               other_road_user:
-                type: integer
+                type:
+                - integer
+                - 'null'
               participants_01:
-                type: integer
+                type:
+                - integer
+                - 'null'
               participants_01_registration:
-                type: string
+                type:
+                - string
+                - 'null'
               participants_02:
-                type: integer
+                type:
+                - integer
+                - 'null'
               participants_02_registration:
-                type: string
+                type:
+                - string
+                - 'null'
               participants_18_24:
-                type: integer
+                type:
+                - integer
+                - 'null'
               participants_age_01:
-                type: integer
+                type:
+                - integer
+                - 'null'
               participants_age_02:
-                type: integer
+                type:
+                - integer
+                - 'null'
               participants_child:
-                type: string
+                type:
+                - string
+                - 'null'
               participants_senior:
-                type: integer
+                type:
+                - integer
+                - 'null'
               pedestrian:
-                type: integer
+                type:
+                - integer
+                - 'null'
               place:
-                type: string
+                type:
+                - string
+                - 'null'
               place_near:
-                type: string
+                type:
+                - string
+                - 'null'
               road_condition:
-                type: string
+                type:
+                - string
+                - 'null'
               seriously_injured:
-                type: integer
+                type:
+                - integer
+                - 'null'
               slightly_injured:
-                type: integer
+                type:
+                - integer
+                - 'null'
               small_moped:
-                type: integer
+                type:
+                - integer
+                - 'null'
               source_file:
                 type: string
               source_file_hash:
@@ -277,9 +355,13 @@ buckets:
               time_of_day:
                 format: time
                 pattern: ^(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)|^(?![\s\S])$
-                type: string
+                type:
+                - string
+                - 'null'
               urban:
-                type: string
+                type:
+                - string
+                - 'null'
             required:
             - source_file
             - import_timestamp
@@ -310,6 +392,7 @@ buckets:
               ui:readonly: true
             date:
               ui:readonly: true
+              ui:widget: text
             day_of_week:
               ui:readonly: true
             deaths:
@@ -376,6 +459,7 @@ buckets:
               ui:readonly: true
             time_of_day:
               ui:readonly: true
+              ui:widget: text
             ui:order:
             - source_file
             - source_row_number

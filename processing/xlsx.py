@@ -11,16 +11,17 @@ def extract_value(cell, column_name, datemode):
     # 2 == float
     # 3 == date
     schema = raw_accident_schema[column_name]
-    if cell.ctype == 0 and schema['type'] == 'integer':
-        return 0
-    if cell.ctype == 0 and schema['type'] == 'string':
-        return ''
-
-    value = cell.value
+    if cell.ctype == 0:
+        return None
 
     # sometimes, place_near is of type date, discard the value
     if column_name == 'place_near' and cell.ctype == 3:
-        value = ''
+        return None
+
+    value = cell.value
+
+    if isinstance(value, str):
+        value = value.strip()
 
     if column_name == 'date':
         try:  # try the excel date first
@@ -47,23 +48,22 @@ def extract_value(cell, column_name, datemode):
             value = str(datetime.strptime(value, '%H:%M'))[11:]
 
     if schema.get('pattern') is not None:
-        if schema['pattern'].match(value) is not None:
-            return value
-        else:
+        if schema['pattern'].match(value) is None:
             print(
                 f'Final fail for {value} (Column: {column_name}, Celltype: {cell.ctype})')
             raise Exception
 
     if schema['type'] == 'integer':
-        if cell.ctype == 1:  # cell is string
+        if cell.ctype == 1: # cell is string
             value = re.sub(r'\D', '', value)
         # VU PP 2018.xlsx row 8144 column lorry
         if column_name == 'lorry' and value == 'ms':
             value = 1
 
         if value != '':
-            return int(value)
-        return -1
+            value = int(value)
+        else:
+            value = None
     if schema['type'] == 'string':
         # if the cell is a float, prevent saving 166.0 instead of 166
         if cell.ctype == 2 and value == int(value):
@@ -94,8 +94,9 @@ def import_xlsx(file_path, file_meta):
                 raw_accident[column_name] = extract_value(
                     row[column_number - 1], column_name, book.datemode)
             except:
+                cell = row[column_number - 1]
                 print(
-                    f'{file_meta["source_file"]}:{row_number}:{column_name} {cell.value} {cell.ctype} failed to import')
+                    f'{file_meta["source_file"]}:{row_number}:{column_name} value "{cell.value}" failed to import')
         try:
             create_accident_raw(raw_accident)
         except Exception as e:

@@ -4,6 +4,7 @@ from pyxlsb import open_workbook, convert_date
 from datetime import datetime
 
 from re import match, sub
+from math import isnan
 
 
 def extract_value(row, column_number, column_name):
@@ -11,10 +12,7 @@ def extract_value(row, column_number, column_name):
     value = row[column_number].v
 
     if value is None:
-        if schema['type'] == 'integer':
-            return 0
-        if schema['type'] == 'string':
-            return ''
+        return None
 
     if column_name == 'date':
         value = convert_date(value)
@@ -63,13 +61,16 @@ def extract_value(row, column_number, column_name):
             if value != '':
                 value = int(value)
             else:
-                value = -1
+                value = None
 
     if schema['type'] == 'string':
         # if the cell is a float, prevent saving 166.0 instead of 166
         if type(value) is float and value == int(value):
             value = int(value)
         value = str(value)
+
+    if value == '' or (type(value) is int and isnan(value)):
+        value = None
 
     return value
 
