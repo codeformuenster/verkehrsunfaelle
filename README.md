@@ -73,7 +73,7 @@ Open a second terminal. Execute psql inside the container
 
     docker exec -it verkehrsunfaelle psql -U postgres accidents
 
-The data lives in the table `objects` in the column `data` as [JSON](https://www.postgresql.org/docs/11/datatype-json.html).
+The data lives in the table `objects` in the column `data` as [JSON](https://www.postgresql.org/docs/12/datatype-json.html).
 
 Get all accidents
 
