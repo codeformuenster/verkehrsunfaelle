@@ -70,7 +70,8 @@ buckets:
             required: false
           cache_expires: 0
           displayFields:
-          - title
+          - key
+          - description
           id: accident_cause
           schema:
             properties:
