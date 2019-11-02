@@ -48,8 +48,7 @@ RESULT=$(psql -qtAX ${POSTGRES_URL} -c "
       WHERE
         a.id = \$1
         AND a.resource_name = 'record'
-        AND a.parent_id = '/buckets/accidents/collections/accidents_raw'
-        AND a.id = g.accident_id)
+        AND a.parent_id = '/buckets/accidents/collections/accidents_raw')
     SELECT row_to_json(result) FROM result;
   EXECUTE accidentbyid$RND('$ID');
 ")
