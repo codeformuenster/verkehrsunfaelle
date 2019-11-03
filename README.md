@@ -109,3 +109,5 @@ Collection `accident_type` is NOT related to the `accident_type` column in the `
 You can either download the csv from [this release](https://github.com/codeformuenster/verkehrsunfaelle/releases/tag/csv-data-2019-06-06) or create the file `export.csv` containing the imported raw accidents:
 
     cat csv-export.sql | docker-compose exec -T postgres psql -qt postgres://postgres@/accidents > export.csv
+
+You'll find instructions on how to export csv directory [csv](csv).
