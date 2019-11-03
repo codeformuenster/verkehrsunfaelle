@@ -10,19 +10,15 @@ Daten und Tools für die Verarbeitung von Verkehrsunfalldaten der Polizei Münst
 - [Metadata](#metadata) Metadata
 - [CSV](#csv-files) csv files
 
-## Quickstart
+## Quickstart data import
 
-Start Kinto (Datastore)
+Initialize containers (may fail, just retry)
 
-    docker-compose up -d kinto
-
-Initialize Kinto
-
-    docker-compose run --rm initializer
+    ./ctl.sh init
 
 Run the importer. This takes a long time (> 1 hour). If you are not that patient consider using a ready-made container instead (see [Data container images](#data-container-images)).
 
-    docker-compose run --rm importer
+    ./ctl.sh import
 
 Or just import a single file
 
@@ -53,7 +49,7 @@ Start Nominatim & Overpass
 
 Execute the geocoder
 
-    docker-compose run --rm geocoder
+    ./ctl.sh geocode
 
 ## Exporting a database dump
 
