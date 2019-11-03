@@ -26,6 +26,10 @@ def import_csv(file_path: PathLike, file_meta: dict):
                 }
                 data_dict['key'] = int(data_dict['key'])
 
+                # 'id' is the field that is used to uniquely identify the rows so that they are inserted twice
+                # this must be a string
+                data_dict['id'] = str(data_dict['key'])
+
                 create_record(data_dict, collection=file_meta['collection'])
             except Exception as e:
                 print(
