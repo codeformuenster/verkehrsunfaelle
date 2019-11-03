@@ -1,11 +1,13 @@
 # Verkehrsunfälle in Münster
 
+[![Diskussion im Chat](https://img.shields.io/matrix/verkehrsunfaelle-muenster:matrix.org?label=Diskussion%20im%20Chat&style=for-the-badge)](https://matrix.to/#/#verkehrsunfaelle-muenster:matrix.org)
+
 Daten und Tools für die Verarbeitung von Verkehrsunfalldaten der Polizei Münster.
 
 - [Quickstart](#quickstart) importing raw data
 - [Geocoding](#geocoding) try to guess the location of the accident
 - [I just want the data](#data-container-images) Container images with built in data
-- [Metadata] Metadata
+- [Metadata](#metadata) Metadata
 - [CSV](#csv-files) csv files
 
 ## Quickstart
@@ -24,7 +26,7 @@ Run the importer. This takes a long time (> 1 hour). If you are not that patient
 
 Or just import a single file
 
-    docker-compose run --rm importer python processing/importer.py '/data/VU PP 2015.xlsb'
+    docker-compose run --rm importer python processing/importer.py 'VU PP 2015.xlsb'
 
 ### I am getting import errors!?
 
@@ -73,7 +75,7 @@ Open a second terminal. Execute psql inside the container
 
     docker exec -it verkehrsunfaelle psql -U postgres accidents
 
-The data lives in the table `objects` in the column `data` as [JSON](https://www.postgresql.org/docs/11/datatype-json.html).
+The data lives in the table `objects` in the column `data` as [JSON](https://www.postgresql.org/docs/12/datatype-json.html).
 
 Get all accidents
 

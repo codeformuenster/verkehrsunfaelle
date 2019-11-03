@@ -34,7 +34,7 @@ services:
         condition: service_started
 
   kinto:
-    image: kinto/kinto-server:13.1.1
+    image: kinto/kinto-server:13.6.1
     ports:
       - 8888:8888
     volumes:
@@ -52,7 +52,7 @@ services:
         condition: service_healthy
 
   postgres:
-    image: postgres:11-alpine
+    image: postgres:12-alpine
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: accidents

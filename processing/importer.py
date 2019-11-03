@@ -1,4 +1,4 @@
-from config import files
+from config import files, data_directory
 from utils import hash_file
 from xlsx import import_xlsx
 from xlsb import import_xlsb
@@ -12,22 +12,26 @@ from multiprocessing import Process
 import_timestamp = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()
 
 
-def execute(file_path: str):
+def execute(file_name: str):
     """
-    Given a file path, look up the meta data from the config (where each file path is a key),
-    and depending on the file extension call the appropriate handler.
-    Each handler will ultimately attempt to create a record, either a raw accident (from Excel files)
-    or one of the meta information collections (from csv files).
+    Given a file name, look up the meta data from the config (where each file
+    name is a key), and depending on the file extension call the appropriate
+    handler.
+    Each handler will ultimately attempt to create a record, either a raw
+    accident (from Excel files) or one of the meta information collections
+    (from csv files).
     """
     try:
-        file_meta = files[file_path]
+        file_meta = files[file_name]
     except KeyError:
-        print(f"Unknown file {file_path}")
+        print(f"Unknown file {file_name}")
         exit(1)
+
+    file_path = path.normpath(f'{data_directory}/{file_name}')
 
     _, file_extension = path.splitext(file_path)
 
-    file_meta['source_file'] = path.basename(file_path)
+    file_meta['source_file'] = file_name
     file_meta['import_timestamp'] = import_timestamp
     file_meta['source_file_hash'] = hash_file(file_path)
 
@@ -44,11 +48,11 @@ def execute(file_path: str):
 
 if __name__ == '__main__':
     try:
-        _, file_path = argv
-        execute(file_path, 0)
+        _, file_name = argv
+        execute(file_name)
         exit(0)
     except ValueError:
         pass
 
-    for idx, file_path in enumerate(files):
-        Process(target=execute, args=(file_path,)).start()
+    for idx, file_name in enumerate(files):
+        Process(target=execute, args=(file_name,)).start()

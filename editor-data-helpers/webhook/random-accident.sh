@@ -1,15 +1,19 @@
 #!/bin/bash
 
-# TODO move this into container initialization
-COUNT=$(psql -qtAX ${POSTGRES_URL} -c "
-  SELECT count(id) FROM objects
+ACCIDENT_ID=$(psql -qtAX ${POSTGRES_URL} -c "
+  SELECT id
+  FROM objects
   WHERE resource_name = 'record'
-    AND parent_id = '/buckets/accidents/collections/accidents_raw';")
+    AND parent_id = '/buckets/accidents/collections/accidents_raw'
+  OFFSET floor(random()*(
+    SELECT count(id) FROM objects
+    WHERE resource_name = 'record'
+    AND parent_id = '/buckets/accidents/collections/accidents_raw'))
+  LIMIT 1;
+")
 
 psql -qtAX ${POSTGRES_URL} -c "
   WITH
-    records AS (
-      SELECT id, parent_id, data FROM objects WHERE resource_name = 'record'),
     accident AS (
       SELECT
         id AS accident_id,
@@ -29,10 +33,10 @@ psql -qtAX ${POSTGRES_URL} -c "
         data->'deaths' AS deaths,
         data->'seriously_injured' AS seriously_injured,
         data->'slightly_injured' AS slightly_injured
-      FROM records
-      WHERE parent_id = '/buckets/accidents/collections/accidents_raw'
-      OFFSET floor(random()*${COUNT})
-      LIMIT 1
+      FROM objects
+      WHERE resource_name = 'record'
+        AND parent_id = '/buckets/accidents/collections/accidents_raw'
+        AND id = '${ACCIDENT_ID}'
     ),
     geometries AS (
       SELECT
@@ -40,8 +44,10 @@ psql -qtAX ${POSTGRES_URL} -c "
         data->>'accident_id' AS accident_id,
         data->'lat' AS lat,
         data->'lon' AS lon
-      FROM records
-      WHERE parent_id = '/buckets/accidents/collections/geometries'
+      FROM objects
+      WHERE resource_name = 'record'
+        AND parent_id = '/buckets/accidents/collections/geometries'
+        AND data->>'accident_id' = '${ACCIDENT_ID}'
     ),
     result AS (
       SELECT *

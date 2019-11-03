@@ -10,7 +10,7 @@ RUN apt-get update \
   && echo "deb http://apt.postgresql.org/pub/repos/apt/ bullseye-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
   && apt-get update \
   && apt-get install -y --no-install-recommends \
-    postgresql-client-11 \
+    postgresql-client-12 \
   && apt-get purge -y curl gnupg \
   && apt-get autoremove -y \
   && rm -rf /var/lib/apt/lists/*
