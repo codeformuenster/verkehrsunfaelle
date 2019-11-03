@@ -65,6 +65,8 @@ Container images with built in data are available from [quay.io/repository/codef
 
 The images are based on the [official postgres container images](https://hub.docker.com/_/postgres) from the docker hub. Just treat them as such.
 
+You'll find instructions on how to build the data container images in directory [data-container-image](data-container-image).
+
 ### Simple Usage
 
 Find the latest container image tag on [the quay.io repository](https://quay.io/repository/codeformuenster/verkehrsunfaelle) and start a container from it and wait until `database system is ready to accept connections` is printed.

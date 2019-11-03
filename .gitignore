@@ -6,3 +6,4 @@ postgres_data
 nominatim/postgresdata
 *.bz2
 overpass/db
+dump.sql.gz
