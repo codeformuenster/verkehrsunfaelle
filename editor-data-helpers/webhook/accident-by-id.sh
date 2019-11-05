@@ -43,7 +43,17 @@ RESULT=$(psql -qtAX ${POSTGRES_URL} -c "
         a.data->'participants_02' AS participants_02,
         a.data->'deaths' AS deaths,
         a.data->'seriously_injured' AS seriously_injured,
-        a.data->'slightly_injured' AS slightly_injured
+        json_build_object(
+          'pedestrian', a.data->'pedestrian',
+          'bicycle', a.data->'bicycle',
+          'small_moped', a.data->'small_moped',
+          'moped', a.data->'moped',
+          'motorcycle', a.data->'motorcycle',
+          'car', a.data->'car',
+          'lorry', a.data->'lorry',
+          'omnibus', a.data->'omnibus',
+          'other_road_user', a.data->'other_road_user'
+        ) AS participants
       FROM objects AS a, geometries AS g
       WHERE
         a.id = \$1

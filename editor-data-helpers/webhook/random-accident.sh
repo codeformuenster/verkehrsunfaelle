@@ -32,7 +32,16 @@ psql -qtAX ${POSTGRES_URL} -c "
         data->'participants_02' AS participants_02,
         data->'deaths' AS deaths,
         data->'seriously_injured' AS seriously_injured,
-        data->'slightly_injured' AS slightly_injured
+        data->'slightly_injured' AS slightly_injured,
+        data->'pedestrian' AS pedestrian,
+        data->'bicycle' AS bicycle,
+        data->'small_moped' AS small_moped,
+        data->'moped' AS moped,
+        data->'motorcycle' AS motorcycle,
+        data->'car' AS car,
+        data->'lorry' AS lorry,
+        data->'omnibus' AS omnibus,
+        data->'other_road_user' AS other_road_user
       FROM objects
       WHERE resource_name = 'record'
         AND parent_id = '/buckets/accidents/collections/accidents_raw'
@@ -50,7 +59,37 @@ psql -qtAX ${POSTGRES_URL} -c "
         AND data->>'accident_id' = '${ACCIDENT_ID}'
     ),
     result AS (
-      SELECT *
+      SELECT
+        geometry_id,
+        accident_id,
+        lat,
+        lon,
+        place,
+        place_near,
+        source_file,
+        source_row_number,
+        accident_category,
+        accident_type,
+        cause_1_4,
+        cause_2,
+        cause_3,
+        cause_other,
+        cause_02,
+        participants_01,
+        participants_02,
+        deaths,
+        seriously_injured,
+        json_build_object(
+          'pedestrian', pedestrian,
+          'bicycle', bicycle,
+          'small_moped', small_moped,
+          'moped', moped,
+          'motorcycle', motorcycle,
+          'car', car,
+          'lorry', lorry,
+          'omnibus', omnibus,
+          'other_road_user', other_road_user
+        ) AS participants
       FROM accident LEFT JOIN geometries USING (accident_id)
       LIMIT 1
     )
