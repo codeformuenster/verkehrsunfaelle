@@ -41,7 +41,9 @@ psql -qtAX ${POSTGRES_URL} -c "
         data->'car' AS car,
         data->'lorry' AS lorry,
         data->'omnibus' AS omnibus,
-        data->'other_road_user' AS other_road_user
+        data->'other_road_user' AS other_road_user,
+        data->'date' AS date,
+        data->'time_of_day' AS time_of_day
       FROM objects
       WHERE resource_name = 'record'
         AND parent_id = '/buckets/accidents/collections/accidents_raw'
@@ -89,7 +91,9 @@ psql -qtAX ${POSTGRES_URL} -c "
           'lorry', lorry,
           'omnibus', omnibus,
           'other_road_user', other_road_user
-        ) AS participants
+        ) AS participants,
+        date,
+        time_of_day
       FROM accident LEFT JOIN geometries USING (accident_id)
       LIMIT 1
     )

@@ -53,7 +53,9 @@ RESULT=$(psql -qtAX ${POSTGRES_URL} -c "
           'lorry', a.data->'lorry',
           'omnibus', a.data->'omnibus',
           'other_road_user', a.data->'other_road_user'
-        ) AS participants
+        ) AS participants,
+        a.data->'date' AS date,
+        a.data->'time_of_day' AS time_of_day
       FROM objects AS a, geometries AS g
       WHERE
         a.id = \$1
