@@ -67,7 +67,7 @@ You'll find instructions on how to build the data container images in directory 
 
 Find the latest container image tag on [the quay.io repository](https://quay.io/repository/codeformuenster/verkehrsunfaelle) and start a container from it and wait until `database system is ready to accept connections` is printed.
 
-    docker run --rm --name verkehrsunfaelle -p 5432:5432 quay.io/codeformuenster/verkehrsunfaelle:2019-11-03
+    docker run --rm --name verkehrsunfaelle -p 5432:5432 quay.io/codeformuenster/verkehrsunfaelle:2019-11-15
 
 Open a second terminal. Execute psql inside the container
 
@@ -106,7 +106,7 @@ Collection `accident_type` is NOT related to the `accident_type` column in the `
 
 [Container images](#data-container-images) mentioned above can be used to create csv files of the data.
 
-You can either download the csv from [this release](https://github.com/codeformuenster/verkehrsunfaelle/releases/tag/csv-data-2019-06-06) or create the file `export.csv` containing the imported raw accidents:
+You can either download the csv from [this release](https://github.com/codeformuenster/verkehrsunfaelle/releases/tag/data-2019-11-03) or create the file `export.csv` containing the imported raw accidents:
 
     cat csv-export.sql | docker-compose exec -T postgres psql -qt postgres://postgres@/accidents > export.csv
 
