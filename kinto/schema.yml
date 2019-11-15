@@ -603,11 +603,15 @@ buckets:
               lat:
                 maximum: 52.5
                 minimum: 51.5
-                type: number
+                type:
+                - number
+                - 'null'
               lon:
                 maximum: 7.9
                 minimum: 7.2
-                type: number
+                type:
+                - number
+                - 'null'
               timestamp:
                 type: string
             type: object
